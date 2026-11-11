@@ -2,6 +2,18 @@
 
 ## Architecture: the model reads, the code decides
 
+```mermaid
+flowchart LR
+    A["Submission<br/>package"] --> B["Validate<br/>(strict schema)"]
+    B -- "documents, medication list,<br/>scheduled procedure" --> C["Reader<br/>(one model call)"]
+    C -- "facts with quotes" --> D["Quote check<br/>(code)"]
+    D -- "verified facts" --> E["Rules<br/>(code)"]
+    B -- "labs, vitals, dates, risk" --> E
+    E --> F["Seven checks, then<br/>decision, issues, explanation"]
+    B -. "invalid record" .-> G["NEEDS_FOLLOW_UP<br/>(system failure)"]
+    C -. "call fails twice" .-> G
+```
+
 1. **Validate.** A strict schema. An unknown field is an error, because a renamed `labs`
    would otherwise read as "no labs".
 2. **Read.** One model call sees the documents, the medication list and the scheduled
