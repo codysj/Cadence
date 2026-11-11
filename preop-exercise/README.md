@@ -114,7 +114,7 @@ metrics locally.
 | `data/recorded_run/` | What the reader returned in the run reported in the write-up, and that run's determinism report |
 | `data/reader_facts/` | What the reader returns in your own runs; ignored by git |
 | `run_baseline.py`, `run_evals.py`, `view_report.py` | The starter's harness |
-| `../docs/session-export/` | The exported coding-agent session |
+| `../docs/session-export/` | The exported coding-agent session, with one email address redacted |
 
 `run_baseline.py` has one change from the starter: it no longer validates every record
 before starting, so one malformed record fails closed for that case instead of stopping

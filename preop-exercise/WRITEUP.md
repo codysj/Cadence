@@ -115,4 +115,5 @@ is saved in `data/recorded_run/`, so these numbers can be re-scored without a ke
 - **Long real charts.** One reader call per document; the facts are already per document.
 - **In production.** Track the `UNKNOWN` rate and how often nurses override `READY`.
 
-Built with Claude Code; the exported session shows where review changed the design.
+Built with Claude Code. The exported session, in `../docs/session-export/`, shows where
+review changed the design.
