@@ -1,12 +1,12 @@
 # Pre-Op Triage Take-Home
 
-`triage_submission(...)` in `core.py` takes one patient submission package and returns a
+`triage_submission(...)` in `preop-exercise/core.py` takes one patient submission package and returns a
 decision (`READY | NEEDS_FOLLOW_UP | NOT_CLEARED`), the issues with their categories, and
 an evidence checklist a pre-op nurse can verify.
 
 A model reads the free-text documents and returns quoted facts. Plain code checks every
 quote against its document, applies the policy and writes the output. The approach,
-assumptions, results and limits are in [WRITEUP.md](WRITEUP.md).
+assumptions, results and limits are in [WRITEUP.md](preop-exercise/WRITEUP.md).
 
 ## Setup
 
@@ -16,8 +16,14 @@ Install [`uv`](https://docs.astral.sh/uv/) and confirm it runs:
 uv --version
 ```
 
-Run everything below from this folder. The commands are the ones the Makefile wraps,
-written out so they also work where `make` is not installed (Windows PowerShell included).
+Run everything below from the `preop-exercise/` folder:
+
+```bash
+cd preop-exercise
+```
+
+The commands are the ones the Makefile wraps, written out so they also work where `make`
+is not installed (Windows PowerShell included).
 
 ## Run without a key: re-score the recorded run
 
@@ -101,6 +107,8 @@ It was not run for this submission. `offline_eval.py score` applies the same thr
 metrics locally.
 
 ## What is where
+
+Paths are relative to `preop-exercise/`.
 
 | File | What it does |
 |---|---|
