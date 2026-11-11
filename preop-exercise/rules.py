@@ -201,7 +201,8 @@ class _Case:
         return _day(doc.date) if doc else None
 
     def cite(self, doc_id: str, quote: str | None) -> Evidence:
-        return Evidence(source="document", ref=doc_id, label=self.label(doc_id), quote=quote)
+        # Shown without the indentation the line had in its document.
+        return Evidence(source="document", ref=doc_id, label=self.label(doc_id), quote=quote.strip() if quote else quote)
 
     def risk_problem(self) -> str:
         if self.raw_risk is None:

@@ -50,16 +50,19 @@ cannot be put in order.
 
 ## One evidence packet
 
-case_00005, from the run below. Its structured vitals are normal; the breach is only in a
-nursing note. The issue and the deciding row (the other six rows are omitted here):
+case_00016, from the run below. It is `READY`, and it has to prove it: the nursing note
+opens with a breaching 189/112, which a recheck 24 minutes later cleared. The header and
+the blood-pressure row (six other rows and two older readings are omitted here):
 
 ```text
-ACUTE_SAFETY_EXCLUSION  Blood pressure: 157/117 on 2026-03-03 09:05, limits 180/110
+READY: all applicable checks pass
+case_00016 | Elective inguinal hernia repair | procedure date 2026-03-17 | risk LOW
 
-FAIL    Blood pressure: 157/117 on 2026-03-03 09:05, limits 180/110
-    source: Nursing Pre-procedure Assessment 2026-03-03 #7aefc9ae
-      "  09:05  BP 157/117, Temp 36.7 °C, HR 69, SpO2 99% RA"
-    rejected: 119/78 on 2026-03-01 10:12 (structured vital, Pre-op clinic): older reading
+PASS    Blood pressure: 137/78 on 2026-03-15 08:30, limits 180/110 (earlier breach superseded by this reading)
+    source: Nursing Pre-procedure Assessment 2026-03-15 #1f5be5f7
+      "ADDENDUM 08:30: Re-measured 137/78 mmHg following 24 minutes in a quiet room. Reported pain 6/10 on arrival, improved after repositioning."
+    rejected: 189/112 on 2026-03-15 08:06 (Nursing Pre-procedure Assessment 2026-03-15 #1f5be5f7): breach superseded by a later reading
+    rejected: 123/75 on 2026-03-12 10:12 (structured vital, Cardiology clinic): older reading
 ```
 
 ## Assumptions
@@ -98,9 +101,18 @@ is saved in `data/recorded_run/`, so these numbers can be re-scored without a ke
   reading guide I wrote after studying the labels. Case 16 I wrote knowing its label.
 - **Untested by real data.** With complete facts no check goes `UNKNOWN`, so the doubt
   paths rest on synthetic tests only.
-- **Size.** `rules.py` is about 1,000 lines for a four-rule policy, much of it for
-  situations no sample case contains. That is more than the exercise needed.
+- **Size.** `rules.py` is about 1,000 lines for a four-rule policy. What I would cut:
+  merge the three places that compute "the latest item that is not superseded"
+  (readings, drug statements, plans) into one, and collapse the conflict paths no sample
+  case reaches into a single rule, `UNKNOWN` on any conflict.
 - **Not run.** A second model or repeat run, the direct OpenAI path, the `make` targets
   and Evals API scoring.
+
+## Next
+
+- **Held-out evaluation.** Score on labelled cases that played no part in writing the
+  rules or the prompt.
+- **Long real charts.** One reader call per document; the facts are already per document.
+- **In production.** Track the `UNKNOWN` rate and how often nurses override `READY`.
 
 Built with Claude Code; the exported session shows where review changed the design.

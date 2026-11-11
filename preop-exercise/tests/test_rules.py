@@ -832,6 +832,28 @@ def test_a_later_reading_in_a_note_outranks_structured_vitals() -> None:
     assert output.checks[5].evidence[0].quote == "09:05 BP 157/117 mmHg"
 
 
+def test_quotes_are_shown_without_the_indentation_of_their_source_line() -> None:
+    """Review finding: lines in the documents are often indented, and the quote was
+    displayed with its leading spaces. It is still checked against the document as given."""
+
+    s, f = ready_case()
+    doc(s, "note1")["text"] += "\n  09:05  BP 157/117, Temp 36.7 C  "
+    f["note_blood_pressures"].append(
+        {"doc_id": "note1", "systolic": 157, "diastolic": 117, "time": "09:05", "quote": "  09:05  BP 157/117, Temp 36.7 C  "}
+    )
+    f["note_temperatures"].append(
+        {"doc_id": "note1", "value": 36.7, "unit": "C", "time": "09:05", "quote": "  09:05  BP 157/117, Temp 36.7 C  "}
+    )
+    output = run(s, f)
+    shown = "09:05  BP 157/117, Temp 36.7 C"
+
+    assert output.decision == "NOT_CLEARED"  # the quote was verified, not dropped
+    assert output.checks[5].evidence[0].quote == shown
+    assert f'      "{shown}"' in output.explanation.splitlines()
+    assert output.issues[0].evidence.endswith(f'"{shown}"')
+    assert '"  09:05' not in output.model_dump_json() and 'C  "' not in output.model_dump_json()
+
+
 def test_a_recheck_in_range_clears_an_earlier_breach() -> None:
     s, f = ready_case()
     note_bp(s, f, 189, 112, time="08:06")
