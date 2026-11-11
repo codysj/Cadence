@@ -1,5 +1,9 @@
 # Approach and results
 
+A model pulls quoted facts from the free-text documents; plain code checks each quote and
+applies the policy. It matches all 50 sample labels, which shows consistency, not accuracy
+(see Limits).
+
 ## Architecture: the model reads, the code decides
 
 ```mermaid
@@ -18,19 +22,22 @@ flowchart LR
    would otherwise read as "no labs".
 2. **Read.** One model call sees the documents, the medication list and the scheduled
    procedure. It returns facts, each with a document id and a verbatim quote. It sees no
-   labs, structured vitals, risk level or thresholds, and it returns no decision.
+   labs, structured vitals, risk level or thresholds, and it returns no decision. If code
+   finds a quote it can't verify, or something in the text the model didn't report, the
+   model is asked once more with that list.
 3. **Verify and decide.** Code confirms each quote is in its document, then applies the
    four rules. Every case gets the same seven checks, `READY` included, and the decision,
    issues and explanation are derived from those rows.
 
-A malformed record or a failed model call returns `NEEDS_FOLLOW_UP` for that case, marked
-as a system failure.
+Output: `decision`, `issues` (`category`, `description`, `evidence`, `check_ids`), the seven
+`checks` behind them, a text `explanation`, and `system_failure`.
 
 ## Design decisions
 
 - **Quotes verified by code.** A fact counts only if its quote is in the document it
   cites, so a nurse can find everything shown. The cost: a correct fact with a mangled
-  quote is discarded and the case goes to follow-up.
+  quote is discarded and the case goes to follow-up. The check confirms the quote is there, not
+  that it supports the fact; the nurse sees the quote and judges that.
 - **One model call per case.** It is cheap and has one failure path to handle. The cost:
   one prompt must get every kind of fact right, and a failed call loses the whole case.
 - **No sampling settings.** No temperature or seed is sent, because some current models
@@ -43,16 +50,15 @@ as a system failure.
 ## Principle: doubt never passes
 
 `READY` and `NOT_CLEARED` are both claims, and a claim needs established facts. A check
-passes or fails only when that holds however the open questions resolve; otherwise it is
-`UNKNOWN` and the case is `NEEDS_FOLLOW_UP`. Open questions are a quote not found in its
-document, something written but not reported, an unrecognised value, and sources that
-cannot be put in order.
+passes or fails only if the result holds however the open questions resolve. Otherwise it
+is `UNKNOWN`, reported as `MISSING_REQUIRED_DATA`, and the case goes to `NEEDS_FOLLOW_UP`.
+Open questions: a quote not found in its document, something in the text the model didn't
+report, a value the code doesn't recognise, and sources that can't be put in date order.
 
 ## One evidence packet
 
-case_00016, from the run below. It is `READY`, and it has to prove it: the nursing note
-opens with a breaching 189/112, which a recheck 24 minutes later cleared. The header and
-the blood-pressure row (six other rows and two older readings are omitted here):
+case_00016, from the run below: `READY`, although the nursing note opens with a breaching
+189/112; a recheck 24 minutes later cleared it. The header and the blood-pressure row (six other rows and two older readings are omitted here):
 
 ```text
 READY: all applicable checks pass
@@ -83,14 +89,19 @@ PASS    Blood pressure: 137/78 on 2026-03-15 08:30, limits 180/110 (earlier brea
 ## Results
 
 One run of the 50 sample cases on 2026-11-10: `openai/gpt-6-luna` through OpenRouter,
-driven by `run_baseline.py`. 51 model calls, $0.04. What the reader returned
-is saved in `data/recorded_run/`, so these numbers can be re-scored without a key.
+driven by `run_baseline.py`. 51 model calls, $0.04. What the reader returned is saved in
+`data/recorded_run/`, so these numbers can be re-scored without a key; the harness's
+determinism report is there too.
 
-| Measure | Result | In one line |
+| Measure | Result | What it shows |
 |---|---|---|
 | Harness metrics | 50/50 valid, decisions and exact category sets | `run_evals.py`'s own metric functions on the outputs file; the Evals API step was not run |
 | Fact by fact | 328 of 328 reference facts found, none missed, added or judged differently | Agreement with facts written to the same reading guide as the prompt: consistency, not independent accuracy |
-| Determinism | Case 0, ten fresh calls: decision 100%, exact output 60% | Decisions are code given the facts; the text varies because the model quotes different lines. The harness's report is in `data/recorded_run/determinism_report.json` |
+| Determinism | Case 0, ten fresh calls: decision 100%, exact output 60% | Decisions are code given the facts; the text varies because the model quotes different lines |
+
+353 unit tests, including: the rules reproduce all 50 labels from the reference facts; no
+single policy problem produces `READY`; every kind of failed model call ends as
+`NEEDS_FOLLOW_UP`.
 
 ## Limits
 
@@ -98,9 +109,10 @@ is saved in `data/recorded_run/`, so these numbers can be re-scored without a ke
   reference facts were written after studying these 50 labels. There are no held-out
   cases, so 50 of 50 is a consistency check and not an accuracy estimate.
 - **Reference facts.** 49 were written by subagents that never saw labels, following a
-  reading guide I wrote after studying the labels. Case 16 I wrote knowing its label.
-- **Untested by real data.** With complete facts no check goes `UNKNOWN`, so the doubt
-  paths rest on synthetic tests only.
+  reading guide I wrote after studying the labels. I wrote case 16's facts myself, knowing
+  its label.
+- **Untested by real data.** No reading problem (an unverified quote or a disputed fact)
+  came up in the recorded run, so those paths are tested synthetically only.
 - **Size.** `rules.py` is about 1,000 lines for a four-rule policy. What I would cut:
   merge the three places that compute "the latest item that is not superseded"
   (readings, drug statements, plans) into one, and collapse the conflict paths no sample
