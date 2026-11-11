@@ -30,6 +30,7 @@ def openai_client(monkeypatch: pytest.MonkeyPatch) -> Mock:
         ),
     )
 
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
     monkeypatch.setitem(sys.modules, "openai", SimpleNamespace(OpenAI=lambda: client))
     return client
 

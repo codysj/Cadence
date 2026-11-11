@@ -3,9 +3,8 @@
 from __future__ import annotations
 
 import json
-from typing import Literal
-
-from pydantic import AliasChoices, BaseModel, Field
+import os
+from pydantic import ValidationError
 
 # -------------------------
 # Policy + system prompt
@@ -52,121 +51,31 @@ Output requirements
 - Return exactly one JSON object.
 """.strip()
 
-Decision = Literal["READY", "NEEDS_FOLLOW_UP", "NOT_CLEARED"]
-ProcedureRisk = Literal["LOW", "MODERATE", "HIGH"]
-IssueCategory = Literal[
-    "REQUIRED_DOCUMENTATION",
-    "REQUIRED_TESTING",
-    "ANTICOAGULATION_MANAGEMENT",
-    "ACUTE_SAFETY_EXCLUSION",
-    "MISSING_REQUIRED_DATA",
-]
-
-# -------------------------
-# Schemas
-# -------------------------
-
-class PatientName(BaseModel):
-
-    given: str | None = None
-    family: str | None = None
-
-class PatientInfo(BaseModel):
-
-    id: str | None = None
-    mrn: str | None = None
-    name: PatientName | None = None
-    dob: str | None = None
-    sex: str | None = None
-
-class ProcedureInfo(BaseModel):
-
-    case_id: str | None = None
-    procedure_type: str | None = None
-    procedure_risk: ProcedureRisk | None = None
-    procedure_date: str | None = None
-    is_elective: bool | None = None
-    location: str | None = None
-
-class BloodPressureVital(BaseModel):
-
-    type: str | None = None
-    systolic: float | int | None = None
-    diastolic: float | int | None = None
-    date: str | None = None
-    source: str | None = None
-
-class TemperatureVital(BaseModel):
-
-    type: str | None = None
-    value_f: float | int | None = None
-    date: str | None = None
-    source: str | None = None
-
-class GenericVital(BaseModel):
-
-    type: str | None = None
-    date: str | None = None
-    source: str | None = None
-
-Vital = BloodPressureVital | TemperatureVital | GenericVital
-
-class LabResult(BaseModel):
-
-    id: str | None = None
-    code: str | None = None
-    display: str | None = None
-    effective_at: str | None = None
-    status: str | None = None
-    source: str | None = None
-
-class Medication(BaseModel):
-
-    name: str | None = None
-    active: bool | None = None
-
-class Condition(BaseModel):
-
-    name: str | None = None
-    active: bool | None = None
-
-class Document(BaseModel):
-
-    doc_id: str | None = None
-    type: str | None = None
-    date: str | None = None
-    author: str | None = None
-    text: str | None = None
-
-class SubmissionMetadata(BaseModel):
-
-    submission_received_at: str | None = None
-    source_system: str | None = None
-
-class PatientSubmission(BaseModel):
-    """Single submission package shape from the take-home prompt."""
-
-    patient: PatientInfo | None = None
-    procedure: ProcedureInfo | None = None
-    vitals: list[Vital] = Field(default_factory=list)
-    labs: list[LabResult] = Field(default_factory=list)
-    medications: list[Medication] = Field(default_factory=list)
-    conditions: list[Condition] = Field(default_factory=list)
-    documents: list[Document] = Field(default_factory=list)
-    metadata: SubmissionMetadata | None = None
-
-class TriageIssue(BaseModel):
-
-    category: IssueCategory
-    evidence: str
-
-class TriageOutput(BaseModel):
-    """Structured output contract for triage responses."""
-
-    decision: Decision
-    issues: list[TriageIssue] = Field(validation_alias=AliasChoices("issues"))
-    explanation: str
-
+# Re-exported: the harness scripts and tests import these names from core.
+from models import (  # noqa: F401
+    CHECK_ORDER,
+    Check,
+    CheckId,
+    CheckStatus,
+    Condition,
+    Decision,
+    Document,
+    Evidence,
+    IssueCategory,
+    LabResult,
+    Medication,
+    PatientInfo,
+    PatientName,
+    PatientSubmission,
+    ProcedureInfo,
+    ProcedureRisk,
+    Rejected,
+    SubmissionMetadata,
+    TriageIssue,
+    TriageOutput,
+    Vital,
+)
+from rules import unreadable
 
 def triage_output_json_schema() -> dict[str, object]:
     """Return the JSON schema used for structured model outputs."""
@@ -192,6 +101,34 @@ def build_user_prompt(submission: dict[str, object]) -> str:
     return "\n".join(sections)
 
 
+def validation_summary(exc: ValidationError, limit: int = 5) -> str:
+    """Where a submission breaks the input contract: field paths and reasons only,
+    never the offending values, which may be patient data."""
+
+    errors = exc.errors()
+    shown = [f"{'.'.join(str(part) for part in e['loc'])}: {e['msg']}" for e in errors[:limit]]
+    more = f"; and {len(errors) - limit} more" if len(errors) > limit else ""
+    return "; ".join(shown) + more
+
+
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+
+
+def make_client():
+    """OpenAI client; OpenRouter's OpenAI-compatible endpoint if OPENROUTER_API_KEY is set.
+
+    With OpenRouter, pass its model ids as `model` (e.g. "openai/gpt-6-luna").
+    """
+
+    # Import lazily so core utilities remain usable without OpenAI installed.
+    from openai import OpenAI
+
+    openrouter_key = os.environ.get("OPENROUTER_API_KEY")
+    if openrouter_key:
+        return OpenAI(base_url=OPENROUTER_BASE_URL, api_key=openrouter_key)
+    return OpenAI()
+
+
 def triage_submission(
     submission: dict[str, object] | PatientSubmission,
     *,
@@ -199,15 +136,18 @@ def triage_submission(
 ) -> TriageOutput:
     """Naive baseline implementation: single LLM call with JSON response output."""
 
-    # Import lazily so core utilities remain usable without OpenAI installed.
-    from openai import OpenAI
+    try:
+        parsed = (
+            submission
+            if isinstance(submission, PatientSubmission)
+            else PatientSubmission.model_validate(submission)
+        )
+    except ValidationError as exc:
+        # Fail closed for this one case: no model call, and the case goes to a nurse.
+        return unreadable(validation_summary(exc))
+    submission_payload = parsed.model_dump()
 
-    if isinstance(submission, PatientSubmission):
-        submission_payload = submission.model_dump()
-    else:
-        submission_payload = PatientSubmission.model_validate(submission).model_dump()
-
-    client = OpenAI()
+    client = make_client()
     request_kwargs: dict[str, object] = {
         "model": model,
         "instructions": BASELINE_SYSTEM_PROMPT,

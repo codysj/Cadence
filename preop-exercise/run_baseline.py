@@ -17,10 +17,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from core import (
-    PatientSubmission,
-    triage_submission,
-)
+from core import triage_submission
 
 ROOT = Path(__file__).resolve().parent
 
@@ -30,7 +27,9 @@ DEFAULT_MODEL = "gpt-4.1-mini"
 @dataclass
 class BaselineInputCase:
     case_id: str
-    submission: PatientSubmission
+    # Raw, as received. triage_submission validates it, so one malformed record
+    # fails closed for that case instead of stopping the whole batch at load time.
+    submission: dict[str, Any]
 
 
 def parse_args() -> argparse.Namespace:
@@ -74,12 +73,12 @@ def load_cases(path: Path) -> list[BaselineInputCase]:
             ):
                 case = BaselineInputCase(
                     case_id=str(payload["case_id"]),
-                    submission=PatientSubmission.model_validate(payload["submission"]),
+                    submission=payload["submission"],
                 )
             else:
                 case = BaselineInputCase(
                     case_id=f"case_{idx:05d}",
-                    submission=PatientSubmission.model_validate(payload),
+                    submission=payload,
                 )
             cases.append(case)
     return cases
@@ -99,7 +98,7 @@ def main() -> None:
     with output_path.open("w", encoding="utf-8") as handle:
         for idx, case in enumerate(cases):
             print(f"[{idx + 1}/{len(cases)}] Running baseline inference")
-            submission = case.submission.model_dump()
+            submission = case.submission
             row: dict[str, Any] = {
                 "record_index": idx,
                 "case_id": case.case_id,
