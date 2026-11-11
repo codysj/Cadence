@@ -44,7 +44,8 @@ def test_unknown_field_gives_a_fail_closed_result_without_a_model_call(rows: lis
     assert [issue.category for issue in output.issues] == ["MISSING_REQUIRED_DATA"]
     assert "labs.0.result_status" in output.issues[0].evidence
     assert all(check.status == "UNKNOWN" for check in output.checks) and len(output.checks) == 7
-    assert output.explanation.startswith("NEEDS_FOLLOW_UP: SYSTEM could not read this submission")
+    assert output.explanation.startswith("NEEDS_FOLLOW_UP: SYSTEM: the submission could not be read")
+    assert output.system_failure == "invalid_submission"
 
 
 def test_the_validation_message_names_fields_not_patient_values(rows: list[dict], no_model: None) -> None:

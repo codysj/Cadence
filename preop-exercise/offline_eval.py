@@ -1,11 +1,15 @@
-"""Evaluate without a model call and without the OpenAI Evals API.
+"""Evaluate saved facts without the OpenAI Evals API, and make the saved facts.
 
 The rules are pure code over (submission, facts), so saved facts can be re-scored as
-often as needed. Facts live one file per case: {"case_id", "submission_sha256", "facts"}.
+often as needed without paying for a model call. Facts live one file per case:
+{"case_id", "submission_sha256", "facts", ...}.
 
-  view  CASE            what the reader is shown for one case (never the label)
-  check CASE [CASE...]  check a facts file against its documents (never the label)
-  score [--facts DIR]   run the rules on saved facts for every case and compare with labels
+  view  CASE              what the reader is shown for one case (never the label)
+  check CASE [CASE...]    check a facts file against its documents (never the label)
+  score [--facts DIR]     run the rules on saved facts, score against the labels, and
+                          compare the facts one by one with the reference facts
+  read  --model M         the only command that calls a model: read cases with the
+                          reader, save what it returned, then score as above
 
 `score` calls run_evals.py's own scoring functions, so its three metrics are the
 harness's, and writes a report that view_report.py can open:
@@ -16,21 +20,32 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
+import os
 import sys
-import unicodedata
+import threading
+import time
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import reader
 import rules
 import run_evals
 from facts import Facts, reader_input, submission_hash
 from models import PatientSubmission, TriageOutput
+from rules import open_items  # noqa: F401  (re-exported for the tests)
 
 ROOT = Path(__file__).resolve().parent
 SAMPLE = ROOT / "data" / "patients_sample_50.jsonl"
 GOLD = ROOT / "data" / "gold_facts"
+READINGS = ROOT / "data" / "reader_facts"
+
+# One case per kind of difficulty: a cleared breach, a breach found only in a note, a drug
+# found only in a note, an unsigned consent with a threshold-exact reading, and a high-risk
+# case with a stale lab and no temperature.
+SMOKE = ["case_00016", "case_00005", "case_00027", "case_00028", "case_00009"]
 
 
 def load_rows(path: Path = SAMPLE) -> list[dict[str, Any]]:
@@ -38,91 +53,163 @@ def load_rows(path: Path = SAMPLE) -> list[dict[str, Any]]:
         return [json.loads(line) for line in handle if line.strip()]
 
 
-def load_facts(facts_dir: Path, row: dict[str, Any]) -> Facts:
-    """Facts saved for this case. A file written for a different version of the
+def load_saved(facts_dir: Path, row: dict[str, Any]) -> dict[str, Any]:
+    """The file saved for this case. One written for a different version of the
     submission is refused, so stale facts cannot be scored by mistake."""
 
     saved = json.loads((facts_dir / f"{row['case_id']}.json").read_text(encoding="utf-8"))
     expected = saved.get("submission_sha256")
     if expected and expected != submission_hash(row["submission"]):
         raise ValueError(f"{row['case_id']}: saved facts were written for a different submission")
-    return Facts.model_validate(saved["facts"])
+    return saved
 
 
-def open_items(submission: PatientSubmission, facts: Facts) -> list[str]:
-    """Everything a complete, verifiable reading must not leave open, across ALL documents.
+def load_facts(facts_dir: Path, row: dict[str, Any]) -> Facts:
+    return Facts.model_validate(load_saved(facts_dir, row)["facts"])
 
-    Stricter than the rules need: the rules ignore an unreported reading in a document
-    too old to hold the latest value, but a reference reading should report it anyway.
-    """
 
-    c = rules._Case(submission, facts)
-    problems: list[str] = []
+def output_for(row: dict[str, Any], facts_dir: Path) -> TriageOutput:
+    """What the pipeline returns for this case given what was saved for it. A saved
+    reader failure gives the fail-closed result, as triage_submission would."""
 
-    def quote(doc_id: str, text: str | None, what: str) -> None:
-        if doc_id not in c.docs:
-            problems.append(f"{what}: document {doc_id!r} does not exist")
-        elif text is not None and not c.quoted(doc_id, text):
-            problems.append(f"{what}: quote not found in {c.label(doc_id)}: {text!r}")
+    saved = load_saved(facts_dir, row)
+    if saved.get("error"):
+        return rules.reader_failed(saved["error"])
+    return rules.evaluate(PatientSubmission.model_validate(row["submission"]), Facts.model_validate(saved["facts"]))
 
-    for f in facts.hp_candidates:
-        quote(f.doc_id, f.quote, "hp_candidate")
-    for f in facts.consents:
-        quote(f.doc_id, f.signature_quote, "consent signature")
-        quote(f.doc_id, f.procedure_quote, "consent procedure")
-        if f.signature_quote is None:
-            problems.append(f"consent in {c.label(f.doc_id)}: signature_quote is required whatever the status")
-        if f.patient_signed == "yes" and f.procedure_quote is None:
-            problems.append(f"consent in {c.label(f.doc_id)}: procedure_quote is required")
-    for f in facts.note_blood_pressures:
-        quote(f.doc_id, f.quote, f"blood pressure {f.systolic}/{f.diastolic}")
-        if not re.search(rf"(?<!\d){f.systolic}\s*/\s*{f.diastolic}(?!\d)", rules._norm(f.quote)):
-            problems.append(f"blood pressure {f.systolic}/{f.diastolic}: not written in its quote {f.quote!r}")
-    for f in facts.note_temperatures:
-        quote(f.doc_id, f.quote, f"temperature {f.value} {f.unit}")
-        if not rules._writes_number(f.quote, f.value):
-            problems.append(f"temperature {f.value} {f.unit}: not written in its quote {f.quote!r}")
-    for f in facts.anticoagulant_mentions:
-        quote(f.doc_id, f.quote, f"mention of {f.drug_as_written}")
-        if not rules.anticoagulants_named(f"{f.drug_as_written} {f.generic_name}"):
-            problems.append(f"mention of {f.drug_as_written!r}: not in the drug table (antiplatelets are not reported)")
-    for f in facts.anticoagulation_plans:
-        quote(f.doc_id, f.preop_quote, f"{f.generic_name} plan, pre-op")
-        quote(f.doc_id, f.postop_quote, f"{f.generic_name} plan, post-op")
-        for when, state, text in (("pre-op", f.preop, f.preop_quote), ("post-op", f.postop, f.postop_quote)):
-            if state != "absent" and text is None:
-                problems.append(f"{f.generic_name} plan in {c.label(f.doc_id)}: {when} is {state} but has no quote")
 
-    listed = {m.name for m in submission.medications if rules.anticoagulants_named(m.name)}
-    reported_listed = set(facts.medication_list_anticoagulants)
-    for name in sorted(listed - reported_listed):
-        problems.append(f"medication list entry {name!r} is an anticoagulant but is not in medication_list_anticoagulants")
-    for name in sorted(reported_listed - {m.name for m in submission.medications}):
-        problems.append(f"medication_list_anticoagulants has {name!r}, which is not an entry of the medication list (copy it verbatim)")
+# --- scoring ----------------------------------------------------------------
 
-    problems += c.unreported(rules._HP_TITLE, {f.doc_id for f in facts.hp_candidates}, "an H&P")
-    problems += c.unreported(rules._CONSENT_TITLE, {f.doc_id for f in facts.consents}, "a consent")
 
-    for doc in submission.documents:
-        label = c.label(doc.doc_id)
-        text = unicodedata.normalize("NFKC", doc.text or "")
-        named = rules.anticoagulants_named(text)
-        reported: set[str] = set()
-        for f in facts.anticoagulant_mentions:
-            if f.doc_id == doc.doc_id:
-                reported |= rules.anticoagulants_named(f"{f.drug_as_written} {f.generic_name}")
-        for generic in sorted(named - reported):
-            problems.append(f"{generic} is named in {label} but there is no mention for it from that document")
+def score_outputs(rows: list[dict[str, Any]], outputs: list[tuple[TriageOutput | None, str | None]]) -> list[dict[str, Any]]:
+    """One record per case, scored by the harness's own code (run_evals), so these
+    numbers are the harness's numbers. `outputs` holds (output, error) per row."""
 
-        pairs = {(f.systolic, f.diastolic) for f in facts.note_blood_pressures if f.doc_id == doc.doc_id}
-        for pair in rules.blood_pressures_written(doc.text):
-            if pair not in pairs:
-                problems.append(f"{pair[0]}/{pair[1]} is written in {label} but is not reported")
-        temps = [rules._fahrenheit(f.value, f.unit) for f in facts.note_temperatures if f.doc_id == doc.doc_id]
-        for value, unit in rules.temperatures_written(doc.text):
-            if not rules.temperature_reported(value, unit, temps):
-                problems.append(f"{value:g} {unit} is written in {label} but is not reported")
-    return problems
+    by_index = {
+        index: {"record_index": index, "output": output.model_dump() if output else None, "error": error}
+        for index, (output, error) in enumerate(outputs)
+    }
+    cases = [run_evals.EvalCase.model_validate(row) for row in rows]
+    _, records = run_evals._build_eval_items(cases, by_index)
+    return records
+
+
+def score_rows(rows: list[dict[str, Any]], facts_dir: Path) -> list[dict[str, Any]]:
+    """Run the rules on the facts saved in `facts_dir` and score every case."""
+
+    outputs: list[tuple[TriageOutput | None, str | None]] = []
+    for row in rows:
+        try:
+            outputs.append((output_for(row, facts_dir), None))
+        except Exception as exc:
+            outputs.append((None, f"{type(exc).__name__}: {exc}"))
+    return score_outputs(rows, outputs)
+
+
+def _facts_by_identity(facts: Facts) -> dict[str, dict[tuple, tuple]]:
+    """Each kind of fact as {what it is about: what was judged about it}."""
+
+    def generic(*text: str) -> str:
+        names = rules.anticoagulants_named(" ".join(text))
+        return sorted(names)[0] if names else text[-1].lower()
+
+    return {
+        "blood pressure readings": {(f.doc_id, f.systolic, f.diastolic): (rules._clock(f.time),) for f in facts.note_blood_pressures},
+        "temperature readings": {(f.doc_id, round(rules._fahrenheit(f.value, f.unit), 1)): (rules._clock(f.time),) for f in facts.note_temperatures},
+        "H&P documents": {(f.doc_id,): (f.is_preop_evaluation,) for f in facts.hp_candidates},
+        "consents": {(f.doc_id,): (f.patient_signed, f.matches_scheduled_procedure) for f in facts.consents},
+        "drug mentions": {(f.doc_id, generic(f.drug_as_written, f.generic_name)): (f.status,) for f in facts.anticoagulant_mentions},
+        "medication-list drugs": {(name,): () for name in facts.medication_list_anticoagulants},
+        "plans": {(f.doc_id, generic(f.generic_name)): (f.preop, f.postop) for f in facts.anticoagulation_plans},
+    }
+
+
+def compare_facts(reference: Facts, got: Facts) -> dict[str, dict[str, Any]]:
+    """Fact by fact: which reference facts were found or missed, what was reported that
+    the reference lacks, and where a found fact was judged differently (a reading's
+    time, a status, a signature, a plan's instructions)."""
+
+    want, have = _facts_by_identity(reference), _facts_by_identity(got)
+    result = {}
+    for kind in want:
+        both = want[kind].keys() & have[kind].keys()
+        result[kind] = {
+            "reference": len(want[kind]),
+            "found": len(both),
+            "missed": sorted(want[kind].keys() - have[kind].keys(), key=str),
+            "extra": sorted(have[kind].keys() - want[kind].keys(), key=str),
+            "differ": sorted(((key, want[kind][key], have[kind][key]) for key in both if want[kind][key] != have[kind][key]), key=str),
+        }
+    return result
+
+
+def print_scores(rows: list[dict[str, Any]], facts_dir: Path, report_path: Path | None, reference_dir: Path | None) -> list[dict[str, Any]]:
+    records = score_rows(rows, facts_dir)
+    total = len(records)
+    summary = run_evals._summarize_local_rows(records)
+    print(f"\nfacts: {facts_dir}   cases: {total}   harness score: {summary['aggregate_local_score_pct']}%")
+    for metric in run_evals.METRIC_WEIGHTS:
+        print(f"  {metric}: {sum(r['metrics'][metric] for r in records)}/{total}")
+    outputs = [r["parsed_output"] or {} for r in records]
+    labels = [r["label"]["decision"] for r in records]
+    print(f"  system failures (counted apart): {sum(1 for o in outputs if o.get('system_failure'))}")
+    print(f"  READY given to a case labelled otherwise: {sum(1 for o, l in zip(outputs, labels) if o.get('decision') == 'READY' and l != 'READY')}")
+    print(f"  NOT_CLEARED label that came out NEEDS_FOLLOW_UP: {sum(1 for o, l in zip(outputs, labels) if l == 'NOT_CLEARED' and o.get('decision') == 'NEEDS_FOLLOW_UP')}")
+
+    for record in records:
+        if all(record["metrics"].values()):
+            continue
+        label, output = record["label"], record["parsed_output"]
+        print(f"\n{record['case_id']}  label {label['decision']} {sorted(label['categories'])}")
+        if output is None:
+            print(f"  no output: {record['baseline_error']}")
+            continue
+        print(f"  got   {output['decision']} {sorted({i['category'] for i in output['issues']})}")
+        for check in output["checks"]:
+            if check["status"] in ("FAIL", "UNKNOWN"):
+                print(f"    {check['status']:<8}{check['id']}: {check['finding'][:300]}")
+
+    if reference_dir and reference_dir.resolve() != facts_dir.resolve():
+        totals: dict[str, dict[str, int]] = {}
+        details: list[str] = []
+        unverified = 0
+        for row in rows:
+            try:
+                saved = load_saved(facts_dir, row)
+                got, reference = Facts.model_validate(saved["facts"]), load_facts(reference_dir, row)
+            except Exception:
+                continue  # no usable reading for this case; it is already counted above
+            unverified += sum("quote not found" in item for item in open_items(PatientSubmission.model_validate(row["submission"]), got))
+            for kind, counts in compare_facts(reference, got).items():
+                slot = totals.setdefault(kind, {"reference": 0, "found": 0, "missed": 0, "extra": 0, "differ": 0})
+                slot["reference"] += counts["reference"]
+                slot["found"] += counts["found"]
+                for what in ("missed", "extra", "differ"):
+                    slot[what] += len(counts[what])
+                    details += [f"  {row['case_id'][-2:]} {kind}: {what} {item}" for item in counts[what]]
+        print(f"\nfact by fact, against {reference_dir.name}:")
+        print(f"  {'kind':<26}{'reference':>10}{'found':>8}{'missed':>8}{'extra':>8}{'differ':>8}")
+        for kind, slot in totals.items():
+            print(f"  {kind:<26}{slot['reference']:>10}{slot['found']:>8}{slot['missed']:>8}{slot['extra']:>8}{slot['differ']:>8}")
+        print(f"  quotes not found in their document: {unverified}")
+        for line in details[:60]:
+            print(line)
+        if len(details) > 60:
+            print(f"  ... and {len(details) - 60} more")
+
+    if report_path:
+        report = {
+            "generated_at": datetime.now(tz=timezone.utc).isoformat(),
+            "mode": f"offline ({facts_dir.name})",
+            "primary_score": {"name": run_evals.PRIMARY_SCORE_NAME, "value_pct": summary["aggregate_local_score_pct"], "goal": "maximize"},
+            "facts_source": str(facts_dir),
+            "local_metrics_summary": summary,
+            "records": records,
+        }
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(json.dumps(report, indent=2, ensure_ascii=True), encoding="utf-8")
+        print(f"\nreport -> {report_path}")
+    return records
 
 
 # --- commands ---------------------------------------------------------------
@@ -171,63 +258,69 @@ def cmd_check(args: argparse.Namespace) -> int:
     return 1 if failed else 0
 
 
-def score_outputs(rows: list[dict[str, Any]], outputs: list[tuple[TriageOutput | None, str | None]]) -> list[dict[str, Any]]:
-    """One record per case, scored by the harness's own code (run_evals), so these
-    numbers are the harness's numbers. `outputs` holds (output, error) per row."""
-
-    by_index = {
-        index: {"record_index": index, "output": output.model_dump() if output else None, "error": error}
-        for index, (output, error) in enumerate(outputs)
-    }
-    cases = [run_evals.EvalCase.model_validate(row) for row in rows]
-    _, records = run_evals._build_eval_items(cases, by_index)
-    return records
-
-
-def score_rows(rows: list[dict[str, Any]], facts_dir: Path) -> list[dict[str, Any]]:
-    """Run the rules on the facts saved in `facts_dir` and score every case."""
-
-    outputs: list[tuple[TriageOutput | None, str | None]] = []
-    for row in rows:
-        try:
-            outputs.append((rules.evaluate(PatientSubmission.model_validate(row["submission"]), load_facts(facts_dir, row)), None))
-        except Exception as exc:
-            outputs.append((None, f"{type(exc).__name__}: {exc}"))
-    return score_outputs(rows, outputs)
-
-
 def cmd_score(args: argparse.Namespace) -> int:
-    records = score_rows(load_rows(), args.facts)
-    total = len(records)
-    summary = run_evals._summarize_local_rows(records)
-    score = summary["aggregate_local_score_pct"]
-    report = {
-        "generated_at": datetime.now(tz=timezone.utc).isoformat(),
-        "mode": f"offline ({args.facts.name})",
-        "primary_score": {"name": run_evals.PRIMARY_SCORE_NAME, "value_pct": score, "goal": "maximize"},
-        "facts_source": str(args.facts),
-        "local_metrics_summary": summary,
-        "records": records,
-    }
-    args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(json.dumps(report, indent=2, ensure_ascii=True), encoding="utf-8")
+    print_scores(load_rows(), args.facts, args.report, args.against)
+    return 0
 
-    print(f"facts: {args.facts}   cases: {total}   score: {score}%")
-    for metric in ("json_schema_valid", "decision_match_oracle", "issue_categories_match_oracle"):
-        print(f"  {metric}: {sum(r['metrics'][metric] for r in records)}/{total}")
-    for record in records:
-        if all(record["metrics"].values()):
-            continue
-        label, output = record["label"], record["parsed_output"]
-        print(f"\n{record['case_id']}  label {label['decision']} {sorted(label['categories'])}")
-        if output is None:
-            print(f"  no output: {record['baseline_error']}")
-            continue
-        print(f"  got   {output['decision']} {sorted({i['category'] for i in output['issues']})}")
-        for check in output["checks"]:
-            if check["status"] in ("FAIL", "UNKNOWN"):
-                print(f"    {check['status']:<8}{check['id']}: {check['finding']}")
-    print(f"\nreport -> {args.report}")
+
+def _openrouter_spend() -> float | None:
+    """What the OpenRouter key has spent so far, or None when not using OpenRouter."""
+
+    key = os.environ.get("OPENROUTER_API_KEY")
+    if not key:
+        return None
+    request = urllib.request.Request(f"{reader.OPENROUTER_BASE_URL}/key", headers={"Authorization": f"Bearer {key}"})
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return float(json.load(response)["data"]["usage"])
+
+
+def cmd_read(args: argparse.Namespace) -> int:
+    wanted = SMOKE if args.cases == ["smoke"] else None if args.cases == ["all"] else args.cases
+    rows = [row for row in load_rows() if wanted is None or row["case_id"] in wanted]
+    out_dir = args.out / args.model.replace("/", "__") / reader.PROMPT_VERSION / f"run{args.run}"
+    client = reader.make_client()
+    already_spent = _openrouter_spend()
+    lock = threading.Lock()
+    tally = {"cost": 0.0, "read": 0, "retried": 0, "failed": 0, "skipped": 0, "prompt_tokens": 0.0, "completion_tokens": 0.0}
+
+    def one(row: dict[str, Any]) -> None:
+        with lock:
+            if already_spent is not None and already_spent + tally["cost"] >= args.budget_usd:
+                tally["skipped"] += 1
+                return
+        submission = PatientSubmission.model_validate(row["submission"])
+        try:
+            reading = reader.read(submission, model=args.model, client=client)
+        except reader.ReaderError as exc:
+            reader.save_reading(out_dir, None, row["submission"], error=str(exc), model=args.model)
+            with lock:
+                tally["failed"] += 1
+            return
+        reader.save_reading(out_dir, reading, row["submission"])
+        with lock:
+            usage = reading.usage
+            tally["read"] += 1
+            tally["retried"] += usage["calls"] > 1
+            tally["cost"] += usage["cost_usd"]
+            tally["prompt_tokens"] += usage["prompt_tokens"]
+            tally["completion_tokens"] += usage["completion_tokens"]
+
+    started = time.perf_counter()
+    with ThreadPoolExecutor(max_workers=args.workers) as pool:
+        list(pool.map(one, rows))
+    seconds = time.perf_counter() - started
+
+    print(f"model {args.model}   prompt {reader.PROMPT_VERSION}   run {args.run}   -> {out_dir}")
+    print(
+        f"  read {tally['read']}/{len(rows)}   needed the retry: {tally['retried']}   reader failed: {tally['failed']}   "
+        f"skipped for budget: {tally['skipped']}   {seconds:.0f}s"
+    )
+    print(
+        f"  tokens in/out: {tally['prompt_tokens']:.0f}/{tally['completion_tokens']:.0f}   "
+        f"cost this run: ${tally['cost']:.4f}   key spend before: {'n/a' if already_spent is None else f'${already_spent:.4f}'}"
+    )
+    done = [row for row in rows if (out_dir / f"{row['case_id']}.json").exists()]
+    print_scores(done, out_dir, None, GOLD)
     return 0
 
 
@@ -245,8 +338,17 @@ def main() -> int:
     check.set_defaults(run=cmd_check)
     score = commands.add_parser("score")
     score.add_argument("--facts", type=Path, default=GOLD)
+    score.add_argument("--against", type=Path, default=GOLD, help="reference facts for the fact-by-fact comparison")
     score.add_argument("--report", type=Path, default=ROOT / "data" / "offline_report.json")
     score.set_defaults(run=cmd_score)
+    read = commands.add_parser("read")
+    read.add_argument("--model", required=True)
+    read.add_argument("--cases", nargs="+", default=["smoke"], help="'smoke', 'all', or case ids")
+    read.add_argument("--run", type=int, default=0, help="run number, so repeated runs are kept apart")
+    read.add_argument("--out", type=Path, default=READINGS)
+    read.add_argument("--workers", type=int, default=6)
+    read.add_argument("--budget-usd", type=float, default=2.50, help="stop starting new cases once the key has spent this much")
+    read.set_defaults(run=cmd_read)
     args = parser.parse_args()
     return args.run(args)
 

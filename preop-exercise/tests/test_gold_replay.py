@@ -112,3 +112,28 @@ def test_missing_facts_file_is_scored_as_a_failure_not_a_crash(tmp_path) -> None
     # My own re-implementation scored this 0; calling the harness shows what it really does.
     assert record["metrics"]["issue_categories_match_oracle"] is True
     assert round(record["aggregate_local_score"], 1) == 33.3
+
+
+def test_facts_are_compared_one_by_one_with_the_reference() -> None:
+    """Stage 4: a reading is scored on what it found, missed, added and judged differently."""
+
+    from offline_eval import compare_facts
+
+    row = next(r for r in ROWS if r["case_id"] == "case_00016")
+    reference = load_facts(GOLD, row)
+    assert all(c["found"] == c["reference"] and not (c["missed"] or c["extra"] or c["differ"]) for c in compare_facts(reference, reference).values())
+
+    changed = reference.model_dump()
+    dropped = changed["note_blood_pressures"].pop()  # the 08:30 recheck
+    changed["note_blood_pressures"][0]["time"] = "11:11"
+    changed["consents"][0]["patient_signed"] = "unclear"
+    changed["note_temperatures"].append({"doc_id": dropped["doc_id"], "value": 39.0, "unit": "C", "time": None, "quote": "x"})
+    result = compare_facts(reference, type(reference).model_validate(changed))
+
+    pressures = result["blood pressure readings"]
+    assert (pressures["reference"], pressures["found"]) == (3, 2)
+    assert pressures["missed"] == [(dropped["doc_id"], 137, 78)]
+    assert len(pressures["differ"]) == 1 and pressures["differ"][0][2] == ("11:11",)
+    assert result["consents"]["differ"][0][1:] == (("yes", "yes"), ("unclear", "yes"))
+    assert result["temperature readings"]["extra"] == [(dropped["doc_id"], 102.2)]
+    assert result["H&P documents"]["found"] == 2 and not result["H&P documents"]["differ"]

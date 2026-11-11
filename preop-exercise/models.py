@@ -170,3 +170,6 @@ class TriageOutput(BaseModel):
     issues: list[TriageIssue] = Field(validation_alias=AliasChoices("issues"))
     explanation: str
     checks: list[Check] = Field(default_factory=list)
+    # Set when the system, not the chart, is the reason no check ran: "invalid_submission"
+    # or "reader_failed". Such cases are counted separately from triage results.
+    system_failure: str | None = None

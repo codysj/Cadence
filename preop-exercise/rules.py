@@ -792,6 +792,87 @@ def _temperature(c: _Case) -> Check:
 
 
 # ---------------------------------------------------------------------------
+# What a reading leaves open
+# ---------------------------------------------------------------------------
+
+
+def open_items(submission: PatientSubmission, facts: Facts) -> list[str]:
+    """Everything a complete, verifiable reading must not leave open, across ALL documents.
+
+    Stricter than the rules need: the rules ignore an unreported reading in a document
+    too old to hold the latest value, but a reference reading should report it anyway.
+    """
+
+    c = _Case(submission, facts)
+    problems: list[str] = []
+
+    def quote(doc_id: str, text: str | None, what: str) -> None:
+        if doc_id not in c.docs:
+            problems.append(f"{what}: document {doc_id!r} does not exist")
+        elif text is not None and not c.quoted(doc_id, text):
+            problems.append(f"{what}: quote not found in {c.label(doc_id)}: {text!r}")
+
+    for f in facts.hp_candidates:
+        quote(f.doc_id, f.quote, "hp_candidate")
+    for f in facts.consents:
+        quote(f.doc_id, f.signature_quote, "consent signature")
+        quote(f.doc_id, f.procedure_quote, "consent procedure")
+        if f.signature_quote is None:
+            problems.append(f"consent in {c.label(f.doc_id)}: signature_quote is required whatever the status")
+        if f.patient_signed == "yes" and f.procedure_quote is None:
+            problems.append(f"consent in {c.label(f.doc_id)}: procedure_quote is required")
+    for f in facts.note_blood_pressures:
+        quote(f.doc_id, f.quote, f"blood pressure {f.systolic}/{f.diastolic}")
+        if not re.search(rf"(?<!\d){f.systolic}\s*/\s*{f.diastolic}(?!\d)", _norm(f.quote)):
+            problems.append(f"blood pressure {f.systolic}/{f.diastolic}: not written in its quote {f.quote!r}")
+    for f in facts.note_temperatures:
+        quote(f.doc_id, f.quote, f"temperature {f.value} {f.unit}")
+        if not _writes_number(f.quote, f.value):
+            problems.append(f"temperature {f.value} {f.unit}: not written in its quote {f.quote!r}")
+    for f in facts.anticoagulant_mentions:
+        quote(f.doc_id, f.quote, f"mention of {f.drug_as_written}")
+        if not anticoagulants_named(f"{f.drug_as_written} {f.generic_name}"):
+            problems.append(f"mention of {f.drug_as_written!r}: not in the drug table (antiplatelets are not reported)")
+    for f in facts.anticoagulation_plans:
+        quote(f.doc_id, f.preop_quote, f"{f.generic_name} plan, pre-op")
+        quote(f.doc_id, f.postop_quote, f"{f.generic_name} plan, post-op")
+        for when, state, text in (("pre-op", f.preop, f.preop_quote), ("post-op", f.postop, f.postop_quote)):
+            if state != "absent" and text is None:
+                problems.append(f"{f.generic_name} plan in {c.label(f.doc_id)}: {when} is {state} but has no quote")
+
+    listed = {m.name for m in submission.medications if anticoagulants_named(m.name)}
+    reported_listed = set(facts.medication_list_anticoagulants)
+    for name in sorted(listed - reported_listed):
+        problems.append(f"medication list entry {name!r} is an anticoagulant but is not in medication_list_anticoagulants")
+    for name in sorted(reported_listed - {m.name for m in submission.medications}):
+        problems.append(f"medication_list_anticoagulants has {name!r}, which is not an entry of the medication list (copy it verbatim)")
+
+    problems += c.unreported(_HP_TITLE, {f.doc_id for f in facts.hp_candidates}, "an H&P")
+    problems += c.unreported(_CONSENT_TITLE, {f.doc_id for f in facts.consents}, "a consent")
+
+    for doc in submission.documents:
+        label = c.label(doc.doc_id)
+        text = unicodedata.normalize("NFKC", doc.text or "")
+        named = anticoagulants_named(text)
+        reported: set[str] = set()
+        for f in facts.anticoagulant_mentions:
+            if f.doc_id == doc.doc_id:
+                reported |= anticoagulants_named(f"{f.drug_as_written} {f.generic_name}")
+        for generic in sorted(named - reported):
+            problems.append(f"{generic} is named in {label} but there is no mention for it from that document")
+
+        pairs = {(f.systolic, f.diastolic) for f in facts.note_blood_pressures if f.doc_id == doc.doc_id}
+        for pair in blood_pressures_written(doc.text):
+            if pair not in pairs:
+                problems.append(f"{pair[0]}/{pair[1]} is written in {label} but is not reported")
+        temps = [_fahrenheit(f.value, f.unit) for f in facts.note_temperatures if f.doc_id == doc.doc_id]
+        for value, unit in temperatures_written(doc.text):
+            if not temperature_reported(value, unit, temps):
+                problems.append(f"{value:g} {unit} is written in {label} but is not reported")
+    return problems
+
+
+# ---------------------------------------------------------------------------
 # Decision, issues and the text a nurse reads
 # ---------------------------------------------------------------------------
 
@@ -891,23 +972,33 @@ def evaluate(submission: PatientSubmission, facts: Facts) -> TriageOutput:
     return TriageOutput(decision=decision, issues=issues, explanation=render(decision, checks, submission), checks=checks)
 
 
-def unreadable(problem: str) -> TriageOutput:
-    """Fail closed for a submission that does not match the input contract.
+def _not_evaluated(kind: str, what_failed: str, problem: str) -> TriageOutput:
+    """Fail closed when the system, not the chart, is the reason no check could run.
 
-    No check can run, so every row is UNKNOWN and the case goes to a nurse. The wording
-    says the system could not read the record, so nobody goes looking for a missing chart item.
+    Every row is UNKNOWN and the case goes to a nurse. The wording names the system, so
+    nobody goes looking for a missing chart item, and `system_failure` lets a caller count
+    these apart from real triage results. The category is MISSING_REQUIRED_DATA only
+    because the policy offers nothing closer.
     """
 
-    finding = f"not evaluated: the submission could not be read ({problem})"
-    checks = [Check(id=check_id, status="UNKNOWN", finding=finding) for check_id in CHECK_ORDER]
+    checks = [Check(id=check_id, status="UNKNOWN", finding=f"not evaluated: {what_failed}") for check_id in CHECK_ORDER]
     issue = TriageIssue(
         category="MISSING_REQUIRED_DATA",
-        description="SYSTEM: the submission could not be read, so no check was run. Review this case manually.",
+        description=f"SYSTEM: {what_failed}, so no check was run. Review this case manually.",
         evidence=problem,
         check_ids=list(CHECK_ORDER),
     )
-    explanation = (
-        "NEEDS_FOLLOW_UP: SYSTEM could not read this submission, so no check was run. Review manually.\n"
-        f"The record does not match the expected format: {problem}"
-    )
-    return TriageOutput(decision="NEEDS_FOLLOW_UP", issues=[issue], explanation=explanation, checks=checks)
+    explanation = f"NEEDS_FOLLOW_UP: SYSTEM: {what_failed}, so no check was run. Review manually.\n{problem}"
+    return TriageOutput(decision="NEEDS_FOLLOW_UP", issues=[issue], explanation=explanation, checks=checks, system_failure=kind)
+
+
+def unreadable(problem: str) -> TriageOutput:
+    """A submission that does not match the input contract."""
+
+    return _not_evaluated("invalid_submission", "the submission could not be read", f"The record does not match the expected format: {problem}")
+
+
+def reader_failed(problem: str) -> TriageOutput:
+    """The model call failed for good: an API error, a refusal, a cut-off or an unusable answer."""
+
+    return _not_evaluated("reader_failed", "the automated reading of the documents failed", problem)
