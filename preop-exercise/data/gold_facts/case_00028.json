@@ -1,0 +1,47 @@
+{
+  "case_id": "case_00028",
+  "submission_sha256": "83caf34eed70195a1cda9cd9f48031d2178dcaa4f4215e9478cf6c8ee9d4aa3a",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "33321cd5-cb32-5c39-9e90-d220bc27aecd",
+        "is_preop_evaluation": true,
+        "quote": "H&P: PREOPERATIVE EVALUATION"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "58a87237-6d24-57aa-979d-3f0cc34438fd",
+        "patient_signed": "no",
+        "signature_quote": "E-signature request sent to patient portal 03/26/2026 11:22; status: NOT COMPLETED as of this note.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: thyroidectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "33321cd5-cb32-5c39-9e90-d220bc27aecd",
+        "systolic": 132,
+        "diastolic": 80,
+        "time": "10:05",
+        "quote": "Vitals 10:05  NIBP 132/80, HR 81, Temp 98.4 °F, SpO2 99% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "33321cd5-cb32-5c39-9e90-d220bc27aecd",
+        "value": 98.4,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  NIBP 132/80, HR 81, Temp 98.4 °F, SpO2 99% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Consent 58a87237: the patient's e-signature request is 'NOT COMPLETED as of this note'; only the physician attestation is signed. Recorded as patient_signed 'no'.",
+    "Nursing intake vitals are 'See flowsheet' (no numbers in the note)."
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "case_id": "case_00003",
+  "submission_sha256": "9562329cc5dca5e0a77a57b1f01feff0c4af5488b40586acf70ab299f5dc1318",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "8014efd4-3b29-56c4-914f-121eab6b6c3a",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      },
+      {
+        "doc_id": "2ce5b1ae-bf18-59ce-be4b-b782d6646978",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "534e01b0-2ce4-5f2a-ab2d-d1838b5ed2bc",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: Danielle Nguyen, 02/19/2026 15:14. Witness: Andrew Wong.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: inguinal hernia repair"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "73381185-2b8a-5f4d-82b1-9481bbe6ea26",
+        "systolic": 116,
+        "diastolic": 76,
+        "time": "08:45",
+        "quote": "VITAL SIGNS: Obtained at 08:45: T 37.0 C, BP: 116/76, HR 64, SpO2 97% RA."
+      },
+      {
+        "doc_id": "8014efd4-3b29-56c4-914f-121eab6b6c3a",
+        "systolic": 127,
+        "diastolic": 80,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP: 127/80, HR 89, 98.1 °F temporal, SpO2 99% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "73381185-2b8a-5f4d-82b1-9481bbe6ea26",
+        "value": 37.0,
+        "unit": "C",
+        "time": "08:45",
+        "quote": "VITAL SIGNS: Obtained at 08:45: T 37.0 C, BP: 116/76, HR 64, SpO2 97% RA."
+      },
+      {
+        "doc_id": "8014efd4-3b29-56c4-914f-121eab6b6c3a",
+        "value": 98.1,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP: 127/80, HR 89, 98.1 °F temporal, SpO2 99% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "d9499cc6-2dc1-5a54-90a3-06ac28fbb710",
+        "drug_as_written": "Eliquis",
+        "generic_name": "apixaban",
+        "status": "current",
+        "quote": "HPI: Patient with paroxysmal atrial fibrillation (CHA2DS2-VASc 5, HAS-BLED 1) maintained on Eliquis 5 mg PO BID. No history of major bleeding. No stroke or TIA. Reports good adherence. Occasional palpitations, no syncope."
+      },
+      {
+        "doc_id": "73381185-2b8a-5f4d-82b1-9481bbe6ea26",
+        "drug_as_written": "Eliquis",
+        "generic_name": "apixaban",
+        "status": "current",
+        "quote": "- Eliquis 5 mg PO BID - taking as prescribed"
+      },
+      {
+        "doc_id": "8014efd4-3b29-56c4-914f-121eab6b6c3a",
+        "drug_as_written": "Eliquis",
+        "generic_name": "apixaban",
+        "status": "current",
+        "quote": "- Eliquis 5 mg PO BID"
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "Eliquis 5 mg PO BID"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "d9499cc6-2dc1-5a54-90a3-06ac28fbb710",
+        "generic_name": "apixaban",
+        "preop": "concrete",
+        "preop_quote": "1. Hold Eliquis for the 2 days before surgery (last dose 03/01/2026; no doses in the 48 hours prior). Resume Eliquis 48 hours post-op if surgical hemostasis is adequate; no bridging required.",
+        "postop": "concrete",
+        "postop_quote": "1. Hold Eliquis for the 2 days before surgery (last dose 03/01/2026; no doses in the 48 hours prior). Resume Eliquis 48 hours post-op if surgical hemostasis is adequate; no bridging required."
+      }
+    ]
+  },
+  "notes": [
+    "Pre-op H&P (8014efd4) names Eliquis only as an item under its MEDICATIONS heading, with no further statement; recorded as 'current' because it is listed as a medication the patient is on.",
+    "Hematology consult (d9499cc6) instructs last Eliquis dose 03/01/2026, but the pre-op nursing intake dated 03/02/2026 (73381185) records 'Eliquis 5 mg PO BID - taking as prescribed' (patient-reported) with no mention of the hold.",
+    "Hematology consult recommendation 2 says 'Continue home beta-blocker' although no beta-blocker is on any medication list in the documents.",
+    "Aspirin EC 81 mg is an antiplatelet and is not listed.",
+    "Anesthesia note (d75efd8b) says 'H&P reviewed.' but is not itself an H&P; not listed."
+  ]
+}

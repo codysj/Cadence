@@ -1,0 +1,89 @@
+{
+  "case_id": "case_00036",
+  "submission_sha256": "d681df49bda7eba87f029c8eeb74b20222879102c7481a622d1ff535a5f87d89",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "d9fa4df7-7797-549c-aa4e-5b9231907a8c",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      },
+      {
+        "doc_id": "4cda50ae-8375-5818-813b-05660c6e8b5d",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "fd562f52-1640-59a9-a7a6-6355a246b1ed",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 04/04/2026 09:07 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: inguinal hernia repair"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "d9fa4df7-7797-549c-aa4e-5b9231907a8c",
+        "systolic": 120,
+        "diastolic": 80,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP: 120/80, HR 86, Temp 98.3 °F, SpO2 98% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "d9fa4df7-7797-549c-aa4e-5b9231907a8c",
+        "value": 98.3,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP: 120/80, HR 86, Temp 98.3 °F, SpO2 98% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "cc3d8324-984d-5dcb-82f2-7afe9ca0d8b7",
+        "drug_as_written": "Xarelto",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "- Xarelto 20 mg PO daily with evening meal - taking as prescribed"
+      },
+      {
+        "doc_id": "156eb2ff-9629-5cd6-b7b4-7657d6668187",
+        "drug_as_written": "rivaroxaban",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "HPI: Patient with persistent atrial fibrillation (CHA2DS2-VASc 2, HAS-BLED 1) maintained on rivaroxaban 20 mg PO daily with evening meal."
+      },
+      {
+        "doc_id": "d9fa4df7-7797-549c-aa4e-5b9231907a8c",
+        "drug_as_written": "Xarelto",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "- Xarelto 20 mg PO daily with evening meal"
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "Xarelto 20 mg PO daily with evening meal"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "156eb2ff-9629-5cd6-b7b4-7657d6668187",
+        "generic_name": "rivaroxaban",
+        "preop": "deferred",
+        "preop_quote": "1. Periprocedural management of rivaroxaban to be determined by the surgical team; happy to assist if needed.",
+        "postop": "deferred",
+        "postop_quote": "1. Periprocedural management of rivaroxaban to be determined by the surgical team; happy to assist if needed."
+      }
+    ]
+  },
+  "notes": [
+    "Cardiology note 156eb2ff defers 'Periprocedural management of rivaroxaban' to the surgical team in a single sentence that does not separate before from after; recorded as deferred for both preop and postop with the same quote. The same note's assessment says 'bridging not indicated for DOAC therapy', which is not a hold/resume instruction.",
+    "No document from the surgical team gives a hold or resume instruction for rivaroxaban; the nursing note of 04/04/2026 (two days before the 04/06/2026 surgery) still records Xarelto 'taking as prescribed'.",
+    "H&P d9fa4df7 names Xarelto only as an entry under its MEDICATIONS heading with no further wording; status recorded as current on that basis.",
+    "The H&P (d9fa4df7) item 'Continue home medications except as directed by perioperative instructions.' is generic and not treated as an anticoagulation plan.",
+    "Cardiology note recommends 'Continue atorvastatin', which is not on the structured medication list (not an anticoagulant).",
+    "Nursing note cc3d8324 records 'VITAL SIGNS: See flowsheet.' with no numeric readings."
+  ]
+}

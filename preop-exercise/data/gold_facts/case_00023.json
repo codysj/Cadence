@@ -1,0 +1,87 @@
+{
+  "case_id": "case_00023",
+  "submission_sha256": "7fca4a8419be22dcfaf59045fd34201f3e093eeaa9486b8d2e49955e62185563",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "4328b9b5-1388-5fc7-9c0f-76d19a2ab7f1",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "9248ac8a-267f-521f-be9c-f6774c0935a4",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "85dba453-6ad2-5216-bf19-ad17da857fb5",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Elena Simmons (electronically signed 03/10/2026 16:34)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: total knee arthroplasty"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "9248ac8a-267f-521f-be9c-f6774c0935a4",
+        "systolic": 125,
+        "diastolic": 76,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 125/76 mmHg, HR 65, Temp: 97.5F, SpO2 98% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "9248ac8a-267f-521f-be9c-f6774c0935a4",
+        "value": 97.5,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 125/76 mmHg, HR 65, Temp: 97.5F, SpO2 98% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "5105686c-c169-5cd8-b9e3-b95716151b59",
+        "drug_as_written": "dabigatran (Pradaxa)",
+        "generic_name": "dabigatran",
+        "status": "current",
+        "quote": "- dabigatran (Pradaxa) 150 mg PO BID - taking as prescribed"
+      },
+      {
+        "doc_id": "9248ac8a-267f-521f-be9c-f6774c0935a4",
+        "drug_as_written": "dabigatran (Pradaxa)",
+        "generic_name": "dabigatran",
+        "status": "current",
+        "quote": "- dabigatran (Pradaxa) 150 mg PO BID"
+      },
+      {
+        "doc_id": "289befe2-1d8a-5534-92d9-5695947b8fc9",
+        "drug_as_written": "dabigatran",
+        "generic_name": "dabigatran",
+        "status": "current",
+        "quote": "HPI: Patient with atrial fibrillation (CHA2DS2-VASc 2, HAS-BLED 2) maintained on dabigatran 150 mg PO BID."
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "dabigatran (Pradaxa) 150 mg PO BID"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "289befe2-1d8a-5534-92d9-5695947b8fc9",
+        "generic_name": "dabigatran",
+        "preop": "deferred",
+        "preop_quote": "1. Periprocedural management of dabigatran to be determined by the surgical team; happy to assist if needed.",
+        "postop": "deferred",
+        "postop_quote": "1. Periprocedural management of dabigatran to be determined by the surgical team; happy to assist if needed."
+      }
+    ]
+  },
+  "notes": [
+    "Cardiology note 289befe2 defers 'periprocedural management' of dabigatran to the surgical team in a single sentence without separating before/after; recorded as deferred for both pre-op and post-op with the same quote. No document gives a concrete hold or restart instruction.",
+    "Cardiology note also says 'bridging not indicated for DOAC therapy' (no bridge drug named).",
+    "H&P 9248ac8a lists dabigatran only as a line in its MEDICATIONS list; recorded as current.",
+    "Pre-Admission Testing vitals are 'See flowsheet' (no numbers in the note)."
+  ]
+}

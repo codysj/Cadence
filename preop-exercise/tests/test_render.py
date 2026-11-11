@@ -54,21 +54,27 @@ FACTS_00016 = {
 EXPECTED = """\
 READY: all applicable checks pass
 case_00016 | Elective inguinal hernia repair | procedure date 2026-03-17 | risk LOW
+
 PASS    H&P: dated 2026-02-21, 24 days before the procedure, limit 30
     source: H&P [PDF] 2026-02-21 #81e2f72a
       "PREOPERATIVE HISTORY AND PHYSICAL"
     rejected: History and Physical 2025-06-22 #89fbc4a7: not the pre-op evaluation
+
 PASS    Consent: signed by the patient for the scheduled procedure
     source: Procedure Consent Form 2026-03-13 #08378923
       "Patient signature on file - signed in clinic 03/13/2026 12:06 (scanned copy attached)."
     source: Procedure Consent Form 2026-03-13 #08378923
       "Procedure: inguinal hernia repair"
+
 PASS    CBC: dated 2026-03-02, 15 days before the procedure, limit 30
     source: CBC 2026-03-02 lab #95160d11
     rejected: CBC 2026-02-07 lab #9c9239da: older result
+
 N/A     CMP: not required at LOW risk
+
 N/A     Anticoagulation: no anticoagulant currently taken (4 medications and 4 documents checked)
     rejected: medication list: ASA 81 mg PO daily: antiplatelet, not an anticoagulant
+
 PASS    Blood pressure: 137/78 on 2026-03-15 08:30, limits 180/110 (earlier breach superseded by this reading)
     source: Nursing Pre-procedure Assessment 2026-03-15 #1f5be5f7
       "ADDENDUM 08:30: Re-measured 137/78 mmHg following 24 minutes in a quiet room."
@@ -76,6 +82,7 @@ PASS    Blood pressure: 137/78 on 2026-03-15 08:30, limits 180/110 (earlier brea
     rejected: 123/75 on 2026-03-12 10:12 (structured vital, Cardiology clinic): older reading
     rejected: 117/72 on 2026-03-05 09:05 (structured vital, Pre-op clinic): older reading
     rejected: 132/76 on 2026-02-21 10:05 (H&P [PDF] 2026-02-21 #81e2f72a): older reading
+
 PASS    Temperature: 37.1 C = 98.8 F on 2026-03-15 08:06, limit 100.4 F
     source: Nursing Pre-procedure Assessment 2026-03-15 #1f5be5f7
       "08:06  NIBP 189/112, T 37.1 C, HR 74, SpO2 96% RA. See addendum."

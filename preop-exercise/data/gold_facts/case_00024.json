@@ -1,0 +1,52 @@
+{
+  "case_id": "case_00024",
+  "submission_sha256": "99bd7f1a324174c02d5934f8b86651956b8eb2c7fccd1792740bb7870f6696d4",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "33e0e7cd-b3b8-54e8-b660-ce29601565c6",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "1dfcd7d4-b8c6-542b-a04f-ea54859bf637",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "a96cef37-6d02-5b1a-a9c0-1874d04d0568",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 03/15/2026 08:27 (scanned copy attached).",
+        "matches_scheduled_procedure": "no",
+        "procedure_quote": "Procedure: coronary artery bypass grafting"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "1dfcd7d4-b8c6-542b-a04f-ea54859bf637",
+        "systolic": 130,
+        "diastolic": 80,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 130/80, HR 92, Temp: 98.3F, SpO2 99% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "1dfcd7d4-b8c6-542b-a04f-ea54859bf637",
+        "value": 98.3,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 130/80, HR 92, Temp: 98.3F, SpO2 99% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Consent a96cef37 names 'coronary artery bypass grafting' (Cardiothoracic Surgery) while the scheduled procedure is thyroidectomy; it is the only consent document, signed by the same patient name (Danielle Kowalski).",
+    "ASA 81 mg (aspirin) is an antiplatelet and is not listed. Nursing assessment vitals are 'See flowsheet' (no numbers in the note)."
+  ]
+}

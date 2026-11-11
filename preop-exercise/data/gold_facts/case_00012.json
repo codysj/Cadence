@@ -1,0 +1,66 @@
+{
+  "case_id": "case_00012",
+  "submission_sha256": "6d85ffec35070d6b94c9accada90575c7021f0e8e2fcdf174a5faa08f867da65",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "d368ffa1-5181-5701-9f52-ef3eb87eba0d",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      },
+      {
+        "doc_id": "f9d36806-4072-532d-9308-46f05a86dae2",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "3b1cc3ea-2d06-55f7-b639-8667e92cfaf7",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Mia Haddad (electronically signed 03/08/2026 12:21)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: carpal tunnel release"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "d368ffa1-5181-5701-9f52-ef3eb87eba0d",
+        "systolic": 120,
+        "diastolic": 76,
+        "time": "10:05",
+        "quote": "Vitals 10:05  120/76 mmHg, HR 68, Temp: 98.5F, SpO2 95% RA"
+      },
+      {
+        "doc_id": "2e42820a-8679-50a8-806b-9d617d9965e7",
+        "systolic": 125,
+        "diastolic": 73,
+        "time": "08:55",
+        "quote": "After resting quietly for 10 minutes, BP was rechecked at 08:55: Blood pressure 125/73 mmHg."
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "d368ffa1-5181-5701-9f52-ef3eb87eba0d",
+        "value": 98.5,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  120/76 mmHg, HR 68, Temp: 98.5F, SpO2 95% RA"
+      },
+      {
+        "doc_id": "2e42820a-8679-50a8-806b-9d617d9965e7",
+        "value": 97.5,
+        "unit": "F",
+        "time": "08:45",
+        "quote": "VITAL SIGNS: On arrival at 08:45: Temperature 97.5 °F (oral)."
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Nursing intake 2e42820a: the blood pressure is described as 'rechecked at 08:55' after 10 minutes of rest, but no earlier (arrival) blood pressure value is written anywhere in the document; only the 08:55 reading 125/73 exists. The temperature is attached to arrival at 08:45.",
+    "The external Clinic H&P f9d36806 (06/18/2025) is an annual wellness / establish-care visit and contains no vitals."
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "case_id": "case_00043",
+  "submission_sha256": "319485d15d3519ad9aebc3aa97f46c6d70012e77ffc5865704ed613bc2f3b363",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "4e124e5e-7eda-5094-8e14-d95e2652b4d3",
+        "is_preop_evaluation": true,
+        "quote": "H&P: PREOPERATIVE EVALUATION"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "b0342210-5163-5f08-9ba3-07cb8d89c2e4",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 04/04/2026 08:51 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: cataract extraction"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "4e124e5e-7eda-5094-8e14-d95e2652b4d3",
+        "systolic": 132,
+        "diastolic": 71,
+        "time": "10:05",
+        "quote": "Vitals 10:05  NIBP 132/71, HR 66, T 99.1 F, SpO2 99% RA"
+      },
+      {
+        "doc_id": "0414f8fb-4ea7-5b14-9dc0-ac90d79f5aed",
+        "systolic": 130,
+        "diastolic": 72,
+        "time": "08:40",
+        "quote": "08:40  BP 130/72 mmHg. See addendum."
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "4e124e5e-7eda-5094-8e14-d95e2652b4d3",
+        "value": 99.1,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  NIBP 132/71, HR 66, T 99.1 F, SpO2 99% RA"
+      },
+      {
+        "doc_id": "0414f8fb-4ea7-5b14-9dc0-ac90d79f5aed",
+        "value": 98.6,
+        "unit": "F",
+        "time": "08:45",
+        "quote": "ADDENDUM 08:45: Recheck: Temp 98.6 °F 5 min later. ."
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "4e124e5e-7eda-5094-8e14-d95e2652b4d3",
+        "drug_as_written": "warfarin (Coumadin)",
+        "generic_name": "warfarin",
+        "status": "stopped",
+        "quote": "Discontinued: warfarin (Coumadin)"
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "warfarin (Coumadin) 5 mg PO daily"
+    ],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Structured medication list shows 'warfarin (Coumadin) 5 mg PO daily' with active=False. The H&P (4e124e5e) says warfarin was 'discontinued by hematology in early 2020 with no recurrence. Not currently anticoagulated.' No document sets out a perioperative anticoagulation plan.",
+    "Nursing visit (0414f8fb): the 08:40 line has a blood pressure only; the addendum at 08:45 is worded 'Recheck' but gives a temperature only ('Temp 98.6 °F 5 min later'), with no first temperature and no second blood pressure. Time 08:45 taken from the addendum header (consistent with 5 min after 08:40)."
+  ]
+}

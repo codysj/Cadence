@@ -1,0 +1,31 @@
+{
+  "case_id": "case_00022",
+  "submission_sha256": "c97c8376848825f25e32c70e2f2cc5afea75d475e66583a750168043308595e0",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "c5bfa7ba-e3ed-5194-9f3d-d53519a564e2",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "fa4b60c8-1252-532e-8386-f1813d0b107d",
+        "patient_signed": "no",
+        "signature_quote": "Patient signature: pending",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: tonsillectomy"
+      }
+    ],
+    "note_blood_pressures": [],
+    "note_temperatures": [],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "No blood pressure or temperature reading is written in any document: H&P says 'Vitals: not recorded at this visit'; nursing assessment says vitals deferred (telephone intake), to be obtained on day of surgery.",
+    "Consent fa4b60c8: patient signature pending; the document adds 'Patient requested additional time to review the form with family and will return the signed consent at the day-of-surgery check-in.' Only the physician attestation is signed."
+  ]
+}

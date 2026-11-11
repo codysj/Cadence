@@ -1,0 +1,48 @@
+{
+  "case_id": "case_00010",
+  "submission_sha256": "48e16ddc327e4cda809788b1269ec9599415d5f511f3c2d5ac56bfbdb3b80dae",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "077cf182-cea5-57fa-b586-2a82708af5a1",
+        "is_preop_evaluation": true,
+        "quote": "H&P: PREOPERATIVE EVALUATION"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "2f668e56-4a6e-5845-b7c2-8e4da90bff84",
+        "patient_signed": "no",
+        "signature_quote": "[Form printed for patient review; not yet signed]",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure discussed: Roux-en-Y gastric bypass"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "077cf182-cea5-57fa-b586-2a82708af5a1",
+        "systolic": 129,
+        "diastolic": 70,
+        "time": "10:05",
+        "quote": "Vitals 10:05  Blood pressure 129/70 mmHg, HR 72, Temperature 97.7 °F (oral), SpO2 97% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "077cf182-cea5-57fa-b586-2a82708af5a1",
+        "value": 97.7,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  Blood pressure 129/70 mmHg, HR 72, Temperature 97.7 °F (oral), SpO2 97% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Consent document 2f668e56 is a 'Pre-op Consent Discussion' note: the patient signature line is blank ('Patient signature: ______________________   Date/Time: __________') and the form is stated as not yet signed; only the physician attestation is signed.",
+    "Clinic follow-up note ce4062be mentions home blood pressure logs 'within goal per patient report' but gives no numeric reading, so nothing is reported from it.",
+    "Nursing assessment a0154f0c says 'VITAL SIGNS: See flowsheet.' and contains no readings."
+  ]
+}

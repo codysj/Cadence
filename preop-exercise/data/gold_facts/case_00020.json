@@ -1,0 +1,94 @@
+{
+  "case_id": "case_00020",
+  "submission_sha256": "a067c1a08d68f40717dcf255fa846a9bfd192dcc906b4daaf5f6221376fc6354",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "bfea860b-565f-5d3d-8d2a-374360e56a45",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "2ace2018-11e3-54eb-b3c6-386c8970c914",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "f3a0b3d9-d4ab-5a75-8778-9a4fe856957e",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: James Nguyen, 03/10/2026 14:48. Witness: Nicole L. O'Connor.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: total knee arthroplasty"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "2ace2018-11e3-54eb-b3c6-386c8970c914",
+        "systolic": 118,
+        "diastolic": 76,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 118/76 mmHg, HR 79, Temp: 97.4F, SpO2 95% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "2ace2018-11e3-54eb-b3c6-386c8970c914",
+        "value": 97.4,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 118/76 mmHg, HR 79, Temp: 97.4F, SpO2 95% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "0eb67951-00cf-5b04-81cb-85dc8a56b3c8",
+        "drug_as_written": "warfarin",
+        "generic_name": "warfarin",
+        "status": "current",
+        "quote": "HPI: Patient with atrial fibrillation with prior TIA (CHA2DS2-VASc 3, HAS-BLED 1) maintained on warfarin 5 mg PO daily (INR goal 2-3)."
+      },
+      {
+        "doc_id": "0eb67951-00cf-5b04-81cb-85dc8a56b3c8",
+        "drug_as_written": "enoxaparin",
+        "generic_name": "enoxaparin",
+        "status": "planned",
+        "quote": "Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op."
+      },
+      {
+        "doc_id": "2ace2018-11e3-54eb-b3c6-386c8970c914",
+        "drug_as_written": "Coumadin",
+        "generic_name": "warfarin",
+        "status": "current",
+        "quote": "- Coumadin 5 mg PO daily (INR goal 2-3)"
+      },
+      {
+        "doc_id": "d1dae22c-b4f5-50a5-9a32-dd415e4be9e7",
+        "drug_as_written": "Coumadin",
+        "generic_name": "warfarin",
+        "status": "current",
+        "quote": "- Coumadin 5 mg PO daily (INR goal 2-3) - taking as prescribed"
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "Coumadin 5 mg PO daily (INR goal 2-3)"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "0eb67951-00cf-5b04-81cb-85dc8a56b3c8",
+        "generic_name": "warfarin",
+        "preop": "concrete",
+        "preop_quote": "Stop warfarin 5 days before surgery (last dose 03/15/2026); check INR the day before surgery with goal <1.5.",
+        "postop": "deferred",
+        "postop_quote": "Post-operative anticoagulation will be addressed after surgery."
+      }
+    ]
+  },
+  "notes": [
+    "Cardiology note 0eb67951 also sets a concrete pre-op enoxaparin bridge in the same recommendation line ('Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op.'); recorded as an anticoagulant mention (planned) and not as a separate plan entry, since the format asks for one plan entry per document (written for warfarin).",
+    "Cardiology note (03/15/2026) says last warfarin dose 03/15/2026; the later Pre-Admission Testing Visit d1dae22c (03/18/2026) lists Coumadin as 'taking as prescribed' (patient-reported). Each recorded as the document states.",
+    "H&P 2ace2018 lists Coumadin only as a line in its MEDICATIONS list with no further statement; recorded as current.",
+    "'INR goal 2-3' and 'goal <1.5' are targets, not readings. Pre-Admission Testing vitals are 'See flowsheet' (no numbers in the note)."
+  ]
+}

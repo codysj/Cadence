@@ -1,0 +1,74 @@
+{
+  "case_id": "case_00049",
+  "submission_sha256": "4c9caea4e9ec804f6373c00f657565d7102abf3bdb0f0a98c79d371f7e449c6a",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "88aee908-9de5-519e-a153-7b3da9de7c03",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "0c7cdfd8-dbf5-545a-bc2b-4533e16e5401",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "a470e170-36ee-5b63-b18f-2397381cdc6d",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 03/03/2026 08:04 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: total hip arthroplasty"
+      },
+      {
+        "doc_id": "b3b87f8f-099e-59c9-b7cc-1a4f3f69730a",
+        "patient_signed": "no",
+        "signature_quote": "Patient signature: pending",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: total hip arthroplasty"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "4a7c1add-92b2-5755-baab-c7937b861206",
+        "systolic": 127,
+        "diastolic": 75,
+        "time": "08:54",
+        "quote": "ADDENDUM 08:54: Second reading BP 127/75 after resting quietly for 9 minutes. ."
+      },
+      {
+        "doc_id": "0c7cdfd8-dbf5-545a-bc2b-4533e16e5401",
+        "systolic": 130,
+        "diastolic": 77,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 130/77, HR 68, 97.8 °F temporal, SpO2 98% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "4a7c1add-92b2-5755-baab-c7937b861206",
+        "value": 97.5,
+        "unit": "F",
+        "time": "08:45",
+        "quote": "08:45  Temperature 97.5 °F (oral). See addendum."
+      },
+      {
+        "doc_id": "0c7cdfd8-dbf5-545a-bc2b-4533e16e5401",
+        "value": 97.8,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 130/77, HR 68, 97.8 °F temporal, SpO2 98% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Two consent documents for the same procedure with different surgeons: b3b87f8f (02/21/2026, surgeon Sarah Williams, DO) shows 'Patient signature: pending' and says the patient 'will return the signed consent at the day-of-surgery check-in'; a470e170 (03/03/2026, surgeon Robert Stein, MD) shows the patient signature on file. The later document is signed; the earlier one is not.",
+    "Nursing visit (4a7c1add): the 08:45 line has a temperature only; the addendum at 08:54 is worded 'Second reading BP 127/75' but no first blood pressure reading is written anywhere in the document.",
+    "aspirin 81 mg appears in the medication list and notes; antiplatelet, not recorded."
+  ]
+}

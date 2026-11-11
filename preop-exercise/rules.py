@@ -787,12 +787,13 @@ _STATUS_WORD = {"PASS": "PASS", "FAIL": "FAIL", "UNKNOWN": "UNKNOWN", "NOT_APPLI
 
 
 def _issue_evidence(check: Check) -> str:
-    """One line for the issue: what was found, then what was considered and set aside.
-    For a finding of absence, the rejected items are the evidence."""
+    """One line for the issue: what was found. For a finding of absence there is nothing
+    to cite, so the evidence is what was considered and set aside (a BMP for a missing CMP).
+    The full list of rejected items stays in the explanation."""
 
     found = [e.label + (f' "{e.quote}"' if e.quote else "") for e in check.evidence]
     set_aside = [f"rejected: {r.label} ({r.reason})" for r in check.rejected]
-    return "; ".join(found + set_aside) or "nothing on file to cite"
+    return "; ".join(found or set_aside) or "nothing on file to cite"
 
 
 def render(decision: str, checks: list[Check], submission: PatientSubmission) -> str:
@@ -811,6 +812,7 @@ def render(decision: str, checks: list[Check], submission: PatientSubmission) ->
     )
     lines = [f"{decision}: {summary}", header]
     for check in checks:
+        lines.append("")  # the viewer wraps long lines to column 0; a gap keeps each row distinct
         lines.append(f"{_STATUS_WORD[check.status]:<8}{_TITLE[check.id]}: {check.finding}")
         for evidence in check.evidence:
             lines.append(f"    source: {evidence.label}")

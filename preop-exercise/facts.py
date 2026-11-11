@@ -1,7 +1,7 @@
-"""What the reader (the one model call) returns.
+"""The reader's contract: what the one model call is shown, and what it returns.
 
-Atomic facts read from the free-text documents, each tied to a document id and a
-verbatim quote that code checks against the source. The reader never returns a
+It returns atomic facts read from the free-text documents, each tied to a document id
+and a verbatim quote that code checks against the source. The reader never returns a
 decision, a category, a day count or a unit conversion: those belong to rules.py.
 
 Every field is required and no extra fields are allowed, which is what OpenAI's
@@ -10,9 +10,36 @@ strict structured-output mode needs. "Not stated" is an explicit null or "unclea
 
 from __future__ import annotations
 
-from typing import Literal
+import hashlib
+import json
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict
+
+from models import PatientSubmission
+
+
+def reader_input(submission: PatientSubmission) -> dict[str, Any]:
+    """What the reader is shown: the documents, the medication list and the scheduled
+    procedure. Nothing it could decide with: no labs, no structured vitals, no risk
+    level, no procedure date field and no thresholds."""
+
+    return {
+        "scheduled_procedure": submission.procedure.procedure_type if submission.procedure else None,
+        "medication_list": [{"name": m.name, "active": m.active} for m in submission.medications],
+        "documents": [
+            {"doc_id": d.doc_id, "type": d.type, "date": d.date, "author": d.author, "text": d.text}
+            for d in submission.documents
+        ],
+    }
+
+
+def submission_hash(submission: dict[str, Any]) -> str:
+    """Identity of a submission as received, for keying saved facts."""
+
+    canonical = json.dumps(submission, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
 
 YesNoUnclear = Literal["yes", "no", "unclear"]
 Instruction = Literal["concrete", "deferred", "absent"]

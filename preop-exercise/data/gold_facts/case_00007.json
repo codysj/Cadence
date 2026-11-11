@@ -1,0 +1,74 @@
+{
+  "case_id": "case_00007",
+  "submission_sha256": "98d16a10f3bdfdc1e340e894353b9c1a419ccdfe73252d919d374192c948d1a3",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "674f877e-428c-57fd-92d3-c22c0771de25",
+        "is_preop_evaluation": true,
+        "quote": "H&P: PREOPERATIVE EVALUATION"
+      },
+      {
+        "doc_id": "e6a5d9c9-b502-58f9-8179-78f75d4d2899",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "cb708d0a-014f-54bb-9c64-9fd18c43c3f0",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: Danielle Lopez, 03/03/2026 16:44. Witness: Lauren Hernandez.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: hepatic lobectomy"
+      },
+      {
+        "doc_id": "933b18e2-333d-5170-8df5-efe4711b3964",
+        "patient_signed": "no",
+        "signature_quote": "Patient signature: pending",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: hepatic lobectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "3c6a3975-6233-5c32-b7bf-59172cfe5850",
+        "systolic": 121,
+        "diastolic": 80,
+        "time": "08:54",
+        "quote": "VITAL SIGNS: On arrival at 08:45: Temp: 37.2C. 9 min later, BP was rechecked at 08:54: BP: 121/80. ."
+      },
+      {
+        "doc_id": "674f877e-428c-57fd-92d3-c22c0771de25",
+        "systolic": 119,
+        "diastolic": 73,
+        "time": "10:05",
+        "quote": "Vitals 10:05  119/73 mmHg, HR 70, Temperature 98.0 °F (oral), SpO2 96% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "3c6a3975-6233-5c32-b7bf-59172cfe5850",
+        "value": 37.2,
+        "unit": "C",
+        "time": "08:45",
+        "quote": "VITAL SIGNS: On arrival at 08:45: Temp: 37.2C. 9 min later, BP was rechecked at 08:54: BP: 121/80. ."
+      },
+      {
+        "doc_id": "674f877e-428c-57fd-92d3-c22c0771de25",
+        "value": 98.0,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  119/73 mmHg, HR 70, Temperature 98.0 °F (oral), SpO2 96% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Two consent documents for the same procedure: the earlier one (933b18e2, 02/18/2026, surgeon Laura Murphy, DO) shows 'Patient signature: pending' with the patient to 'return the signed consent at the day-of-surgery check-in'; the later one (cb708d0a, 03/03/2026, surgeon Daniel W. Goldberg, MD) shows 'Signed by patient'. The two forms name different surgeons.",
+    "Nursing pre-procedure assessment (3c6a3975): the arrival line at 08:45 gives only a temperature; the only BP written is the recheck at 08:54 (121/80). The arrival blood pressure that prompted the recheck is not written.",
+    "H&P (674f877e) blood pressure is written without a 'BP' label: '119/73 mmHg'."
+  ]
+}

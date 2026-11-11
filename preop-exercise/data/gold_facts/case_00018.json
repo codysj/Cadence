@@ -1,0 +1,111 @@
+{
+  "case_id": "case_00018",
+  "submission_sha256": "4c5346130e919a05a5f93b5017675aee5effe5d941cf1977b947bef4bcce336e",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "d0fdac8a-87e7-571d-a47c-334b3edb69ce",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      },
+      {
+        "doc_id": "ea245b1c-8588-5769-a975-b2407ed76230",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "ad5690b4-7cef-5998-b791-4c2dd331edaf",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: Grace Okafor, 03/17/2026 11:04. Witness: Michael C. Rodriguez.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: coronary artery bypass grafting"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "d0fdac8a-87e7-571d-a47c-334b3edb69ce",
+        "systolic": 125,
+        "diastolic": 78,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 125/78 mmHg, HR 71, Temp: 98.2F, SpO2 96% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "d0fdac8a-87e7-571d-a47c-334b3edb69ce",
+        "value": 98.2,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 125/78 mmHg, HR 71, Temp: 98.2F, SpO2 96% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "d0fdac8a-87e7-571d-a47c-334b3edb69ce",
+        "drug_as_written": "apixaban",
+        "generic_name": "apixaban",
+        "status": "current",
+        "quote": "- apixaban 5 mg PO BID"
+      },
+      {
+        "doc_id": "d0fdac8a-87e7-571d-a47c-334b3edb69ce",
+        "drug_as_written": "warfarin",
+        "generic_name": "warfarin",
+        "status": "stopped",
+        "quote": "Discontinued: warfarin"
+      },
+      {
+        "doc_id": "162990fe-f57c-564c-984e-41040fbe66e2",
+        "drug_as_written": "warfarin",
+        "generic_name": "warfarin",
+        "status": "current",
+        "quote": "HPI: Patient with atrial fibrillation with prior TIA (CHA2DS2-VASc 3, HAS-BLED 1) maintained on warfarin 5 mg PO daily (INR goal 2-3)."
+      },
+      {
+        "doc_id": "162990fe-f57c-564c-984e-41040fbe66e2",
+        "drug_as_written": "enoxaparin",
+        "generic_name": "enoxaparin",
+        "status": "planned",
+        "quote": "Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op."
+      },
+      {
+        "doc_id": "49e558c2-2d14-5dce-ab36-429608a3ec54",
+        "drug_as_written": "apixaban",
+        "generic_name": "apixaban",
+        "status": "current",
+        "quote": "- apixaban 5 mg PO BID - taking as prescribed"
+      },
+      {
+        "doc_id": "49e558c2-2d14-5dce-ab36-429608a3ec54",
+        "drug_as_written": "warfarin",
+        "generic_name": "warfarin",
+        "status": "stopped",
+        "quote": "- Note: patient states warfarin was stopped last month and replaced with Eliquis by cardiology."
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "apixaban 5 mg PO BID",
+      "warfarin 5 mg PO daily"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "162990fe-f57c-564c-984e-41040fbe66e2",
+        "generic_name": "warfarin",
+        "preop": "concrete",
+        "preop_quote": "Stop warfarin 5 days before surgery (last dose 03/13/2026); check INR the day before surgery with goal <1.5.",
+        "postop": "concrete",
+        "postop_quote": "Resume warfarin at the usual home dose the evening of surgery if hemostasis is adequate, with enoxaparin bridging restarted 48-72 hours post-op until INR is therapeutic."
+      }
+    ]
+  },
+  "notes": [
+    "Later documents contradict the earlier plan's drug: the only anticoagulation plan (Perioperative Medication Plan 162990fe, 02/06/2026) is written for warfarin with an enoxaparin bridge and is itself marked 'Written prior to planned transition off warfarin.' The pre-op H&P (03/05/2026) lists apixaban 5 mg PO BID as current with 'Discontinued: warfarin', and the nursing assessment (03/17/2026) records 'patient states warfarin was stopped last month and replaced with Eliquis by cardiology.' No document gives any peri-procedural instruction for apixaban.",
+    "The plan's enoxaparin bridge is part of the single warfarin plan entry (one entry per document); pre-op bridge instruction: 'Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op.' Post-op bridge restart is in the postop quote.",
+    "In the nursing assessment 49e558c2 apixaban is also written by brand name 'Eliquis' in the warfarin note line; a single apixaban entry is recorded for that document.",
+    "The plan's 'INR goal 2-3' and 'goal <1.5' are INR targets, not blood pressure or temperature readings.",
+    "The medication list flags 'warfarin 5 mg PO daily' as active=False and 'apixaban 5 mg PO BID' as active=True.",
+    "The H&P ea245b1c (10/16/2025) is an annual wellness / establish-care visit; it lists atrial fibrillation in PMH but names no anticoagulant and has no vitals."
+  ]
+}

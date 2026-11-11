@@ -1,0 +1,53 @@
+{
+  "case_id": "case_00029",
+  "submission_sha256": "d152c1bf3371fb16ac8d5b0214ae6aead068c280d2e24eb149b1514155c98298",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "95d46190-1f38-5227-b55a-43cfb010ca83",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "20fab676-c9c2-5e99-b8ca-c5ec02c5f340",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "c4b4910f-efad-50c5-8c07-b2828e2897b3",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Noah Patel (electronically signed 03/25/2026 15:26)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: abdominal aortic aneurysm repair"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "20fab676-c9c2-5e99-b8ca-c5ec02c5f340",
+        "systolic": 122,
+        "diastolic": 73,
+        "time": "10:05",
+        "quote": "Vitals 10:05  122/73 mmHg, HR 71, 99.1 °F temporal, SpO2 99% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "20fab676-c9c2-5e99-b8ca-c5ec02c5f340",
+        "value": 99.1,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  122/73 mmHg, HR 71, 99.1 °F temporal, SpO2 99% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Clinic follow-up aed4ec0b mentions 'home glucose and blood pressure logs brought by patient; values within goal per patient report' with no numbers; no reading recorded from it.",
+    "H&P 20fab676 vitals line gives the blood pressure without a 'BP' label ('122/73 mmHg') and the temperature as '99.1 °F temporal'. It also states 'Surgical risk category not yet assigned by the surgical team.' (not expressible in the format).",
+    "Nursing intake vitals are 'See flowsheet' (no numbers in the note)."
+  ]
+}

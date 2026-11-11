@@ -1,0 +1,47 @@
+{
+  "case_id": "case_00009",
+  "submission_sha256": "a4976887deb739d71916776de0e561086c98241b95ac889d453037cfb9c4eccb",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "68aec2e2-84c2-5fdc-8c31-a08dc46996c0",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "e17a2d65-b604-531d-a6a8-452dd018422d",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Mia Patel (electronically signed 03/01/2026 11:33)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: coronary artery bypass grafting"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "3f62cc02-48b6-5cb8-b0e8-a9fe09851fbe",
+        "systolic": 128,
+        "diastolic": 76,
+        "time": "08:52",
+        "quote": "VITAL SIGNS: Obtained at 08:52: BP: 128/76."
+      },
+      {
+        "doc_id": "68aec2e2-84c2-5fdc-8c31-a08dc46996c0",
+        "systolic": 117,
+        "diastolic": 74,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 117/74"
+      }
+    ],
+    "note_temperatures": [],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "No temperature reading is written in any document: the nursing intake (3f62cc02) vitals line gives only BP, and the H&P (68aec2e2) vitals line gives only BP.",
+    "Patient portal message (a21cafac) mentions ibuprofen (an NSAID, not an anticoagulant) and 'standard pre-op medication guidance' with no detail; nothing reported.",
+    "Anesthesia screening note (e0c577a1) says 'Surgical H&P reviewed' but is not itself an H&P; not listed."
+  ]
+}

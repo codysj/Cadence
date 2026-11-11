@@ -1,0 +1,47 @@
+{
+  "case_id": "case_00044",
+  "submission_sha256": "03daa8089952e0bf7c710c38405cf5b99b67e8d85280c114858045e0be2b771a",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "b63b60c2-127c-56fa-ad73-2a8c2ed20bc0",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "e3e3b033-cf69-5e5e-8df0-8f15d580ed94",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: Ava Okafor, 04/07/2026 08:27. Witness: Michael Thompson.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: cataract extraction"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "b63b60c2-127c-56fa-ad73-2a8c2ed20bc0",
+        "systolic": 116,
+        "diastolic": 80,
+        "time": "10:05",
+        "quote": "Vitals 10:05  NIBP 116/80, HR 80, 98.1 °F temporal, SpO2 98% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "b63b60c2-127c-56fa-ad73-2a8c2ed20bc0",
+        "value": 98.1,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  NIBP 116/80, HR 80, 98.1 °F temporal, SpO2 98% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "The pre-op H&P (b63b60c2, type 'History & Physical (scanned)') does not give a surgery date: 'Planned procedure: cataract extraction (date to be determined pending OR availability)'.",
+    "Pre-admission testing visit (e1e7b369) gives no vital sign numbers ('VITAL SIGNS: See flowsheet.')."
+  ]
+}

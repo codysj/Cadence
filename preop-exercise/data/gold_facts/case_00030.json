@@ -1,0 +1,60 @@
+{
+  "case_id": "case_00030",
+  "submission_sha256": "4dfdb5959dafff7578fe8b8971c71381bfa01f9a490001a6299541be2f3e9222",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "6f56cea7-123a-5d0c-910c-55226e38448e",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "92aa8bb3-021d-576a-9c6a-e554117c65ba",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 03/26/2026 14:14 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: lumbar laminectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "6f56cea7-123a-5d0c-910c-55226e38448e",
+        "systolic": 118,
+        "diastolic": 74,
+        "time": "10:05",
+        "quote": "Vitals 10:05  NIBP 118/74, HR 68, Temperature 97.7 °F (oral), SpO2 97% RA"
+      },
+      {
+        "doc_id": "6c223371-e463-510e-b1f0-f51e15c5e99e",
+        "systolic": 127,
+        "diastolic": 73,
+        "time": "08:50",
+        "quote": "VITAL SIGNS: Obtained at 08:50: NIBP 127/73, Temp: 37.9C, HR 83, SpO2 95% RA."
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "6f56cea7-123a-5d0c-910c-55226e38448e",
+        "value": 97.7,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  NIBP 118/74, HR 68, Temperature 97.7 °F (oral), SpO2 97% RA"
+      },
+      {
+        "doc_id": "6c223371-e463-510e-b1f0-f51e15c5e99e",
+        "value": 37.9,
+        "unit": "C",
+        "time": "08:50",
+        "quote": "VITAL SIGNS: Obtained at 08:50: NIBP 127/73, Temp: 37.9C, HR 83, SpO2 95% RA."
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Pre-anesthesia evaluation (dd2bbedb) says 'H&P reviewed.' but is not itself an H&P; not listed."
+  ]
+}

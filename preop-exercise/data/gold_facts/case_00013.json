@@ -1,0 +1,26 @@
+{
+  "case_id": "case_00013",
+  "submission_sha256": "a38516a4f5ee812b6933e6d806b628930befba9d308d061ba06829cddab6770f",
+  "facts": {
+    "hp_candidates": [],
+    "consents": [
+      {
+        "doc_id": "31776655-e987-506a-9aac-db2db313bd83",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: Ava Patel, 03/08/2026 16:31. Witness: Christopher Rodriguez.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: esophagectomy"
+      }
+    ],
+    "note_blood_pressures": [],
+    "note_temperatures": [],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "No document in this case is titled or headed as a History and Physical. The Anesthesia Screening Note 3fb51913 states: 'H&P: not yet on file for this surgical episode; primary care office contacted to complete.'",
+    "The signed consent 31776655 contains the line 'Blood products: I do not consent to transfusion of blood products if medically necessary.' The format has no field for a blood-product refusal.",
+    "No blood pressure or temperature reading is written in any document (nursing note says 'VITAL SIGNS: See flowsheet.')."
+  ]
+}

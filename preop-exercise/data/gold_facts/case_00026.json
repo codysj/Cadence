@@ -1,0 +1,87 @@
+{
+  "case_id": "case_00026",
+  "submission_sha256": "0705afd973ccac41988c9114e37b9078a6b7bcce440afdd20815291a05394010",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "dc18294a-5aee-59ae-8e3b-cef23fe64ebd",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "1301dd21-c875-5827-90de-c2c7c559916c",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "921c175a-184a-58a1-a6a4-050b5968a548",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Mateo Patel (electronically signed 03/16/2026 10:55)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: tonsillectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "1301dd21-c875-5827-90de-c2c7c559916c",
+        "systolic": 118,
+        "diastolic": 74,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 118/74, HR 82, 97.9 °F temporal, SpO2 97% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "1301dd21-c875-5827-90de-c2c7c559916c",
+        "value": 97.9,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 118/74, HR 82, 97.9 °F temporal, SpO2 97% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "8100b3b2-7cd0-5c5e-9308-167d59cf2f1a",
+        "drug_as_written": "dabigatran",
+        "generic_name": "dabigatran",
+        "status": "current",
+        "quote": "- dabigatran 150 mg PO BID - taking as prescribed"
+      },
+      {
+        "doc_id": "d35edef4-5df4-5a4c-9e83-ac3c0c096fec",
+        "drug_as_written": "dabigatran",
+        "generic_name": "dabigatran",
+        "status": "current",
+        "quote": "HPI: Patient with atrial fibrillation (CHA2DS2-VASc 5, HAS-BLED 3) maintained on dabigatran 150 mg PO BID."
+      },
+      {
+        "doc_id": "1301dd21-c875-5827-90de-c2c7c559916c",
+        "drug_as_written": "dabigatran",
+        "generic_name": "dabigatran",
+        "status": "current",
+        "quote": "- dabigatran 150 mg PO BID"
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "dabigatran 150 mg PO BID"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "d35edef4-5df4-5a4c-9e83-ac3c0c096fec",
+        "generic_name": "dabigatran",
+        "preop": "concrete",
+        "preop_quote": "Hold dabigatran for the 3 days before surgery (last dose 03/23/2026; no doses in the 72 hours prior).",
+        "postop": "concrete",
+        "postop_quote": "Restart dabigatran on postoperative day 1 at the full dose if there are no bleeding concerns."
+      }
+    ]
+  },
+  "notes": [
+    "Perioperative Medication Plan d35edef4 (03/17/2026) says last dabigatran dose 03/23/2026; the nursing assessment 8100b3b2 dated 03/24/2026 lists dabigatran as 'taking as prescribed' (patient-reported). Each recorded as the document states.",
+    "The plan's own wording is internally hard to reconcile: 'hold for the 3 days before surgery ... no doses in the 72 hours prior' with 'last dose 03/23/2026', while the H&P gives surgery date 03/27/2026. Recorded as written.",
+    "H&P 1301dd21 lists dabigatran only as a line in its MEDICATIONS list; recorded as current. Its temperature is written '97.9 °F temporal'.",
+    "Nursing assessment vitals are 'See flowsheet' (no numbers in the note)."
+  ]
+}

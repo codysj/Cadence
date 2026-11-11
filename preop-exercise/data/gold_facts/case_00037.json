@@ -1,0 +1,88 @@
+{
+  "case_id": "case_00037",
+  "submission_sha256": "2a1b586e7a0ed4e8fddc763e658d3e128c76bfca200c54857f0b7e4ff5e9ad34",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "a48d086e-87c6-5229-983f-fff8a75c842f",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "cf037b51-48fa-586e-b884-7648f110f04d",
+        "is_preop_evaluation": true,
+        "quote": "H&P: PREOPERATIVE EVALUATION"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "4fb1264a-be4c-5b69-bd78-522f6d95c11e",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: Nora Okafor, 03/31/2026 09:14. Witness: Alexis O'Connor.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: tonsillectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "cf037b51-48fa-586e-b884-7648f110f04d",
+        "systolic": 124,
+        "diastolic": 79,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP: 124/79, HR 85, Temp: 98.0F, SpO2 98% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "cf037b51-48fa-586e-b884-7648f110f04d",
+        "value": 98.0,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP: 124/79, HR 85, Temp: 98.0F, SpO2 98% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "c9cece47-8e5b-5413-b75d-7abea65f9eed",
+        "drug_as_written": "Xarelto",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "- Xarelto 20 mg PO daily with evening meal - taking as prescribed"
+      },
+      {
+        "doc_id": "cf037b51-48fa-586e-b884-7648f110f04d",
+        "drug_as_written": "Xarelto",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "- Xarelto 20 mg PO daily with evening meal"
+      },
+      {
+        "doc_id": "49d8b02a-5fcc-5949-b8e8-fa604633236b",
+        "drug_as_written": "Xarelto",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "HPI: Patient with persistent atrial fibrillation (CHA2DS2-VASc 5, HAS-BLED 3) maintained on Xarelto 20 mg PO daily with evening meal."
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "Xarelto 20 mg PO daily with evening meal"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "49d8b02a-5fcc-5949-b8e8-fa604633236b",
+        "generic_name": "rivaroxaban",
+        "preop": "concrete",
+        "preop_quote": "1. Hold Xarelto for the 2 days before surgery (last dose 04/04/2026; no doses in the 48 hours prior).",
+        "postop": "concrete",
+        "postop_quote": "Resume Xarelto 24-48 hours after surgery once hemostasis is secure, per surgical team."
+      }
+    ]
+  },
+  "notes": [
+    "Perioperative Medication Plan 49d8b02a: the resume instruction gives timing and a condition ('24-48 hours after surgery once hemostasis is secure') and adds 'per surgical team'; recorded as concrete.",
+    "H&P cf037b51 names Xarelto only as an entry under its MEDICATIONS heading with no further wording; status recorded as current on that basis.",
+    "Nursing note c9cece47 dated 04/04/2026 (the plan's stated last-dose date, 3 days before the 04/07/2026 surgery) records Xarelto 'taking as prescribed'; it does not mention the hold instruction.",
+    "The plan recommends 'Continue metoprolol succinate', which is not on the structured medication list (not an anticoagulant).",
+    "Nursing note c9cece47 records 'VITAL SIGNS: See flowsheet.' with no numeric readings."
+  ]
+}

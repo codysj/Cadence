@@ -1,0 +1,76 @@
+{
+  "case_id": "case_00038",
+  "submission_sha256": "bbf25952c600316abfb31197ae64a98d1f58274bcd8c29f27580943166e7a706",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "e7d2bbfd-b672-5e84-b8b2-2da55f37dc17",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "e3a8a2ad-7b3f-547c-97d3-fc6bf01ca091",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "868595c7-2e6b-5eda-9603-f38ba151a087",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 03/26/2026 08:32 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: cataract extraction"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "6fa954e5-6cea-505e-92e1-07d7188d734d",
+        "systolic": 143,
+        "diastolic": 76,
+        "time": "08:41",
+        "quote": "08:41  143/76 mmHg"
+      },
+      {
+        "doc_id": "e3a8a2ad-7b3f-547c-97d3-fc6bf01ca091",
+        "systolic": 134,
+        "diastolic": 76,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 134/76, HR 70, T 97.5 F, SpO2 96% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "6fa954e5-6cea-505e-92e1-07d7188d734d",
+        "value": 99.0,
+        "unit": "F",
+        "time": "08:45",
+        "quote": "08:45  Re-measured Temperature 99.0 °F (oral) 4 min later; ."
+      },
+      {
+        "doc_id": "e3a8a2ad-7b3f-547c-97d3-fc6bf01ca091",
+        "value": 97.5,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP 134/76, HR 70, T 97.5 F, SpO2 96% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "6fa954e5-6cea-505e-92e1-07d7188d734d",
+        "drug_as_written": "Coumadin",
+        "generic_name": "warfarin",
+        "status": "current",
+        "quote": "- Patient also reports taking Coumadin 5 mg (daily (INR goal 2-3)), prescribed by an outside cardiologist; not on the reconciled medication list - flagged for provider review."
+      }
+    ],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Coumadin appears only in the 04/06/2026 Pre-Admission Testing Visit as patient-reported, prescribed by an outside cardiologist; it is not on the structured medication list and not in the 03/27/2026 pre-op H&P medication list. No document gives any instruction for managing it around the procedure.",
+    "'INR goal 2-3' in that line is a target, not a reading.",
+    "Pre-Admission Testing Visit vitals are oddly worded: the 08:41 line gives only a blood pressure, and the 08:45 line reads 'Re-measured Temperature 99.0 °F (oral) 4 min later; .' with no earlier temperature and no repeat blood pressure recorded. The temperature is reported at 08:45 as written.",
+    "Pre-op H&P e3a8a2ad says 'hold metformin the morning of surgery' (not an anticoagulant)."
+  ]
+}

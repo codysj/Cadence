@@ -1,0 +1,47 @@
+{
+  "case_id": "case_00014",
+  "submission_sha256": "437de143feaa138d74ed02a26875a9f65c51153e8b4e5f5c341b4a11d077817f",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "6fed8663-8ff1-5d5a-a2bf-fda87b3ee5db",
+        "is_preop_evaluation": true,
+        "quote": "H&P: PREOPERATIVE EVALUATION"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "0778e173-59f7-582d-b41e-f4846de5fe20",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Maya Simmons (electronically signed 03/11/2026 08:53)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: tonsillectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "6fed8663-8ff1-5d5a-a2bf-fda87b3ee5db",
+        "systolic": 128,
+        "diastolic": 73,
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP: 128/73, HR 71, T 98.9 F, SpO2 96% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "6fed8663-8ff1-5d5a-a2bf-fda87b3ee5db",
+        "value": 98.9,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  BP: 128/73, HR 71, T 98.9 F, SpO2 96% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Clinic follow-up note 6f829b7f mentions home blood pressure logs 'within goal per patient report' but gives no numeric reading, so nothing is reported from it.",
+    "Nursing intake ffc2467a says 'VITAL SIGNS: See flowsheet.' and contains no readings."
+  ]
+}

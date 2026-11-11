@@ -1,0 +1,52 @@
+{
+  "case_id": "case_00041",
+  "submission_sha256": "4714f2e7d5a4b35a321903b334473dd085c788253824507f8ccefaaa55586d3c",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "4ec27afa-d10c-589f-a28a-275fc0bc52dd",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "9a8936fe-1125-50e6-9232-5bd863853ff7",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "3b9a681b-b9d4-57ae-88a7-e5cd84ac06cb",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Lucas Simmons (electronically signed 04/06/2026 15:12)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: carpal tunnel release"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "9a8936fe-1125-50e6-9232-5bd863853ff7",
+        "systolic": 121,
+        "diastolic": 72,
+        "time": "10:05",
+        "quote": "Vitals 10:05  Blood pressure 121/72 mmHg, HR 92, 97.9 °F temporal, SpO2 96% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "9a8936fe-1125-50e6-9232-5bd863853ff7",
+        "value": 97.9,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "Vitals 10:05  Blood pressure 121/72 mmHg, HR 92, 97.9 °F temporal, SpO2 96% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "notes": [
+    "Aspirin EC 81 mg is listed in the medication list and notes; it is an antiplatelet, so not recorded.",
+    "Nursing intake (e5c583eb) gives no vital sign numbers ('VITAL SIGNS: See flowsheet.')."
+  ]
+}
