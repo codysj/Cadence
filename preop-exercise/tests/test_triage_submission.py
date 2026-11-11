@@ -276,6 +276,35 @@ def test_a_reader_failure_is_saved_too(monkeypatch, tmp_path, submission) -> Non
     assert "facts" not in saved and "API error: RuntimeError: down" in saved["error"]
 
 
+def test_a_bad_key_or_model_id_stops_the_run_but_a_bad_call_does_not(monkeypatch, submission) -> None:
+    """Review finding: a wrong key or model id quietly turned all 50 cases into
+    NEEDS_FOLLOW_UP. Those errors hit every case alike, so they must end the run with a
+    message. A timeout or server error is one case's problem and still fails closed."""
+
+    def api_error(status: int, text: str) -> Exception:
+        error = RuntimeError(text)
+        error.status_code = status
+        return error
+
+    for status, text, expected in (
+        (401, "Error code: 401 - User not found.", "API key was rejected"),
+        (403, "Error code: 403 - Forbidden", "not allowed"),
+        (404, "Error code: 404 - Not Found", "does not know this model id"),
+        (400, "Error code: 400 - vendor/no-such-model is not a valid model ID", "does not know this model id"),
+    ):
+        client = use(monkeypatch, api_error(status, text), api_error(status, text))
+        with pytest.raises(SystemExit) as stopped:
+            triage_submission(submission, model="vendor/some-model")
+        assert not isinstance(stopped.value, Exception)  # a per-case `except Exception` cannot swallow it
+        assert expected in str(stopped.value) and "'vendor/some-model'" in str(stopped.value) and ".env" in str(stopped.value)
+        assert len(client.requests) == 1  # no pointless second call
+
+    for status, text in ((500, "Error code: 500 - upstream error"), (429, "Error code: 429 - rate limited"), (400, "Error code: 400 - context too long")):
+        use(monkeypatch, api_error(status, text), api_error(status, text))
+        output = triage_submission(submission, model="vendor/some-model")
+        assert output.decision == "NEEDS_FOLLOW_UP" and output.system_failure == "reader_failed"
+
+
 def test_the_prompt_version_changes_with_the_prompt(monkeypatch) -> None:
     before = reader._prompt_version()
     monkeypatch.setattr(reader, "SYSTEM_PROMPT", reader.SYSTEM_PROMPT + " One more rule.")

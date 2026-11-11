@@ -1,15 +1,22 @@
-"""Evaluate saved facts without the OpenAI Evals API, and make the saved facts.
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "openai>=2.0.0",
+#   "pydantic>=2.8.0",
+# ]
+# ///
+
+"""Score saved facts without a model call and without the OpenAI Evals API.
 
 The rules are pure code over (submission, facts), so saved facts can be re-scored as
-often as needed without paying for a model call. Facts live one file per case:
-{"case_id", "submission_sha256", "facts", ...}.
+often as needed. Facts live one file per case: {"case_id", "submission_sha256", "facts", ...}.
+run_baseline.py saves what the reader returned for each case when TRIAGE_FACTS_DIR is set.
 
   view  CASE              what the reader is shown for one case (never the label)
   check CASE [CASE...]    check a facts file against its documents (never the label)
   score [--facts DIR]     run the rules on saved facts, score against the labels, and
                           compare the facts one by one with the reference facts
-  read  --model M         the only command that calls a model: read cases with the
-                          reader, save what it returned, then score as above
 
 `score` calls run_evals.py's own scoring functions, so its three metrics are the
 harness's, and writes a report that view_report.py can open:
@@ -20,17 +27,11 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
-import threading
-import time
-import urllib.request
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import reader
 import rules
 import run_evals
 from facts import Facts, reader_input, submission_hash
@@ -40,13 +41,6 @@ from rules import open_items  # noqa: F401  (re-exported for the tests)
 ROOT = Path(__file__).resolve().parent
 SAMPLE = ROOT / "data" / "patients_sample_50.jsonl"
 GOLD = ROOT / "data" / "gold_facts"
-READINGS = ROOT / "data" / "reader_facts"
-
-# One case per kind of difficulty: a cleared breach, a breach found only in a note, a drug
-# found only in a note, an unsigned consent with a threshold-exact reading, and a high-risk
-# case with a stale lab and no temperature.
-SMOKE = ["case_00016", "case_00005", "case_00027", "case_00028", "case_00009"]
-
 
 def load_rows(path: Path = SAMPLE) -> list[dict[str, Any]]:
     with path.open(encoding="utf-8") as handle:
@@ -263,67 +257,6 @@ def cmd_score(args: argparse.Namespace) -> int:
     return 0
 
 
-def _openrouter_spend() -> float | None:
-    """What the OpenRouter key has spent so far, or None when not using OpenRouter."""
-
-    key = os.environ.get("OPENROUTER_API_KEY")
-    if not key:
-        return None
-    request = urllib.request.Request(f"{reader.OPENROUTER_BASE_URL}/key", headers={"Authorization": f"Bearer {key}"})
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return float(json.load(response)["data"]["usage"])
-
-
-def cmd_read(args: argparse.Namespace) -> int:
-    wanted = SMOKE if args.cases == ["smoke"] else None if args.cases == ["all"] else args.cases
-    rows = [row for row in load_rows() if wanted is None or row["case_id"] in wanted]
-    out_dir = args.out / args.model.replace("/", "__") / reader.PROMPT_VERSION / f"run{args.run}"
-    client = reader.make_client()
-    already_spent = _openrouter_spend()
-    lock = threading.Lock()
-    tally = {"cost": 0.0, "read": 0, "retried": 0, "failed": 0, "skipped": 0, "prompt_tokens": 0.0, "completion_tokens": 0.0}
-
-    def one(row: dict[str, Any]) -> None:
-        with lock:
-            if already_spent is not None and already_spent + tally["cost"] >= args.budget_usd:
-                tally["skipped"] += 1
-                return
-        submission = PatientSubmission.model_validate(row["submission"])
-        try:
-            reading = reader.read(submission, model=args.model, client=client)
-        except reader.ReaderError as exc:
-            reader.save_reading(out_dir, None, row["submission"], error=str(exc), model=args.model)
-            with lock:
-                tally["failed"] += 1
-            return
-        reader.save_reading(out_dir, reading, row["submission"])
-        with lock:
-            usage = reading.usage
-            tally["read"] += 1
-            tally["retried"] += usage["calls"] > 1
-            tally["cost"] += usage["cost_usd"]
-            tally["prompt_tokens"] += usage["prompt_tokens"]
-            tally["completion_tokens"] += usage["completion_tokens"]
-
-    started = time.perf_counter()
-    with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        list(pool.map(one, rows))
-    seconds = time.perf_counter() - started
-
-    print(f"model {args.model}   prompt {reader.PROMPT_VERSION}   run {args.run}   -> {out_dir}")
-    print(
-        f"  read {tally['read']}/{len(rows)}   needed the retry: {tally['retried']}   reader failed: {tally['failed']}   "
-        f"skipped for budget: {tally['skipped']}   {seconds:.0f}s"
-    )
-    print(
-        f"  tokens in/out: {tally['prompt_tokens']:.0f}/{tally['completion_tokens']:.0f}   "
-        f"cost this run: ${tally['cost']:.4f}   key spend before: {'n/a' if already_spent is None else f'${already_spent:.4f}'}"
-    )
-    done = [row for row in rows if (out_dir / f"{row['case_id']}.json").exists()]
-    print_scores(done, out_dir, None, GOLD)
-    return 0
-
-
 def main() -> int:
     for stream in (sys.stdout, sys.stderr):
         stream.reconfigure(encoding="utf-8")  # document text contains non-ASCII characters
@@ -341,14 +274,6 @@ def main() -> int:
     score.add_argument("--against", type=Path, default=GOLD, help="reference facts for the fact-by-fact comparison")
     score.add_argument("--report", type=Path, default=ROOT / "data" / "offline_report.json")
     score.set_defaults(handler=cmd_score)
-    read = commands.add_parser("read")
-    read.add_argument("--model", required=True)
-    read.add_argument("--cases", nargs="+", default=["smoke"], help="'smoke', 'all', or case ids")
-    read.add_argument("--run", type=int, default=0, help="run number, so repeated runs are kept apart")
-    read.add_argument("--out", type=Path, default=READINGS)
-    read.add_argument("--workers", type=int, default=6)
-    read.add_argument("--budget-usd", type=float, default=2.50, help="stop starting new cases once the key has spent this much")
-    read.set_defaults(handler=cmd_read)
     args = parser.parse_args()
     return args.handler(args)
 

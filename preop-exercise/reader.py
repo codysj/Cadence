@@ -21,6 +21,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -85,7 +86,36 @@ PROMPT_VERSION = _prompt_version()
 
 
 class ReaderError(RuntimeError):
-    """The model call failed for good. The caller must fail closed."""
+    """The model call failed for good on this case. The caller must fail closed."""
+
+
+class ConfigurationError(SystemExit):
+    """The run cannot work at all: a missing or rejected API key, no permission, or a
+    model id the provider does not know.
+
+    Deliberately a SystemExit. Batch runners catch Exception around each case, and this is
+    not a problem with one case: without it, a wrong key quietly turns every case into
+    NEEDS_FOLLOW_UP. Uncaught, it ends the run and prints its message.
+    """
+
+
+def _configuration_problem(exc: Exception) -> str | None:
+    """Why this error means the whole run is misconfigured, or None if it is not that."""
+
+    status = getattr(exc, "status_code", None)
+    text = str(exc)
+    if status == 401:
+        return "the API key was rejected (HTTP 401)"
+    if status == 403:
+        return "the API key is not allowed to use this model or endpoint (HTTP 403)"
+    unknown_model = re.search(r"model", text, re.I) and re.search(r"not a valid|not found|does not exist", text, re.I)
+    if status == 404 or (status == 400 and unknown_model):
+        return f"the provider does not know this model id (HTTP {status})"
+    return None
+
+
+def _provider() -> str:
+    return "OpenRouter" if os.environ.get("OPENROUTER_API_KEY") else "OpenAI"
 
 
 @dataclass
@@ -129,9 +159,14 @@ def make_client():
     from openai import OpenAI
 
     openrouter_key = os.environ.get("OPENROUTER_API_KEY")
-    if openrouter_key:
-        return OpenAI(base_url=OPENROUTER_BASE_URL, api_key=openrouter_key)
-    return OpenAI()
+    try:
+        if openrouter_key:
+            return OpenAI(base_url=OPENROUTER_BASE_URL, api_key=openrouter_key)
+        return OpenAI()
+    except Exception as exc:  # the SDK refuses to build a client without a key
+        raise ConfigurationError(
+            f"Cannot run triage: no usable API key. Set OPENROUTER_API_KEY or OPENAI_API_KEY in .env (see README). ({str(exc)[:120]})"
+        ) from exc
 
 
 def build_user_message(submission: PatientSubmission) -> str:
@@ -162,7 +197,14 @@ def _ask(client: Any, model: str, messages: list[dict[str, str]]) -> dict[str, A
     result: dict[str, Any] = {"facts": None, "problem": None, "raw": None, "usage": {}}
     try:
         response = client.chat.completions.create(**request)
-    except Exception as exc:  # network, auth, rate limit, bad request: all fail the attempt
+    except Exception as exc:
+        problem = _configuration_problem(exc)
+        if problem:  # every case would fail the same way, so stop the run
+            raise ConfigurationError(
+                f"Cannot run triage: {problem}. Provider: {_provider()}. Model: {model!r}. "
+                f"Check the key in .env and the MODEL value (see README). ({str(exc)[:160]})"
+            ) from exc
+        # A timeout, a rate limit or a server error is a problem with this call only.
         result["problem"] = f"API error: {type(exc).__name__}: {str(exc)[:300]}"
         return result
 
