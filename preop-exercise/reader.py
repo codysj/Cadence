@@ -209,7 +209,7 @@ def _ask(client: Any, model: str, messages: list[dict[str, str]]) -> dict[str, A
         if problem:  # every case would fail the same way, so stop the run
             raise ConfigurationError(
                 f"Cannot run triage: {problem}. Provider: {_provider()}. Model: {model!r}. "
-                f"Check the key in .env and the MODEL value (see README). ({str(exc)[:160]})"
+                f"Check the key in .env and the model id passed to --model (see README). ({str(exc)[:160]})"
             ) from exc
         # A timeout, a rate limit or a server error is a problem with this call only.
         result["problem"] = f"API error: {type(exc).__name__}: {str(exc)[:300]}"

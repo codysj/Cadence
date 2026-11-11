@@ -83,14 +83,14 @@ PASS    Blood pressure: 137/78 on 2026-03-15 08:30, limits 180/110 (earlier brea
 ## Results
 
 One run of the 50 sample cases on 2026-11-10: `openai/gpt-6-luna` through OpenRouter,
-driven by the stock `run_baseline.py`. 51 model calls, $0.04. What the reader returned
+driven by `run_baseline.py`. 51 model calls, $0.04. What the reader returned
 is saved in `data/recorded_run/`, so these numbers can be re-scored without a key.
 
 | Measure | Result | In one line |
 |---|---|---|
 | Harness metrics | 50/50 valid, decisions and exact category sets | `run_evals.py`'s own metric functions on the outputs file; the Evals API step was not run |
 | Fact by fact | 328 of 328 reference facts found, none missed, added or judged differently | Agreement with facts written to the same reading guide as the prompt: consistency, not independent accuracy |
-| Determinism | Case 0, ten fresh calls: decision 100%, exact output 60% | Decisions are code given the facts; the text varies because the model quotes different lines |
+| Determinism | Case 0, ten fresh calls: decision 100%, exact output 60% | Decisions are code given the facts; the text varies because the model quotes different lines. The harness's report is in `data/recorded_run/determinism_report.json` |
 
 ## Limits
 

@@ -10,82 +10,95 @@ assumptions, results and limits are in [WRITEUP.md](WRITEUP.md).
 
 ## Setup
 
-1. Install [`uv`](https://docs.astral.sh/uv/) and confirm it runs:
+Install [`uv`](https://docs.astral.sh/uv/) and confirm it runs:
 
 ```bash
 uv --version
 ```
 
-2. Copy `.env.example` to `.env` and put your key in it.
+Run everything below from this folder. The commands are the ones the Makefile wraps,
+written out so they also work where `make` is not installed (Windows PowerShell included).
 
-| Provider | Key in `.env` | `MODEL` | Status |
-|---|---|---|---|
-| OpenRouter | `OPENROUTER_API_KEY` | `openai/gpt-6-luna` | The path this was run and tested on |
-| OpenAI | `OPENAI_API_KEY` | an OpenAI model id | Covered by mocked tests only; not run live |
+## Run without a key: re-score the recorded run
 
-If both keys are set, OpenRouter is used. A missing or rejected key, a model id the
-provider does not know, or an account with no credit left stops the run with a message.
-It does not produce 50 outputs.
-
-## Run
-
-Run these from this folder. They are the same commands the Makefile wraps, written out
-so they also work where `make` is not installed (Windows PowerShell included).
-
-1. Triage all 50 sample cases. This writes `data/baseline_outputs.jsonl` and, because
-   `.env` sets `TRIAGE_FACTS_DIR`, saves what the reader returned for each case in
-   `data/reader_facts/`. That folder is ignored by git, so your runs never touch the
-   recorded run in `data/recorded_run/`.
+The readings behind the numbers in the write-up are committed in `data/recorded_run/`.
+Scoring them needs no key and makes no model call:
 
 ```bash
-uv run --env-file .env run_baseline.py --model openai/gpt-6-luna
+uv run offline_eval.py score --facts data/recorded_run
 ```
 
-2. Score the run against the labels. This uses the harness's own metric functions from
-   `run_evals.py` and needs no API key. It also compares the reader's facts one by one
-   with the reference facts in `data/gold_facts/`.
-
-```bash
-uv run offline_eval.py score --facts data/reader_facts
-```
-
-3. Browse the results case by case in the report viewer. Press `q` to quit.
+This applies the harness's own metric functions from `run_evals.py`, and compares the
+reader's facts one by one with the reference facts in `data/gold_facts/`. Then browse the
+results case by case in the report viewer (press `q` to quit):
 
 ```bash
 uv run view_report.py --report data/offline_report.json
 ```
 
-4. Run the harness's determinism check: the same case, ten fresh model calls. Each call
-   saves its reading over that case's file in `data/reader_facts/`, so score first.
-
-```bash
-uv run --env-file .env run_evals.py --determinism --model openai/gpt-6-luna --report data/determinism_report.json
-```
-
-5. Run the unit tests. They need no key and make no model calls.
+The unit tests need no key either:
 
 ```bash
 uv run --with "openai>=2.0.0" --with "pydantic>=2.8.0" --with "pytest>=8.0.0" python -m pytest tests
 ```
 
+## Run with a key: a fresh run
+
+Copy `.env.example` to `.env` and put your key in it. The model is not set in `.env`; it
+is passed with `--model`, and the id must be one your provider knows.
+
+| Provider | Key in `.env` | `--model` | Status |
+|---|---|---|---|
+| OpenRouter | `OPENROUTER_API_KEY` | `openai/gpt-6-luna` | The path this was run and tested on |
+| OpenAI | `OPENAI_API_KEY` | `gpt-6-luna` | Covered by mocked tests only; not run live |
+
+If both keys are set, OpenRouter is used. OpenAI rejects the OpenRouter id
+`openai/gpt-6-luna`, so with an OpenAI key use `gpt-6-luna`. A missing or rejected key,
+a model id the provider does not know, or an account with no credit left stops the run
+with a message. It does not produce 50 outputs.
+
+1. Triage all 50 sample cases. This writes `data/baseline_outputs.jsonl` and, because
+   `.env` sets `TRIAGE_FACTS_DIR`, saves what the reader returned for each case in
+   `data/reader_facts/`. That folder is ignored by git, so your runs never touch the
+   recorded run.
+
+With an OpenRouter key:
+
+```bash
+uv run --env-file .env run_baseline.py --model openai/gpt-6-luna
+```
+
+With an OpenAI key:
+
+```bash
+uv run --env-file .env run_baseline.py --model gpt-6-luna
+```
+
+2. Score your run against the labels, and open it in the viewer as above:
+
+```bash
+uv run offline_eval.py score --facts data/reader_facts
+```
+
+3. Run the harness's determinism check: the same case, ten fresh model calls. Each call
+   saves its reading over that case's file in `data/reader_facts/`, so score first. Use
+   the same `--model` as in step 1.
+
+```bash
+uv run --env-file .env run_evals.py --determinism --model openai/gpt-6-luna --report data/determinism_report.json
+```
+
 With `make`: `make baseline`, `make offline`, `make report REPORT=data/offline_report.json`,
-`make determinism`, `make test`. The Makefile was edited on a machine without `make`, so
-those targets are untested; the commands above are the ones that were run.
+`make determinism`, `make test`. `MODEL` defaults to `openai/gpt-6-luna`; with an OpenAI
+key add `MODEL=gpt-6-luna`. The Makefile was edited on a machine without `make`, so those
+targets are untested; the commands above are the ones that were run.
 
 ### Scoring through OpenAI's Evals API
 
 `make evals` (`run_evals.py` without `--determinism`) scores through OpenAI's Evals API,
 as in the starter. It needs an `OPENAI_API_KEY` and does not work with an OpenRouter key.
-It was not run for this submission. Step 2 above applies the same three metrics locally.
-
-## Re-score without a key
-
-The readings behind the numbers in the write-up are committed in `data/recorded_run/`.
-Scoring them needs no key and makes no model call, and step 3 then shows that run:
-
-```bash
-uv run offline_eval.py score --facts data/recorded_run
-```
+It was not run for this submission. `offline_eval.py score` applies the same three
+metrics locally.
 
 ## What is where
 
@@ -98,9 +111,10 @@ uv run offline_eval.py score --facts data/recorded_run
 | `rules.py` | The policy as pure code: seven checks, decision, issues, explanation |
 | `offline_eval.py` | `view`, `check` and `score` for saved facts; no model calls |
 | `data/gold_facts/` | Reference facts for the 50 sample cases |
-| `data/recorded_run/` | What the reader returned in the run reported in the write-up |
+| `data/recorded_run/` | What the reader returned in the run reported in the write-up, and that run's determinism report |
 | `data/reader_facts/` | What the reader returns in your own runs; ignored by git |
 | `run_baseline.py`, `run_evals.py`, `view_report.py` | The starter's harness |
+| `../docs/session-export/` | The exported coding-agent session |
 
 `run_baseline.py` has one change from the starter: it no longer validates every record
 before starting, so one malformed record fails closed for that case instead of stopping
