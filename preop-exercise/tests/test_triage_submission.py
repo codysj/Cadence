@@ -291,6 +291,9 @@ def test_a_bad_key_or_model_id_stops_the_run_but_a_bad_call_does_not(monkeypatch
         (403, "Error code: 403 - Forbidden", "not allowed"),
         (404, "Error code: 404 - Not Found", "does not know this model id"),
         (400, "Error code: 400 - vendor/no-such-model is not a valid model ID", "does not know this model id"),
+        # A key that runs dry mid-run must not quietly turn the remaining cases into NEEDS_FOLLOW_UP.
+        (402, "Error code: 402 - Insufficient credits. Add more using https://openrouter.ai/credits", "run out of credit"),
+        (429, "Error code: 429 - {'error': {'message': 'You exceeded your current quota', 'type': 'insufficient_quota', 'code': 'insufficient_quota'}}", "quota is used up"),
     ):
         client = use(monkeypatch, api_error(status, text), api_error(status, text))
         with pytest.raises(SystemExit) as stopped:

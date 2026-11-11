@@ -34,3 +34,7 @@ data/determinism_report.json
 
 # Offline scoring
 data/offline_report.json
+
+# Readings saved by run_baseline.py when TRIAGE_FACTS_DIR is set (the default in .env.example).
+# The run reported in the write-up is kept separately in data/recorded_run/.
+data/reader_facts/

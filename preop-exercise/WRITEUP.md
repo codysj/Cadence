@@ -12,7 +12,21 @@
    issues and explanation are derived from those rows.
 
 A malformed record or a failed model call returns `NEEDS_FOLLOW_UP` for that case, marked
-as a system failure. A wrong key or model id stops the run.
+as a system failure.
+
+## Design decisions
+
+- **Quotes verified by code.** A fact counts only if its quote is in the document it
+  cites, so a nurse can find everything shown. The cost: a correct fact with a mangled
+  quote is discarded and the case goes to follow-up.
+- **One model call per case.** It is cheap and has one failure path to handle. The cost:
+  one prompt must get every kind of fact right, and a failed call loses the whole case.
+- **No sampling settings.** No temperature or seed is sent, because some current models
+  reject them. The cost: the quotes chosen vary between runs, so repeatability comes from
+  the rules being code, not from the model.
+- **Safe per case, loud on configuration.** A bad record or a failed call still sends
+  that case to a nurse; a bad key, model id or empty balance stops the run. The cost: the
+  entry point can end the process, which is unusual for a library function.
 
 ## Principle: doubt never passes
 
@@ -54,7 +68,8 @@ FAIL    Blood pressure: 157/117 on 2026-03-03 09:05, limits 180/110
 ## Results
 
 One run of the 50 sample cases on 2026-11-10: `openai/gpt-6-luna` through OpenRouter,
-driven by the stock `run_baseline.py`. 51 model calls, $0.04.
+driven by the stock `run_baseline.py`. 51 model calls, $0.04. What the reader returned
+is saved in `data/recorded_run/`, so these numbers can be re-scored without a key.
 
 | Measure | Result | In one line |
 |---|---|---|

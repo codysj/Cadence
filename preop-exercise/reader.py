@@ -90,8 +90,8 @@ class ReaderError(RuntimeError):
 
 
 class ConfigurationError(SystemExit):
-    """The run cannot work at all: a missing or rejected API key, no permission, or a
-    model id the provider does not know.
+    """The run cannot work at all: a missing or rejected API key, no permission, a
+    model id the provider does not know, or an account with no credit left.
 
     Deliberately a SystemExit. Batch runners catch Exception around each case, and this is
     not a problem with one case: without it, a wrong key quietly turns every case into
@@ -111,6 +111,13 @@ def _configuration_problem(exc: Exception) -> str | None:
     unknown_model = re.search(r"model", text, re.I) and re.search(r"not a valid|not found|does not exist", text, re.I)
     if status == 404 or (status == 400 and unknown_model):
         return f"the provider does not know this model id (HTTP {status})"
+    # A key that runs dry mid-run would otherwise turn every remaining case into
+    # NEEDS_FOLLOW_UP. OpenRouter answers 402; OpenAI answers 429 with insufficient_quota,
+    # which is not the same as an ordinary 429 rate limit (that one is worth failing per case).
+    if status == 402:
+        return "the account has run out of credit (HTTP 402)"
+    if status == 429 and "insufficient_quota" in f"{getattr(exc, 'code', '')} {text}":
+        return "the account's quota is used up (HTTP 429, insufficient_quota)"
     return None
 
 

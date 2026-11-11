@@ -23,8 +23,9 @@ uv --version
 | OpenRouter | `OPENROUTER_API_KEY` | `openai/gpt-6-luna` | The path this was run and tested on |
 | OpenAI | `OPENAI_API_KEY` | an OpenAI model id | Covered by mocked tests only; not run live |
 
-If both keys are set, OpenRouter is used. A missing or rejected key, or a model id the
-provider does not know, stops the run with a message. It does not produce 50 outputs.
+If both keys are set, OpenRouter is used. A missing or rejected key, a model id the
+provider does not know, or an account with no credit left stops the run with a message.
+It does not produce 50 outputs.
 
 ## Run
 
@@ -33,7 +34,8 @@ so they also work where `make` is not installed (Windows PowerShell included).
 
 1. Triage all 50 sample cases. This writes `data/baseline_outputs.jsonl` and, because
    `.env` sets `TRIAGE_FACTS_DIR`, saves what the reader returned for each case in
-   `data/reader_facts/`.
+   `data/reader_facts/`. That folder is ignored by git, so your runs never touch the
+   recorded run in `data/recorded_run/`.
 
 ```bash
 uv run --env-file .env run_baseline.py --model openai/gpt-6-luna
@@ -53,7 +55,8 @@ uv run offline_eval.py score --facts data/reader_facts
 uv run view_report.py --report data/offline_report.json
 ```
 
-4. Run the harness's determinism check: the same case, ten fresh model calls.
+4. Run the harness's determinism check: the same case, ten fresh model calls. Each call
+   saves its reading over that case's file in `data/reader_facts/`, so score first.
 
 ```bash
 uv run --env-file .env run_evals.py --determinism --model openai/gpt-6-luna --report data/determinism_report.json
@@ -77,8 +80,12 @@ It was not run for this submission. Step 2 above applies the same three metrics 
 
 ## Re-score without a key
 
-The readings behind the numbers in the write-up are committed in `data/reader_facts/`,
-so steps 2 and 3 work straight after cloning, with no key and no model call.
+The readings behind the numbers in the write-up are committed in `data/recorded_run/`.
+Scoring them needs no key and makes no model call, and step 3 then shows that run:
+
+```bash
+uv run offline_eval.py score --facts data/recorded_run
+```
 
 ## What is where
 
@@ -91,7 +98,8 @@ so steps 2 and 3 work straight after cloning, with no key and no model call.
 | `rules.py` | The policy as pure code: seven checks, decision, issues, explanation |
 | `offline_eval.py` | `view`, `check` and `score` for saved facts; no model calls |
 | `data/gold_facts/` | Reference facts for the 50 sample cases |
-| `data/reader_facts/` | What the reader returned in the run reported in the write-up |
+| `data/recorded_run/` | What the reader returned in the run reported in the write-up |
+| `data/reader_facts/` | What the reader returns in your own runs; ignored by git |
 | `run_baseline.py`, `run_evals.py`, `view_report.py` | The starter's harness |
 
 `run_baseline.py` has one change from the starter: it no longer validates every record
@@ -101,7 +109,7 @@ the batch. `run_evals.py` and `view_report.py` are unchanged.
 ## Outputs
 
 - Triage outputs: `data/baseline_outputs.jsonl`
-- Saved readings: `data/reader_facts/`
+- Saved readings from your runs: `data/reader_facts/` (ignored by git)
 - Offline score report: `data/offline_report.json`
 - Determinism report: `data/determinism_report.json`
 - Evals API report, if you run `make evals`: `data/eval_report.json`
