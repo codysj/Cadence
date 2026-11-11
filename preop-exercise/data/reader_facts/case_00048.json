@@ -1,0 +1,142 @@
+{
+  "case_id": "case_00048",
+  "submission_sha256": "b7172b6a8e7a8281ddd260367e4ed658ae19088acbaa39e86e466bc3617e19ca",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [],
+    "consents": [
+      {
+        "doc_id": "64dc8cfb-1ac0-545c-bf38-5d5ff21259a0",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 02/21/2026 16:25 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: knee arthroscopy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "d0fb027f-b603-545f-9b3a-1bf2a95012b6",
+        "systolic": 128,
+        "diastolic": 79,
+        "time": "08:45",
+        "quote": "VITAL SIGNS: Obtained at 08:45: Temp: 97.9F, BP: 128/79, HR 78, SpO2 95% RA."
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "d0fb027f-b603-545f-9b3a-1bf2a95012b6",
+        "value": 97.9,
+        "unit": "F",
+        "time": "08:45",
+        "quote": "VITAL SIGNS: Obtained at 08:45: Temp: 97.9F, BP: 128/79, HR 78, SpO2 95% RA."
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "54f61c78-6d38-532a-a803-154689d052cc",
+        "drug_as_written": "Savaysa 60 mg PO daily",
+        "generic_name": "edoxaban",
+        "status": "current",
+        "quote": "HPI: Patient with prior pulmonary embolism (HAS-BLED 2) maintained on Savaysa 60 mg PO daily."
+      },
+      {
+        "doc_id": "d0fb027f-b603-545f-9b3a-1bf2a95012b6",
+        "drug_as_written": "edoxaban (Savaysa) 60 mg PO daily",
+        "generic_name": "edoxaban",
+        "status": "current",
+        "quote": "  - edoxaban (Savaysa) 60 mg PO daily - taking as prescribed"
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "edoxaban (Savaysa) 60 mg PO daily"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "54f61c78-6d38-532a-a803-154689d052cc",
+        "generic_name": "edoxaban",
+        "preop": "deferred",
+        "preop_quote": "  1. Recommend the surgical team discuss interruption of Savaysa with the patient; we will follow up with specific recommendations.",
+        "postop": "absent",
+        "postop_quote": null
+      }
+    ]
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3494.0,
+    "completion_tokens": 915.0,
+    "cost_usd": 0.00065992
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [],
+        "consents": [
+          {
+            "doc_id": "64dc8cfb-1ac0-545c-bf38-5d5ff21259a0",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature on file - signed in clinic 02/21/2026 16:25 (scanned copy attached).",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: knee arthroscopy"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "d0fb027f-b603-545f-9b3a-1bf2a95012b6",
+            "systolic": 128,
+            "diastolic": 79,
+            "time": "08:45",
+            "quote": "VITAL SIGNS: Obtained at 08:45: Temp: 97.9F, BP: 128/79, HR 78, SpO2 95% RA."
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "d0fb027f-b603-545f-9b3a-1bf2a95012b6",
+            "value": 97.9,
+            "unit": "F",
+            "time": "08:45",
+            "quote": "VITAL SIGNS: Obtained at 08:45: Temp: 97.9F, BP: 128/79, HR 78, SpO2 95% RA."
+          }
+        ],
+        "anticoagulant_mentions": [
+          {
+            "doc_id": "54f61c78-6d38-532a-a803-154689d052cc",
+            "drug_as_written": "Savaysa 60 mg PO daily",
+            "generic_name": "edoxaban",
+            "status": "current",
+            "quote": "HPI: Patient with prior pulmonary embolism (HAS-BLED 2) maintained on Savaysa 60 mg PO daily."
+          },
+          {
+            "doc_id": "d0fb027f-b603-545f-9b3a-1bf2a95012b6",
+            "drug_as_written": "edoxaban (Savaysa) 60 mg PO daily",
+            "generic_name": "edoxaban",
+            "status": "current",
+            "quote": "  - edoxaban (Savaysa) 60 mg PO daily - taking as prescribed"
+          }
+        ],
+        "medication_list_anticoagulants": [
+          "edoxaban (Savaysa) 60 mg PO daily"
+        ],
+        "anticoagulation_plans": [
+          {
+            "doc_id": "54f61c78-6d38-532a-a803-154689d052cc",
+            "generic_name": "edoxaban",
+            "preop": "deferred",
+            "preop_quote": "  1. Recommend the surgical team discuss interruption of Savaysa with the patient; we will follow up with specific recommendations.",
+            "postop": "absent",
+            "postop_quote": null
+          }
+        ]
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3494,
+        "completion_tokens": 915,
+        "cost_usd": 0.00065992
+      }
+    }
+  ]
+}

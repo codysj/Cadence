@@ -1,0 +1,144 @@
+{
+  "case_id": "case_00046",
+  "submission_sha256": "585bf5893af9a2dfca8759d201fd72711a9ba48f98647146776eab94b444999b",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "4c290847-97cd-594b-badd-6ad32ffe302a",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "5c736258-3dd0-522b-8d9e-04eb6f195a0b",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 02/17/2026 09:48 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: knee arthroscopy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "4c290847-97cd-594b-badd-6ad32ffe302a",
+        "systolic": 130,
+        "diastolic": 79,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP: 130/79, HR 70, Temperature 98.4 °F (oral), SpO2 97% RA"
+      },
+      {
+        "doc_id": "22c7aec9-f03a-58ad-9af0-d15a7378d551",
+        "systolic": 192,
+        "diastolic": 106,
+        "time": "10:12",
+        "quote": "VITAL SIGNS: On arrival at 10:12: NIBP 192/106, T 99.1 F, HR 76, SpO2 97% RA. After resting quietly for 24 minutes, BP was rechecked at 10:36: BP 183/104. Remains elevated despite quiet rest."
+      },
+      {
+        "doc_id": "22c7aec9-f03a-58ad-9af0-d15a7378d551",
+        "systolic": 183,
+        "diastolic": 104,
+        "time": "10:36",
+        "quote": "VITAL SIGNS: On arrival at 10:12: NIBP 192/106, T 99.1 F, HR 76, SpO2 97% RA. After resting quietly for 24 minutes, BP was rechecked at 10:36: BP 183/104. Remains elevated despite quiet rest."
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "4c290847-97cd-594b-badd-6ad32ffe302a",
+        "value": 98.4,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP: 130/79, HR 70, Temperature 98.4 °F (oral), SpO2 97% RA"
+      },
+      {
+        "doc_id": "22c7aec9-f03a-58ad-9af0-d15a7378d551",
+        "value": 99.1,
+        "unit": "F",
+        "time": "10:12",
+        "quote": "VITAL SIGNS: On arrival at 10:12: NIBP 192/106, T 99.1 F, HR 76, SpO2 97% RA. After resting quietly for 24 minutes, BP was rechecked at 10:36: BP 183/104. Remains elevated despite quiet rest."
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3820.0,
+    "completion_tokens": 854.0,
+    "cost_usd": 0.00067017
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "4c290847-97cd-594b-badd-6ad32ffe302a",
+            "is_preop_evaluation": true,
+            "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "5c736258-3dd0-522b-8d9e-04eb6f195a0b",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature on file - signed in clinic 02/17/2026 09:48 (scanned copy attached).",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: knee arthroscopy"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "4c290847-97cd-594b-badd-6ad32ffe302a",
+            "systolic": 130,
+            "diastolic": 79,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP: 130/79, HR 70, Temperature 98.4 °F (oral), SpO2 97% RA"
+          },
+          {
+            "doc_id": "22c7aec9-f03a-58ad-9af0-d15a7378d551",
+            "systolic": 192,
+            "diastolic": 106,
+            "time": "10:12",
+            "quote": "VITAL SIGNS: On arrival at 10:12: NIBP 192/106, T 99.1 F, HR 76, SpO2 97% RA. After resting quietly for 24 minutes, BP was rechecked at 10:36: BP 183/104. Remains elevated despite quiet rest."
+          },
+          {
+            "doc_id": "22c7aec9-f03a-58ad-9af0-d15a7378d551",
+            "systolic": 183,
+            "diastolic": 104,
+            "time": "10:36",
+            "quote": "VITAL SIGNS: On arrival at 10:12: NIBP 192/106, T 99.1 F, HR 76, SpO2 97% RA. After resting quietly for 24 minutes, BP was rechecked at 10:36: BP 183/104. Remains elevated despite quiet rest."
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "4c290847-97cd-594b-badd-6ad32ffe302a",
+            "value": 98.4,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP: 130/79, HR 70, Temperature 98.4 °F (oral), SpO2 97% RA"
+          },
+          {
+            "doc_id": "22c7aec9-f03a-58ad-9af0-d15a7378d551",
+            "value": 99.1,
+            "unit": "F",
+            "time": "10:12",
+            "quote": "VITAL SIGNS: On arrival at 10:12: NIBP 192/106, T 99.1 F, HR 76, SpO2 97% RA. After resting quietly for 24 minutes, BP was rechecked at 10:36: BP 183/104. Remains elevated despite quiet rest."
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3820,
+        "completion_tokens": 854,
+        "cost_usd": 0.00067017
+      }
+    }
+  ]
+}

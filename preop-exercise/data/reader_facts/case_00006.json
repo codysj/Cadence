@@ -1,0 +1,140 @@
+{
+  "case_id": "case_00006",
+  "submission_sha256": "379b374aa9f61bc90a847e48f7df8846579640190207c91559c679833d1b4109",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "6cf7f91d-8ab7-5200-ad40-4ed666791fdb",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      },
+      {
+        "doc_id": "5c6db4b7-3a97-5b99-8368-387d436e11bc",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "092312dc-17c4-5b4c-98eb-3f457a96ffa2",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: Maya Patel, 02/24/2026 13:00. Witness: Emily Martinez.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: Roux-en-Y gastric bypass"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "6cf7f91d-8ab7-5200-ad40-4ed666791fdb",
+        "systolic": 129,
+        "diastolic": 71,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP 129/71 mmHg, HR 70, T 98.5 F, SpO2 95% RA"
+      },
+      {
+        "doc_id": "68cfc71f-61dd-5d1b-b49a-7b732472d872",
+        "systolic": 116,
+        "diastolic": 77,
+        "time": "08:49",
+        "quote": "  08:49  Re-measured BP 116/77 mmHg after resting quietly for 4 minutes; ."
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "6cf7f91d-8ab7-5200-ad40-4ed666791fdb",
+        "value": 98.5,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP 129/71 mmHg, HR 70, T 98.5 F, SpO2 95% RA"
+      },
+      {
+        "doc_id": "68cfc71f-61dd-5d1b-b49a-7b732472d872",
+        "value": 98.1,
+        "unit": "F",
+        "time": "08:45",
+        "quote": "  08:45  T 98.1 F"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3984.0,
+    "completion_tokens": 691.0,
+    "cost_usd": 0.00060917
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "6cf7f91d-8ab7-5200-ad40-4ed666791fdb",
+            "is_preop_evaluation": true,
+            "quote": "HISTORY & PHYSICAL - PRE-OP"
+          },
+          {
+            "doc_id": "5c6db4b7-3a97-5b99-8368-387d436e11bc",
+            "is_preop_evaluation": false,
+            "quote": "Encounter: annual wellness / establish care"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "092312dc-17c4-5b4c-98eb-3f457a96ffa2",
+            "patient_signed": "yes",
+            "signature_quote": "Signed by patient: Maya Patel, 02/24/2026 13:00. Witness: Emily Martinez.",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: Roux-en-Y gastric bypass"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "6cf7f91d-8ab7-5200-ad40-4ed666791fdb",
+            "systolic": 129,
+            "diastolic": 71,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP 129/71 mmHg, HR 70, T 98.5 F, SpO2 95% RA"
+          },
+          {
+            "doc_id": "68cfc71f-61dd-5d1b-b49a-7b732472d872",
+            "systolic": 116,
+            "diastolic": 77,
+            "time": "08:49",
+            "quote": "  08:49  Re-measured BP 116/77 mmHg after resting quietly for 4 minutes; ."
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "6cf7f91d-8ab7-5200-ad40-4ed666791fdb",
+            "value": 98.5,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP 129/71 mmHg, HR 70, T 98.5 F, SpO2 95% RA"
+          },
+          {
+            "doc_id": "68cfc71f-61dd-5d1b-b49a-7b732472d872",
+            "value": 98.1,
+            "unit": "F",
+            "time": "08:45",
+            "quote": "  08:45  T 98.1 F"
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3984,
+        "completion_tokens": 691,
+        "cost_usd": 0.00060917
+      }
+    }
+  ]
+}

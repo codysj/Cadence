@@ -1,0 +1,132 @@
+{
+  "case_id": "case_00019",
+  "submission_sha256": "5f65c0b2ed2694ec8db68f6b67e11a8a3757e9cd1a44220bec23cfd75e9cf62e",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "98b7e014-fc98-580a-a2f0-9aea7fbea8d1",
+        "is_preop_evaluation": true,
+        "quote": "H&P: PREOPERATIVE EVALUATION"
+      },
+      {
+        "doc_id": "f0db2b51-2c34-57c9-b304-75de71e7a16f",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "e8a353b9-ab05-586e-bcdf-0ed310af672c",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Mateo Kowalski (electronically signed 03/17/2026 11:45)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: thyroidectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "98b7e014-fc98-580a-a2f0-9aea7fbea8d1",
+        "systolic": 129,
+        "diastolic": 75,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  Blood pressure 129/75 mmHg, HR 87, Temperature 99.1 °F (oral), SpO2 98% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "98b7e014-fc98-580a-a2f0-9aea7fbea8d1",
+        "value": 99.1,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  Blood pressure 129/75 mmHg, HR 87, Temperature 99.1 °F (oral), SpO2 98% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "98b7e014-fc98-580a-a2f0-9aea7fbea8d1",
+        "drug_as_written": "warfarin",
+        "generic_name": "warfarin",
+        "status": "stopped",
+        "quote": "PAST MEDICAL HISTORY: No chronic medical conditions. Provoked left femoral DVT in 2019 after ankle fracture; completed 6 months of warfarin, discontinued by hematology in early 2020 with no recurrence. Not currently anticoagulated."
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "warfarin (Coumadin) 5 mg PO daily"
+    ],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 4050.0,
+    "completion_tokens": 1084.0,
+    "cost_usd": 0.00081392
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "98b7e014-fc98-580a-a2f0-9aea7fbea8d1",
+            "is_preop_evaluation": true,
+            "quote": "H&P: PREOPERATIVE EVALUATION"
+          },
+          {
+            "doc_id": "f0db2b51-2c34-57c9-b304-75de71e7a16f",
+            "is_preop_evaluation": false,
+            "quote": "Encounter: annual wellness / establish care"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "e8a353b9-ab05-586e-bcdf-0ed310af672c",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature: /s/ Mateo Kowalski (electronically signed 03/17/2026 11:45)",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: thyroidectomy"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "98b7e014-fc98-580a-a2f0-9aea7fbea8d1",
+            "systolic": 129,
+            "diastolic": 75,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  Blood pressure 129/75 mmHg, HR 87, Temperature 99.1 °F (oral), SpO2 98% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "98b7e014-fc98-580a-a2f0-9aea7fbea8d1",
+            "value": 99.1,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  Blood pressure 129/75 mmHg, HR 87, Temperature 99.1 °F (oral), SpO2 98% RA"
+          }
+        ],
+        "anticoagulant_mentions": [
+          {
+            "doc_id": "98b7e014-fc98-580a-a2f0-9aea7fbea8d1",
+            "drug_as_written": "warfarin",
+            "generic_name": "warfarin",
+            "status": "stopped",
+            "quote": "PAST MEDICAL HISTORY: No chronic medical conditions. Provoked left femoral DVT in 2019 after ankle fracture; completed 6 months of warfarin, discontinued by hematology in early 2020 with no recurrence. Not currently anticoagulated."
+          }
+        ],
+        "medication_list_anticoagulants": [
+          "warfarin (Coumadin) 5 mg PO daily"
+        ],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 4050,
+        "completion_tokens": 1084,
+        "cost_usd": 0.00081392
+      }
+    }
+  ]
+}

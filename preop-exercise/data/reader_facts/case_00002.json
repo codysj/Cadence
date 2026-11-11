@@ -1,0 +1,130 @@
+{
+  "case_id": "case_00002",
+  "submission_sha256": "62c8955e24c29520a9ab6765f6e9ba75b810a39ee76280ded6ec08de6f93cd40",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "e35d0946-3e1d-516b-ac74-29f3af18e2ae",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "fdce8743-2288-5749-b5df-f9f191788315",
+        "patient_signed": "no",
+        "signature_quote": "E-signature request sent to patient portal 02/24/2026 09:46; status: NOT COMPLETED as of this note.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: carpal tunnel release"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "9e15fc88-0a97-5473-98a7-8eebec5ea8e3",
+        "systolic": 127,
+        "diastolic": 75,
+        "time": "08:30",
+        "quote": "VITAL SIGNS: Obtained at 08:30: Blood pressure 127/75 mmHg, Temperature 38.6 °C (oral), HR 93, SpO2 99% RA."
+      },
+      {
+        "doc_id": "e35d0946-3e1d-516b-ac74-29f3af18e2ae",
+        "systolic": 118,
+        "diastolic": 80,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP: 118/80, HR 94, 97.8 °F temporal, SpO2 95% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "9e15fc88-0a97-5473-98a7-8eebec5ea8e3",
+        "value": 38.6,
+        "unit": "C",
+        "time": "08:30",
+        "quote": "VITAL SIGNS: Obtained at 08:30: Blood pressure 127/75 mmHg, Temperature 38.6 °C (oral), HR 93, SpO2 99% RA."
+      },
+      {
+        "doc_id": "e35d0946-3e1d-516b-ac74-29f3af18e2ae",
+        "value": 97.8,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP: 118/80, HR 94, 97.8 °F temporal, SpO2 95% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3782.0,
+    "completion_tokens": 858.0,
+    "cost_usd": 0.00066742
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "e35d0946-3e1d-516b-ac74-29f3af18e2ae",
+            "is_preop_evaluation": true,
+            "quote": "HISTORY & PHYSICAL - PRE-OP"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "fdce8743-2288-5749-b5df-f9f191788315",
+            "patient_signed": "no",
+            "signature_quote": "E-signature request sent to patient portal 02/24/2026 09:46; status: NOT COMPLETED as of this note.",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: carpal tunnel release"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "9e15fc88-0a97-5473-98a7-8eebec5ea8e3",
+            "systolic": 127,
+            "diastolic": 75,
+            "time": "08:30",
+            "quote": "VITAL SIGNS: Obtained at 08:30: Blood pressure 127/75 mmHg, Temperature 38.6 °C (oral), HR 93, SpO2 99% RA."
+          },
+          {
+            "doc_id": "e35d0946-3e1d-516b-ac74-29f3af18e2ae",
+            "systolic": 118,
+            "diastolic": 80,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP: 118/80, HR 94, 97.8 °F temporal, SpO2 95% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "9e15fc88-0a97-5473-98a7-8eebec5ea8e3",
+            "value": 38.6,
+            "unit": "C",
+            "time": "08:30",
+            "quote": "VITAL SIGNS: Obtained at 08:30: Blood pressure 127/75 mmHg, Temperature 38.6 °C (oral), HR 93, SpO2 99% RA."
+          },
+          {
+            "doc_id": "e35d0946-3e1d-516b-ac74-29f3af18e2ae",
+            "value": 97.8,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP: 118/80, HR 94, 97.8 °F temporal, SpO2 95% RA"
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3782,
+        "completion_tokens": 858,
+        "cost_usd": 0.00066742
+      }
+    }
+  ]
+}

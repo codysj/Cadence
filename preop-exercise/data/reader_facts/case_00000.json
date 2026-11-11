@@ -1,0 +1,160 @@
+{
+  "case_id": "case_00000",
+  "submission_sha256": "d7aa55c352d82dd4d5fbeb548aae9cc873bd02abb33bc5619ebbf0e493040820",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "cb2e2b18-9cce-528a-9dd7-5353a0027b52",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      },
+      {
+        "doc_id": "517b3a8f-e994-558a-95fb-b093a650077d",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "c92f23f5-bc1f-54cb-911f-c719bc7df37b",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Grace Lopez (electronically signed 02/27/2026 08:05)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: carpal tunnel release"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "cb2e2b18-9cce-528a-9dd7-5353a0027b52",
+        "systolic": 127,
+        "diastolic": 74,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP 127/74, HR 68, T 98.0 F, SpO2 97% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "cb2e2b18-9cce-528a-9dd7-5353a0027b52",
+        "value": 98.0,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP 127/74, HR 68, T 98.0 F, SpO2 97% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "ffd06a2d-6fc3-5243-9189-6054e87f1c86",
+        "drug_as_written": "Xarelto",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "HPI: Patient with persistent atrial fibrillation (CHA2DS2-VASc 2, HAS-BLED 2) maintained on Xarelto 20 mg PO daily with evening meal."
+      },
+      {
+        "doc_id": "0e230e4e-469c-503f-9ad7-9ce6d086ab84",
+        "drug_as_written": "Xarelto",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "  - Patient also reports taking Xarelto 20 mg (daily with evening meal), prescribed by an outside cardiologist; not on the reconciled medication list - flagged for provider review."
+      }
+    ],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "ffd06a2d-6fc3-5243-9189-6054e87f1c86",
+        "generic_name": "rivaroxaban",
+        "preop": "concrete",
+        "preop_quote": "  1. Hold Xarelto for the 2 days before surgery (last dose 02/26/2026; no doses in the 48 hours prior). Resume Xarelto 24-48 hours after surgery once hemostasis is secure, per surgical team.",
+        "postop": "concrete",
+        "postop_quote": "  1. Hold Xarelto for the 2 days before surgery (last dose 02/26/2026; no doses in the 48 hours prior). Resume Xarelto 24-48 hours after surgery once hemostasis is secure, per surgical team."
+      }
+    ]
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 4334.0,
+    "completion_tokens": 1511.0,
+    "cost_usd": 0.001297175
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "cb2e2b18-9cce-528a-9dd7-5353a0027b52",
+            "is_preop_evaluation": true,
+            "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+          },
+          {
+            "doc_id": "517b3a8f-e994-558a-95fb-b093a650077d",
+            "is_preop_evaluation": false,
+            "quote": "Encounter: annual wellness / establish care"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "c92f23f5-bc1f-54cb-911f-c719bc7df37b",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature: /s/ Grace Lopez (electronically signed 02/27/2026 08:05)",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: carpal tunnel release"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "cb2e2b18-9cce-528a-9dd7-5353a0027b52",
+            "systolic": 127,
+            "diastolic": 74,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP 127/74, HR 68, T 98.0 F, SpO2 97% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "cb2e2b18-9cce-528a-9dd7-5353a0027b52",
+            "value": 98.0,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP 127/74, HR 68, T 98.0 F, SpO2 97% RA"
+          }
+        ],
+        "anticoagulant_mentions": [
+          {
+            "doc_id": "ffd06a2d-6fc3-5243-9189-6054e87f1c86",
+            "drug_as_written": "Xarelto",
+            "generic_name": "rivaroxaban",
+            "status": "current",
+            "quote": "HPI: Patient with persistent atrial fibrillation (CHA2DS2-VASc 2, HAS-BLED 2) maintained on Xarelto 20 mg PO daily with evening meal."
+          },
+          {
+            "doc_id": "0e230e4e-469c-503f-9ad7-9ce6d086ab84",
+            "drug_as_written": "Xarelto",
+            "generic_name": "rivaroxaban",
+            "status": "current",
+            "quote": "  - Patient also reports taking Xarelto 20 mg (daily with evening meal), prescribed by an outside cardiologist; not on the reconciled medication list - flagged for provider review."
+          }
+        ],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": [
+          {
+            "doc_id": "ffd06a2d-6fc3-5243-9189-6054e87f1c86",
+            "generic_name": "rivaroxaban",
+            "preop": "concrete",
+            "preop_quote": "  1. Hold Xarelto for the 2 days before surgery (last dose 02/26/2026; no doses in the 48 hours prior). Resume Xarelto 24-48 hours after surgery once hemostasis is secure, per surgical team.",
+            "postop": "concrete",
+            "postop_quote": "  1. Hold Xarelto for the 2 days before surgery (last dose 02/26/2026; no doses in the 48 hours prior). Resume Xarelto 24-48 hours after surgery once hemostasis is secure, per surgical team."
+          }
+        ]
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 4334,
+        "completion_tokens": 1511,
+        "cost_usd": 0.001297175
+      }
+    }
+  ]
+}

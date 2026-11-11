@@ -1,0 +1,168 @@
+{
+  "case_id": "case_00042",
+  "submission_sha256": "6d2decf1b71c76e485ef3b0908f731bc6514c2be8b3840bcd812c9405d4e1a6f",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "5802f239-d106-5d7a-94bb-d62b07fd3660",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "cc98f305-e84d-556c-a3c7-6c6beb805926",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Elena Okafor (electronically signed 04/08/2026 11:40)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: hepatic lobectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "5802f239-d106-5d7a-94bb-d62b07fd3660",
+        "systolic": 135,
+        "diastolic": 77,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP 135/77 mmHg, HR 78, Temperature 98.8 °F (oral), SpO2 99% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "5802f239-d106-5d7a-94bb-d62b07fd3660",
+        "value": 98.8,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP 135/77 mmHg, HR 78, Temperature 98.8 °F (oral), SpO2 99% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "6be6a3e2-a5b9-55b2-b167-3f012624af5f",
+        "drug_as_written": "rivaroxaban",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "HPI: Patient with persistent atrial fibrillation (CHA2DS2-VASc 3, HAS-BLED 2) maintained on rivaroxaban 20 mg PO daily with evening meal. No history of major bleeding. No stroke or TIA. Reports good adherence. Rate well controlled on current regimen."
+      },
+      {
+        "doc_id": "4cac12ab-2e41-5ca6-bdde-ed9f732b651d",
+        "drug_as_written": "rivaroxaban",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "  - rivaroxaban 20 mg PO daily with evening meal - taking as prescribed"
+      },
+      {
+        "doc_id": "5802f239-d106-5d7a-94bb-d62b07fd3660",
+        "drug_as_written": "rivaroxaban",
+        "generic_name": "rivaroxaban",
+        "status": "current",
+        "quote": "  - rivaroxaban 20 mg PO daily with evening meal"
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "rivaroxaban 20 mg PO daily with evening meal"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "6be6a3e2-a5b9-55b2-b167-3f012624af5f",
+        "generic_name": "rivaroxaban",
+        "preop": "concrete",
+        "preop_quote": "  1. Hold rivaroxaban for the 2 days before surgery (last dose 04/09/2026; no doses in the 48 hours prior). Restart rivaroxaban on postoperative day 1 at the full dose if there are no bleeding concerns.",
+        "postop": "concrete",
+        "postop_quote": "  1. Hold rivaroxaban for the 2 days before surgery (last dose 04/09/2026; no doses in the 48 hours prior). Restart rivaroxaban on postoperative day 1 at the full dose if there are no bleeding concerns."
+      }
+    ]
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 4268.0,
+    "completion_tokens": 1336.0,
+    "cost_usd": 0.00096717
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "5802f239-d106-5d7a-94bb-d62b07fd3660",
+            "is_preop_evaluation": true,
+            "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "cc98f305-e84d-556c-a3c7-6c6beb805926",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature: /s/ Elena Okafor (electronically signed 04/08/2026 11:40)",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: hepatic lobectomy"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "5802f239-d106-5d7a-94bb-d62b07fd3660",
+            "systolic": 135,
+            "diastolic": 77,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP 135/77 mmHg, HR 78, Temperature 98.8 °F (oral), SpO2 99% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "5802f239-d106-5d7a-94bb-d62b07fd3660",
+            "value": 98.8,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP 135/77 mmHg, HR 78, Temperature 98.8 °F (oral), SpO2 99% RA"
+          }
+        ],
+        "anticoagulant_mentions": [
+          {
+            "doc_id": "6be6a3e2-a5b9-55b2-b167-3f012624af5f",
+            "drug_as_written": "rivaroxaban",
+            "generic_name": "rivaroxaban",
+            "status": "current",
+            "quote": "HPI: Patient with persistent atrial fibrillation (CHA2DS2-VASc 3, HAS-BLED 2) maintained on rivaroxaban 20 mg PO daily with evening meal. No history of major bleeding. No stroke or TIA. Reports good adherence. Rate well controlled on current regimen."
+          },
+          {
+            "doc_id": "4cac12ab-2e41-5ca6-bdde-ed9f732b651d",
+            "drug_as_written": "rivaroxaban",
+            "generic_name": "rivaroxaban",
+            "status": "current",
+            "quote": "  - rivaroxaban 20 mg PO daily with evening meal - taking as prescribed"
+          },
+          {
+            "doc_id": "5802f239-d106-5d7a-94bb-d62b07fd3660",
+            "drug_as_written": "rivaroxaban",
+            "generic_name": "rivaroxaban",
+            "status": "current",
+            "quote": "  - rivaroxaban 20 mg PO daily with evening meal"
+          }
+        ],
+        "medication_list_anticoagulants": [
+          "rivaroxaban 20 mg PO daily with evening meal"
+        ],
+        "anticoagulation_plans": [
+          {
+            "doc_id": "6be6a3e2-a5b9-55b2-b167-3f012624af5f",
+            "generic_name": "rivaroxaban",
+            "preop": "concrete",
+            "preop_quote": "  1. Hold rivaroxaban for the 2 days before surgery (last dose 04/09/2026; no doses in the 48 hours prior). Restart rivaroxaban on postoperative day 1 at the full dose if there are no bleeding concerns.",
+            "postop": "concrete",
+            "postop_quote": "  1. Hold rivaroxaban for the 2 days before surgery (last dose 04/09/2026; no doses in the 48 hours prior). Restart rivaroxaban on postoperative day 1 at the full dose if there are no bleeding concerns."
+          }
+        ]
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 4268,
+        "completion_tokens": 1336,
+        "cost_usd": 0.00096717
+      }
+    }
+  ]
+}

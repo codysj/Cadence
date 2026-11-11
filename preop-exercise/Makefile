@@ -2,13 +2,17 @@ INPUT ?= data/patients_sample_50.jsonl
 OUTPUT ?= data/baseline_outputs.jsonl
 REPORT ?= data/eval_report.json
 DETERMINISM_REPORT ?= data/determinism_report.json
-MODEL ?= gpt-4.1-mini
+# An OpenRouter model id, the provider this was tested on. With an OpenAI key, pass an
+# OpenAI model id instead: make baseline MODEL=<id>
+MODEL ?= openai/gpt-6-luna
+FACTS ?= data/reader_facts
+OFFLINE_REPORT ?= data/offline_report.json
 
 # Load API keys from .env when it exists (see .env.example). uv stops with an error
 # if it is told to load a file that is not there, so the flag is added only then.
 ENV_FILE := $(if $(wildcard .env),--env-file .env,)
 
-.PHONY: baseline evals determinism score report test all clean
+.PHONY: baseline evals offline determinism score report test all clean
 
 baseline:
 	uv run $(ENV_FILE) run_baseline.py \
@@ -21,6 +25,11 @@ evals:
 		--input $(INPUT) \
 		--outputs $(OUTPUT) \
 		--report $(REPORT)
+
+# Score the readings saved by `make baseline` with the harness's own metric code.
+# Needs no API key. `make evals` does the same through OpenAI's Evals API and needs one.
+offline:
+	uv run offline_eval.py score --facts $(FACTS) --report $(OFFLINE_REPORT)
 
 determinism:
 	uv run $(ENV_FILE) run_evals.py \

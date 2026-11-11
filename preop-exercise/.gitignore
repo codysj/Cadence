@@ -34,6 +34,3 @@ data/determinism_report.json
 
 # Offline scoring
 data/offline_report.json
-
-# Readings saved by offline_eval.py read
-data/reader_facts/

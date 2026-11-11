@@ -1,0 +1,96 @@
+{
+  "case_id": "case_00021",
+  "submission_sha256": "7e6cc0be8e92b84e6ab80bbd763059c3e6d0c85ae96516112c243ebde557ae33",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "25c3256a-0441-5af1-9864-5cd6296fafb3",
+        "is_preop_evaluation": true,
+        "quote": "H&P: PREOPERATIVE EVALUATION"
+      },
+      {
+        "doc_id": "2e0b5d03-a565-5f9b-9056-63726281ba2f",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "5b948539-5013-5726-bd41-16b1ad4abf5a",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Ethan Kowalski (electronically signed 03/10/2026 16:10)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: carpal tunnel release"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "25c3256a-0441-5af1-9864-5cd6296fafb3",
+        "systolic": 120,
+        "diastolic": 71,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  120/71 mmHg"
+      }
+    ],
+    "note_temperatures": [],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3475.0,
+    "completion_tokens": 547.0,
+    "cost_usd": 0.000473545
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "25c3256a-0441-5af1-9864-5cd6296fafb3",
+            "is_preop_evaluation": true,
+            "quote": "H&P: PREOPERATIVE EVALUATION"
+          },
+          {
+            "doc_id": "2e0b5d03-a565-5f9b-9056-63726281ba2f",
+            "is_preop_evaluation": false,
+            "quote": "Encounter: annual wellness / establish care"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "5b948539-5013-5726-bd41-16b1ad4abf5a",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature: /s/ Ethan Kowalski (electronically signed 03/10/2026 16:10)",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: carpal tunnel release"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "25c3256a-0441-5af1-9864-5cd6296fafb3",
+            "systolic": 120,
+            "diastolic": 71,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  120/71 mmHg"
+          }
+        ],
+        "note_temperatures": [],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3475,
+        "completion_tokens": 547,
+        "cost_usd": 0.000473545
+      }
+    }
+  ]
+}

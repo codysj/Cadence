@@ -1,0 +1,210 @@
+{
+  "case_id": "case_00004",
+  "submission_sha256": "3f7e946178eaedf8cdd523afe7bf4b9e4f6fbfea19ff351168ca095b344f4d26",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "e1e2f93e-7b59-5ee7-bddf-e6fadd65c8ca",
+        "is_preop_evaluation": true,
+        "quote": "H&P: PREOPERATIVE EVALUATION"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "188693e7-83c2-53ed-84a4-cf13130d45f2",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: Mateo Okafor, 03/03/2026 11:30. Witness: Stephanie A. Moore.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: thyroidectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "45c71dad-c0de-5cfe-9dc8-bd8c497bef2b",
+        "systolic": 140,
+        "diastolic": 78,
+        "time": "08:53",
+        "quote": "ADDENDUM 08:53: Repeat BP 140/78 8 min later. ."
+      },
+      {
+        "doc_id": "e1e2f93e-7b59-5ee7-bddf-e6fadd65c8ca",
+        "systolic": 134,
+        "diastolic": 79,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP: 134/79, HR 64, 98.6 °F temporal, SpO2 96% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "45c71dad-c0de-5cfe-9dc8-bd8c497bef2b",
+        "value": 98.1,
+        "unit": "F",
+        "time": "08:45",
+        "quote": "  08:45  98.1 °F temporal. See addendum."
+      },
+      {
+        "doc_id": "e1e2f93e-7b59-5ee7-bddf-e6fadd65c8ca",
+        "value": 98.6,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP: 134/79, HR 64, 98.6 °F temporal, SpO2 96% RA"
+      }
+    ],
+    "anticoagulant_mentions": [
+      {
+        "doc_id": "45c71dad-c0de-5cfe-9dc8-bd8c497bef2b",
+        "drug_as_written": "warfarin 5 mg PO daily (INR goal 2-3)",
+        "generic_name": "warfarin",
+        "status": "current",
+        "quote": "  - warfarin 5 mg PO daily (INR goal 2-3) - taking as prescribed"
+      },
+      {
+        "doc_id": "39d3585a-4921-5911-bf8a-758787d2038e",
+        "drug_as_written": "warfarin",
+        "generic_name": "warfarin",
+        "status": "current",
+        "quote": "HPI: Patient with atrial fibrillation with prior TIA (CHA2DS2-VASc 5, HAS-BLED 1) maintained on warfarin 5 mg PO daily (INR goal 2-3). No history of major bleeding. Prior TIA without residual deficits; no stroke. Reports good adherence. Occasional palpitations, no syncope."
+      },
+      {
+        "doc_id": "39d3585a-4921-5911-bf8a-758787d2038e",
+        "drug_as_written": "enoxaparin",
+        "generic_name": "enoxaparin",
+        "status": "planned",
+        "quote": "  1. Stop warfarin 5 days before surgery (last dose 02/27/2026); check INR the day before surgery with goal <1.5. Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op. Resume warfarin at the usual home dose the evening of surgery if hemostasis is adequate, with enoxaparin bridging restarted 48-72 hours post-op until INR is therapeutic."
+      },
+      {
+        "doc_id": "e1e2f93e-7b59-5ee7-bddf-e6fadd65c8ca",
+        "drug_as_written": "warfarin 5 mg PO daily (INR goal 2-3)",
+        "generic_name": "warfarin",
+        "status": "current",
+        "quote": "  - warfarin 5 mg PO daily (INR goal 2-3)"
+      }
+    ],
+    "medication_list_anticoagulants": [
+      "warfarin 5 mg PO daily (INR goal 2-3)"
+    ],
+    "anticoagulation_plans": [
+      {
+        "doc_id": "39d3585a-4921-5911-bf8a-758787d2038e",
+        "generic_name": "warfarin",
+        "preop": "concrete",
+        "preop_quote": "  1. Stop warfarin 5 days before surgery (last dose 02/27/2026); check INR the day before surgery with goal <1.5. Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op. Resume warfarin at the usual home dose the evening of surgery if hemostasis is adequate, with enoxaparin bridging restarted 48-72 hours post-op until INR is therapeutic.",
+        "postop": "concrete",
+        "postop_quote": "  1. Stop warfarin 5 days before surgery (last dose 02/27/2026); check INR the day before surgery with goal <1.5. Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op. Resume warfarin at the usual home dose the evening of surgery if hemostasis is adequate, with enoxaparin bridging restarted 48-72 hours post-op until INR is therapeutic."
+      }
+    ]
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 4445.0,
+    "completion_tokens": 2088.0,
+    "cost_usd": 0.001365295
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "e1e2f93e-7b59-5ee7-bddf-e6fadd65c8ca",
+            "is_preop_evaluation": true,
+            "quote": "H&P: PREOPERATIVE EVALUATION"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "188693e7-83c2-53ed-84a4-cf13130d45f2",
+            "patient_signed": "yes",
+            "signature_quote": "Signed by patient: Mateo Okafor, 03/03/2026 11:30. Witness: Stephanie A. Moore.",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: thyroidectomy"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "45c71dad-c0de-5cfe-9dc8-bd8c497bef2b",
+            "systolic": 140,
+            "diastolic": 78,
+            "time": "08:53",
+            "quote": "ADDENDUM 08:53: Repeat BP 140/78 8 min later. ."
+          },
+          {
+            "doc_id": "e1e2f93e-7b59-5ee7-bddf-e6fadd65c8ca",
+            "systolic": 134,
+            "diastolic": 79,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP: 134/79, HR 64, 98.6 °F temporal, SpO2 96% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "45c71dad-c0de-5cfe-9dc8-bd8c497bef2b",
+            "value": 98.1,
+            "unit": "F",
+            "time": "08:45",
+            "quote": "  08:45  98.1 °F temporal. See addendum."
+          },
+          {
+            "doc_id": "e1e2f93e-7b59-5ee7-bddf-e6fadd65c8ca",
+            "value": 98.6,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP: 134/79, HR 64, 98.6 °F temporal, SpO2 96% RA"
+          }
+        ],
+        "anticoagulant_mentions": [
+          {
+            "doc_id": "45c71dad-c0de-5cfe-9dc8-bd8c497bef2b",
+            "drug_as_written": "warfarin 5 mg PO daily (INR goal 2-3)",
+            "generic_name": "warfarin",
+            "status": "current",
+            "quote": "  - warfarin 5 mg PO daily (INR goal 2-3) - taking as prescribed"
+          },
+          {
+            "doc_id": "39d3585a-4921-5911-bf8a-758787d2038e",
+            "drug_as_written": "warfarin",
+            "generic_name": "warfarin",
+            "status": "current",
+            "quote": "HPI: Patient with atrial fibrillation with prior TIA (CHA2DS2-VASc 5, HAS-BLED 1) maintained on warfarin 5 mg PO daily (INR goal 2-3). No history of major bleeding. Prior TIA without residual deficits; no stroke. Reports good adherence. Occasional palpitations, no syncope."
+          },
+          {
+            "doc_id": "39d3585a-4921-5911-bf8a-758787d2038e",
+            "drug_as_written": "enoxaparin",
+            "generic_name": "enoxaparin",
+            "status": "planned",
+            "quote": "  1. Stop warfarin 5 days before surgery (last dose 02/27/2026); check INR the day before surgery with goal <1.5. Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op. Resume warfarin at the usual home dose the evening of surgery if hemostasis is adequate, with enoxaparin bridging restarted 48-72 hours post-op until INR is therapeutic."
+          },
+          {
+            "doc_id": "e1e2f93e-7b59-5ee7-bddf-e6fadd65c8ca",
+            "drug_as_written": "warfarin 5 mg PO daily (INR goal 2-3)",
+            "generic_name": "warfarin",
+            "status": "current",
+            "quote": "  - warfarin 5 mg PO daily (INR goal 2-3)"
+          }
+        ],
+        "medication_list_anticoagulants": [
+          "warfarin 5 mg PO daily (INR goal 2-3)"
+        ],
+        "anticoagulation_plans": [
+          {
+            "doc_id": "39d3585a-4921-5911-bf8a-758787d2038e",
+            "generic_name": "warfarin",
+            "preop": "concrete",
+            "preop_quote": "  1. Stop warfarin 5 days before surgery (last dose 02/27/2026); check INR the day before surgery with goal <1.5. Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op. Resume warfarin at the usual home dose the evening of surgery if hemostasis is adequate, with enoxaparin bridging restarted 48-72 hours post-op until INR is therapeutic.",
+            "postop": "concrete",
+            "postop_quote": "  1. Stop warfarin 5 days before surgery (last dose 02/27/2026); check INR the day before surgery with goal <1.5. Bridge with enoxaparin 1 mg/kg SC q12h starting 3 days prior, last dose 24 hours pre-op. Resume warfarin at the usual home dose the evening of surgery if hemostasis is adequate, with enoxaparin bridging restarted 48-72 hours post-op until INR is therapeutic."
+          }
+        ]
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 4445,
+        "completion_tokens": 2088,
+        "cost_usd": 0.001365295
+      }
+    }
+  ]
+}

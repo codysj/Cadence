@@ -1,0 +1,58 @@
+{
+  "case_id": "case_00013",
+  "submission_sha256": "a38516a4f5ee812b6933e6d806b628930befba9d308d061ba06829cddab6770f",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [],
+    "consents": [
+      {
+        "doc_id": "31776655-e987-506a-9aac-db2db313bd83",
+        "patient_signed": "yes",
+        "signature_quote": "Signed by patient: Ava Patel, 03/08/2026 16:31. Witness: Christopher Rodriguez.",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: esophagectomy"
+      }
+    ],
+    "note_blood_pressures": [],
+    "note_temperatures": [],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3149.0,
+    "completion_tokens": 195.0,
+    "cost_usd": 0.000256795
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [],
+        "consents": [
+          {
+            "doc_id": "31776655-e987-506a-9aac-db2db313bd83",
+            "patient_signed": "yes",
+            "signature_quote": "Signed by patient: Ava Patel, 03/08/2026 16:31. Witness: Christopher Rodriguez.",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: esophagectomy"
+          }
+        ],
+        "note_blood_pressures": [],
+        "note_temperatures": [],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3149,
+        "completion_tokens": 195,
+        "cost_usd": 0.000256795
+      }
+    }
+  ]
+}

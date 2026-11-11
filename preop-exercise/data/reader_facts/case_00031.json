@@ -1,0 +1,112 @@
+{
+  "case_id": "case_00031",
+  "submission_sha256": "e590a7ff745bcb41ee61de1a0602d91d001ff8c0c9958a28399f06ced40297ac",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "5b3754c7-c638-5da3-beac-0224919c63e9",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      },
+      {
+        "doc_id": "4df175e7-381d-5c18-8e14-ed30a30d6e12",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "a57fa403-89c0-5f31-b756-4cd55825a5c8",
+        "patient_signed": "no",
+        "signature_quote": "[Form printed for patient review; not yet signed]",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: thyroidectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "5b3754c7-c638-5da3-beac-0224919c63e9",
+        "systolic": 126,
+        "diastolic": 80,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  NIBP 126/80, HR 84, Temp: 97.6F, SpO2 97% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "5b3754c7-c638-5da3-beac-0224919c63e9",
+        "value": 97.6,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  NIBP 126/80, HR 84, Temp: 97.6F, SpO2 97% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3983.0,
+    "completion_tokens": 739.0,
+    "cost_usd": 0.000633045
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "5b3754c7-c638-5da3-beac-0224919c63e9",
+            "is_preop_evaluation": true,
+            "quote": "HISTORY & PHYSICAL - PRE-OP"
+          },
+          {
+            "doc_id": "4df175e7-381d-5c18-8e14-ed30a30d6e12",
+            "is_preop_evaluation": false,
+            "quote": "Encounter: annual wellness / establish care"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "a57fa403-89c0-5f31-b756-4cd55825a5c8",
+            "patient_signed": "no",
+            "signature_quote": "[Form printed for patient review; not yet signed]",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: thyroidectomy"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "5b3754c7-c638-5da3-beac-0224919c63e9",
+            "systolic": 126,
+            "diastolic": 80,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  NIBP 126/80, HR 84, Temp: 97.6F, SpO2 97% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "5b3754c7-c638-5da3-beac-0224919c63e9",
+            "value": 97.6,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  NIBP 126/80, HR 84, Temp: 97.6F, SpO2 97% RA"
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3983,
+        "completion_tokens": 739,
+        "cost_usd": 0.000633045
+      }
+    }
+  ]
+}

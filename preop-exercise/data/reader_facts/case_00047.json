@@ -1,0 +1,140 @@
+{
+  "case_id": "case_00047",
+  "submission_sha256": "7d3509c83bb9ce43671471b92bed93c9f158c0c6f66dcbd6caed31e2ac40f299",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "2c71b995-ec5c-5f5d-98a0-c4bb95810260",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "8136a0b1-4121-5687-b67b-e4329966a365",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "7fb1643c-e8c3-5404-9eee-317e3ca494d0",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Ava Patel (electronically signed 02/26/2026 13:05)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: carpal tunnel release"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "3157bf54-3877-55e3-bd50-a2a25aba56d2",
+        "systolic": 161,
+        "diastolic": 117,
+        "time": "09:05",
+        "quote": "  09:05  BP: 161/117, 37.2 °C tympanic, HR 84, SpO2 95% RA"
+      },
+      {
+        "doc_id": "8136a0b1-4121-5687-b67b-e4329966a365",
+        "systolic": 125,
+        "diastolic": 76,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  Blood pressure 125/76 mmHg, HR 76, Temperature 97.9 °F (oral), SpO2 97% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "3157bf54-3877-55e3-bd50-a2a25aba56d2",
+        "value": 37.2,
+        "unit": "C",
+        "time": "09:05",
+        "quote": "  09:05  BP: 161/117, 37.2 °C tympanic, HR 84, SpO2 95% RA"
+      },
+      {
+        "doc_id": "8136a0b1-4121-5687-b67b-e4329966a365",
+        "value": 97.9,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  Blood pressure 125/76 mmHg, HR 76, Temperature 97.9 °F (oral), SpO2 97% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3966.0,
+    "completion_tokens": 943.0,
+    "cost_usd": 0.00073292
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "2c71b995-ec5c-5f5d-98a0-c4bb95810260",
+            "is_preop_evaluation": false,
+            "quote": "Encounter: annual wellness / establish care"
+          },
+          {
+            "doc_id": "8136a0b1-4121-5687-b67b-e4329966a365",
+            "is_preop_evaluation": true,
+            "quote": "HISTORY & PHYSICAL - PRE-OP"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "7fb1643c-e8c3-5404-9eee-317e3ca494d0",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature: /s/ Ava Patel (electronically signed 02/26/2026 13:05)",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: carpal tunnel release"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "3157bf54-3877-55e3-bd50-a2a25aba56d2",
+            "systolic": 161,
+            "diastolic": 117,
+            "time": "09:05",
+            "quote": "  09:05  BP: 161/117, 37.2 °C tympanic, HR 84, SpO2 95% RA"
+          },
+          {
+            "doc_id": "8136a0b1-4121-5687-b67b-e4329966a365",
+            "systolic": 125,
+            "diastolic": 76,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  Blood pressure 125/76 mmHg, HR 76, Temperature 97.9 °F (oral), SpO2 97% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "3157bf54-3877-55e3-bd50-a2a25aba56d2",
+            "value": 37.2,
+            "unit": "C",
+            "time": "09:05",
+            "quote": "  09:05  BP: 161/117, 37.2 °C tympanic, HR 84, SpO2 95% RA"
+          },
+          {
+            "doc_id": "8136a0b1-4121-5687-b67b-e4329966a365",
+            "value": 97.9,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  Blood pressure 125/76 mmHg, HR 76, Temperature 97.9 °F (oral), SpO2 97% RA"
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3966,
+        "completion_tokens": 943,
+        "cost_usd": 0.00073292
+      }
+    }
+  ]
+}

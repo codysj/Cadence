@@ -1,0 +1,130 @@
+{
+  "case_id": "case_00005",
+  "submission_sha256": "c8a0969134d631bc8ba946d74505f05ff50e614bda5e374fce3882b92f206dbc",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "92040c30-7556-5d4d-a4d1-ffae8724ebaf",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "e43cff65-6e3d-5335-9f7f-a6d861ffb414",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 02/22/2026 12:41 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: colonic resection"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "7aefc9ae-14a0-55b9-957f-861d3e532a3b",
+        "systolic": 157,
+        "diastolic": 117,
+        "time": "09:05",
+        "quote": "  09:05  BP 157/117, Temp 36.7 °C, HR 69, SpO2 99% RA"
+      },
+      {
+        "doc_id": "92040c30-7556-5d4d-a4d1-ffae8724ebaf",
+        "systolic": 126,
+        "diastolic": 72,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  NIBP 126/72, HR 67, Temperature 98.8 °F (oral), SpO2 97% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "7aefc9ae-14a0-55b9-957f-861d3e532a3b",
+        "value": 36.7,
+        "unit": "C",
+        "time": "09:05",
+        "quote": "  09:05  BP 157/117, Temp 36.7 °C, HR 69, SpO2 99% RA"
+      },
+      {
+        "doc_id": "92040c30-7556-5d4d-a4d1-ffae8724ebaf",
+        "value": 98.8,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  NIBP 126/72, HR 67, Temperature 98.8 °F (oral), SpO2 97% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3641.0,
+    "completion_tokens": 807.0,
+    "cost_usd": 0.000624295
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "92040c30-7556-5d4d-a4d1-ffae8724ebaf",
+            "is_preop_evaluation": true,
+            "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "e43cff65-6e3d-5335-9f7f-a6d861ffb414",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature on file - signed in clinic 02/22/2026 12:41 (scanned copy attached).",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: colonic resection"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "7aefc9ae-14a0-55b9-957f-861d3e532a3b",
+            "systolic": 157,
+            "diastolic": 117,
+            "time": "09:05",
+            "quote": "  09:05  BP 157/117, Temp 36.7 °C, HR 69, SpO2 99% RA"
+          },
+          {
+            "doc_id": "92040c30-7556-5d4d-a4d1-ffae8724ebaf",
+            "systolic": 126,
+            "diastolic": 72,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  NIBP 126/72, HR 67, Temperature 98.8 °F (oral), SpO2 97% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "7aefc9ae-14a0-55b9-957f-861d3e532a3b",
+            "value": 36.7,
+            "unit": "C",
+            "time": "09:05",
+            "quote": "  09:05  BP 157/117, Temp 36.7 °C, HR 69, SpO2 99% RA"
+          },
+          {
+            "doc_id": "92040c30-7556-5d4d-a4d1-ffae8724ebaf",
+            "value": 98.8,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  NIBP 126/72, HR 67, Temperature 98.8 °F (oral), SpO2 97% RA"
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3641,
+        "completion_tokens": 807,
+        "cost_usd": 0.000624295
+      }
+    }
+  ]
+}

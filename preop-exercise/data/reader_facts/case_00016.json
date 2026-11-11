@@ -1,0 +1,154 @@
+{
+  "case_id": "case_00016",
+  "submission_sha256": "008bf690527562b56f285dcc121c13d5f2dce2af5cd6881923e1ae9f53046e90",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "89fbc4a7-5a5e-5b71-85eb-d5b254e0ba55",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      },
+      {
+        "doc_id": "81e2f72a-f558-5c73-853d-5383ea9f59b1",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "08378923-717b-50f8-9bb1-0d78e19d1f66",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 03/13/2026 12:06 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: inguinal hernia repair"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "1f5be5f7-1a56-5e66-9c45-2e94e55b0271",
+        "systolic": 189,
+        "diastolic": 112,
+        "time": "08:06",
+        "quote": "  08:06  NIBP 189/112, T 37.1 C, HR 74, SpO2 96% RA. See addendum."
+      },
+      {
+        "doc_id": "1f5be5f7-1a56-5e66-9c45-2e94e55b0271",
+        "systolic": 137,
+        "diastolic": 78,
+        "time": "08:30",
+        "quote": "ADDENDUM 08:30: Re-measured 137/78 mmHg following 24 minutes in a quiet room. Reported pain 6/10 on arrival, improved after repositioning."
+      },
+      {
+        "doc_id": "81e2f72a-f558-5c73-853d-5383ea9f59b1",
+        "systolic": 132,
+        "diastolic": 76,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  132/76 mmHg, HR 78, Temperature 99.1 °F (oral), SpO2 95% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "1f5be5f7-1a56-5e66-9c45-2e94e55b0271",
+        "value": 37.1,
+        "unit": "C",
+        "time": "08:06",
+        "quote": "  08:06  NIBP 189/112, T 37.1 C, HR 74, SpO2 96% RA. See addendum."
+      },
+      {
+        "doc_id": "81e2f72a-f558-5c73-853d-5383ea9f59b1",
+        "value": 99.1,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  132/76 mmHg, HR 78, Temperature 99.1 °F (oral), SpO2 95% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3642.0,
+    "completion_tokens": 1333.0,
+    "cost_usd": 0.00088742
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "89fbc4a7-5a5e-5b71-85eb-d5b254e0ba55",
+            "is_preop_evaluation": false,
+            "quote": "Encounter: annual wellness / establish care"
+          },
+          {
+            "doc_id": "81e2f72a-f558-5c73-853d-5383ea9f59b1",
+            "is_preop_evaluation": true,
+            "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "08378923-717b-50f8-9bb1-0d78e19d1f66",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature on file - signed in clinic 03/13/2026 12:06 (scanned copy attached).",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: inguinal hernia repair"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "1f5be5f7-1a56-5e66-9c45-2e94e55b0271",
+            "systolic": 189,
+            "diastolic": 112,
+            "time": "08:06",
+            "quote": "  08:06  NIBP 189/112, T 37.1 C, HR 74, SpO2 96% RA. See addendum."
+          },
+          {
+            "doc_id": "1f5be5f7-1a56-5e66-9c45-2e94e55b0271",
+            "systolic": 137,
+            "diastolic": 78,
+            "time": "08:30",
+            "quote": "ADDENDUM 08:30: Re-measured 137/78 mmHg following 24 minutes in a quiet room. Reported pain 6/10 on arrival, improved after repositioning."
+          },
+          {
+            "doc_id": "81e2f72a-f558-5c73-853d-5383ea9f59b1",
+            "systolic": 132,
+            "diastolic": 76,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  132/76 mmHg, HR 78, Temperature 99.1 °F (oral), SpO2 95% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "1f5be5f7-1a56-5e66-9c45-2e94e55b0271",
+            "value": 37.1,
+            "unit": "C",
+            "time": "08:06",
+            "quote": "  08:06  NIBP 189/112, T 37.1 C, HR 74, SpO2 96% RA. See addendum."
+          },
+          {
+            "doc_id": "81e2f72a-f558-5c73-853d-5383ea9f59b1",
+            "value": 99.1,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  132/76 mmHg, HR 78, Temperature 99.1 °F (oral), SpO2 95% RA"
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3642,
+        "completion_tokens": 1333,
+        "cost_usd": 0.00088742
+      }
+    }
+  ]
+}

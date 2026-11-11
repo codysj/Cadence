@@ -1,0 +1,154 @@
+{
+  "case_id": "case_00032",
+  "submission_sha256": "75360342416aad8740d47117e390a66443bd03d74d4c5e05311cc76d6805c8fc",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "d1282783-0221-5f17-ad65-cf1e2950ac32",
+        "is_preop_evaluation": true,
+        "quote": "HISTORY & PHYSICAL - PRE-OP"
+      },
+      {
+        "doc_id": "fb88e9b9-b338-5942-97ec-b2622b1239b4",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "deaa6337-c80e-5200-b907-9f5521f0501f",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 03/31/2026 14:56 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: knee arthroscopy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "41ff2483-f4a7-5eea-b7fd-04e6b97e83cd",
+        "systolic": 196,
+        "diastolic": 110,
+        "time": "09:06",
+        "quote": "VITAL SIGNS: On arrival at 09:06: BP 196/110 mmHg, Temperature 98.2 °F (oral), HR 93, SpO2 99% RA. Following 32 minutes in a quiet room, BP was rechecked at 09:38: BP 181/98 mmHg. Surgeon's office notified of elevated readings."
+      },
+      {
+        "doc_id": "41ff2483-f4a7-5eea-b7fd-04e6b97e83cd",
+        "systolic": 181,
+        "diastolic": 98,
+        "time": "09:38",
+        "quote": "VITAL SIGNS: On arrival at 09:06: BP 196/110 mmHg, Temperature 98.2 °F (oral), HR 93, SpO2 99% RA. Following 32 minutes in a quiet room, BP was rechecked at 09:38: BP 181/98 mmHg. Surgeon's office notified of elevated readings."
+      },
+      {
+        "doc_id": "d1282783-0221-5f17-ad65-cf1e2950ac32",
+        "systolic": 117,
+        "diastolic": 70,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  NIBP 117/70, HR 91, 98.1 °F temporal, SpO2 97% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "41ff2483-f4a7-5eea-b7fd-04e6b97e83cd",
+        "value": 98.2,
+        "unit": "F",
+        "time": "09:06",
+        "quote": "VITAL SIGNS: On arrival at 09:06: BP 196/110 mmHg, Temperature 98.2 °F (oral), HR 93, SpO2 99% RA. Following 32 minutes in a quiet room, BP was rechecked at 09:38: BP 181/98 mmHg. Surgeon's office notified of elevated readings."
+      },
+      {
+        "doc_id": "d1282783-0221-5f17-ad65-cf1e2950ac32",
+        "value": 98.1,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  NIBP 117/70, HR 91, 98.1 °F temporal, SpO2 97% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3770.0,
+    "completion_tokens": 1264.0,
+    "cost_usd": 0.00086892
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "d1282783-0221-5f17-ad65-cf1e2950ac32",
+            "is_preop_evaluation": true,
+            "quote": "HISTORY & PHYSICAL - PRE-OP"
+          },
+          {
+            "doc_id": "fb88e9b9-b338-5942-97ec-b2622b1239b4",
+            "is_preop_evaluation": false,
+            "quote": "Encounter: annual wellness / establish care"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "deaa6337-c80e-5200-b907-9f5521f0501f",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature on file - signed in clinic 03/31/2026 14:56 (scanned copy attached).",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: knee arthroscopy"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "41ff2483-f4a7-5eea-b7fd-04e6b97e83cd",
+            "systolic": 196,
+            "diastolic": 110,
+            "time": "09:06",
+            "quote": "VITAL SIGNS: On arrival at 09:06: BP 196/110 mmHg, Temperature 98.2 °F (oral), HR 93, SpO2 99% RA. Following 32 minutes in a quiet room, BP was rechecked at 09:38: BP 181/98 mmHg. Surgeon's office notified of elevated readings."
+          },
+          {
+            "doc_id": "41ff2483-f4a7-5eea-b7fd-04e6b97e83cd",
+            "systolic": 181,
+            "diastolic": 98,
+            "time": "09:38",
+            "quote": "VITAL SIGNS: On arrival at 09:06: BP 196/110 mmHg, Temperature 98.2 °F (oral), HR 93, SpO2 99% RA. Following 32 minutes in a quiet room, BP was rechecked at 09:38: BP 181/98 mmHg. Surgeon's office notified of elevated readings."
+          },
+          {
+            "doc_id": "d1282783-0221-5f17-ad65-cf1e2950ac32",
+            "systolic": 117,
+            "diastolic": 70,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  NIBP 117/70, HR 91, 98.1 °F temporal, SpO2 97% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "41ff2483-f4a7-5eea-b7fd-04e6b97e83cd",
+            "value": 98.2,
+            "unit": "F",
+            "time": "09:06",
+            "quote": "VITAL SIGNS: On arrival at 09:06: BP 196/110 mmHg, Temperature 98.2 °F (oral), HR 93, SpO2 99% RA. Following 32 minutes in a quiet room, BP was rechecked at 09:38: BP 181/98 mmHg. Surgeon's office notified of elevated readings."
+          },
+          {
+            "doc_id": "d1282783-0221-5f17-ad65-cf1e2950ac32",
+            "value": 98.1,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  NIBP 117/70, HR 91, 98.1 °F temporal, SpO2 97% RA"
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3770,
+        "completion_tokens": 1264,
+        "cost_usd": 0.00086892
+      }
+    }
+  ]
+}

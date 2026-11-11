@@ -1,0 +1,130 @@
+{
+  "case_id": "case_00039",
+  "submission_sha256": "180d8d2a904cded3f2e9cbe92889255b1f10129f05576b0f925384fe29609169",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "82ccdcb2-2a5f-510f-ad67-2a9225539fd7",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "b6abbed4-318a-57a8-a46b-e3df8a28b593",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature: /s/ Danielle Carter (electronically signed 03/28/2026 15:53)",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: coronary artery bypass grafting"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "6fe4c274-4722-54ba-88af-b5cd9bd96c2a",
+        "systolic": 127,
+        "diastolic": 74,
+        "time": "08:55",
+        "quote": "VITAL SIGNS: On arrival at 08:45: Temperature 98.2 °F (oral). After resting quietly for 10 minutes, BP was rechecked at 08:55: BP 127/74 mmHg. ."
+      },
+      {
+        "doc_id": "82ccdcb2-2a5f-510f-ad67-2a9225539fd7",
+        "systolic": 124,
+        "diastolic": 80,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  NIBP 124/80, HR 86, T 97.4 F, SpO2 97% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "6fe4c274-4722-54ba-88af-b5cd9bd96c2a",
+        "value": 98.2,
+        "unit": "F",
+        "time": "08:45",
+        "quote": "VITAL SIGNS: On arrival at 08:45: Temperature 98.2 °F (oral). After resting quietly for 10 minutes, BP was rechecked at 08:55: BP 127/74 mmHg. ."
+      },
+      {
+        "doc_id": "82ccdcb2-2a5f-510f-ad67-2a9225539fd7",
+        "value": 97.4,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  NIBP 124/80, HR 86, T 97.4 F, SpO2 97% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3530.0,
+    "completion_tokens": 811.0,
+    "cost_usd": 0.00061242
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "82ccdcb2-2a5f-510f-ad67-2a9225539fd7",
+            "is_preop_evaluation": true,
+            "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "b6abbed4-318a-57a8-a46b-e3df8a28b593",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature: /s/ Danielle Carter (electronically signed 03/28/2026 15:53)",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: coronary artery bypass grafting"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "6fe4c274-4722-54ba-88af-b5cd9bd96c2a",
+            "systolic": 127,
+            "diastolic": 74,
+            "time": "08:55",
+            "quote": "VITAL SIGNS: On arrival at 08:45: Temperature 98.2 °F (oral). After resting quietly for 10 minutes, BP was rechecked at 08:55: BP 127/74 mmHg. ."
+          },
+          {
+            "doc_id": "82ccdcb2-2a5f-510f-ad67-2a9225539fd7",
+            "systolic": 124,
+            "diastolic": 80,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  NIBP 124/80, HR 86, T 97.4 F, SpO2 97% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "6fe4c274-4722-54ba-88af-b5cd9bd96c2a",
+            "value": 98.2,
+            "unit": "F",
+            "time": "08:45",
+            "quote": "VITAL SIGNS: On arrival at 08:45: Temperature 98.2 °F (oral). After resting quietly for 10 minutes, BP was rechecked at 08:55: BP 127/74 mmHg. ."
+          },
+          {
+            "doc_id": "82ccdcb2-2a5f-510f-ad67-2a9225539fd7",
+            "value": 97.4,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  NIBP 124/80, HR 86, T 97.4 F, SpO2 97% RA"
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3530,
+        "completion_tokens": 811,
+        "cost_usd": 0.00061242
+      }
+    }
+  ]
+}

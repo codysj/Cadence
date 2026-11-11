@@ -1,0 +1,86 @@
+{
+  "case_id": "case_00011",
+  "submission_sha256": "df3ecf0d8bf375e0601fa13fdb3b2a021a28e2c948bbaa84eca62f8c031fe0ef",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "8e3e65c9-48f3-5a95-bb47-d609b772313f",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "45278cc4-bb41-5cb1-990e-9f32df3cb1af",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 03/07/2026 10:02 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: lumbar laminectomy"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "8e3e65c9-48f3-5a95-bb47-d609b772313f",
+        "systolic": 117,
+        "diastolic": 71,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  NIBP 117/71"
+      }
+    ],
+    "note_temperatures": [],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3716.0,
+    "completion_tokens": 376.0,
+    "cost_usd": 0.00041817
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "8e3e65c9-48f3-5a95-bb47-d609b772313f",
+            "is_preop_evaluation": true,
+            "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "45278cc4-bb41-5cb1-990e-9f32df3cb1af",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature on file - signed in clinic 03/07/2026 10:02 (scanned copy attached).",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: lumbar laminectomy"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "8e3e65c9-48f3-5a95-bb47-d609b772313f",
+            "systolic": 117,
+            "diastolic": 71,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  NIBP 117/71"
+          }
+        ],
+        "note_temperatures": [],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3716,
+        "completion_tokens": 376,
+        "cost_usd": 0.00041817
+      }
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "case_id": "case_00015",
+  "submission_sha256": "6394ef3543e5a113b76be064d5844ef46fea480f87a9d21ea19c66d2535e5c27",
+  "model": "openai/gpt-6-luna",
+  "prompt_version": "eeba713521",
+  "facts": {
+    "hp_candidates": [
+      {
+        "doc_id": "11a57159-c8f6-5f27-a1ea-b9cb4651e7d2",
+        "is_preop_evaluation": true,
+        "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+      },
+      {
+        "doc_id": "cbfa10fd-b8e3-5971-b6f7-0b3807cb1aae",
+        "is_preop_evaluation": false,
+        "quote": "Encounter: annual wellness / establish care"
+      }
+    ],
+    "consents": [
+      {
+        "doc_id": "7a6123a0-7f1b-591c-94be-cf81d65bf391",
+        "patient_signed": "yes",
+        "signature_quote": "Patient signature on file - signed in clinic 03/06/2026 10:16 (scanned copy attached).",
+        "matches_scheduled_procedure": "yes",
+        "procedure_quote": "Procedure: cataract extraction"
+      }
+    ],
+    "note_blood_pressures": [
+      {
+        "doc_id": "11a57159-c8f6-5f27-a1ea-b9cb4651e7d2",
+        "systolic": 132,
+        "diastolic": 76,
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP: 132/76, HR 92, Temp 98.8 °F, SpO2 95% RA"
+      }
+    ],
+    "note_temperatures": [
+      {
+        "doc_id": "11a57159-c8f6-5f27-a1ea-b9cb4651e7d2",
+        "value": 98.8,
+        "unit": "F",
+        "time": "10:05",
+        "quote": "  Vitals 10:05  BP: 132/76, HR 92, Temp 98.8 °F, SpO2 95% RA"
+      }
+    ],
+    "anticoagulant_mentions": [],
+    "medication_list_anticoagulants": [],
+    "anticoagulation_plans": []
+  },
+  "disputes": [],
+  "usage": {
+    "calls": 1.0,
+    "prompt_tokens": 3692.0,
+    "completion_tokens": 593.0,
+    "cost_usd": 0.00052367
+  },
+  "attempts": [
+    {
+      "facts": {
+        "hp_candidates": [
+          {
+            "doc_id": "11a57159-c8f6-5f27-a1ea-b9cb4651e7d2",
+            "is_preop_evaluation": true,
+            "quote": "PREOPERATIVE HISTORY AND PHYSICAL"
+          },
+          {
+            "doc_id": "cbfa10fd-b8e3-5971-b6f7-0b3807cb1aae",
+            "is_preop_evaluation": false,
+            "quote": "Encounter: annual wellness / establish care"
+          }
+        ],
+        "consents": [
+          {
+            "doc_id": "7a6123a0-7f1b-591c-94be-cf81d65bf391",
+            "patient_signed": "yes",
+            "signature_quote": "Patient signature on file - signed in clinic 03/06/2026 10:16 (scanned copy attached).",
+            "matches_scheduled_procedure": "yes",
+            "procedure_quote": "Procedure: cataract extraction"
+          }
+        ],
+        "note_blood_pressures": [
+          {
+            "doc_id": "11a57159-c8f6-5f27-a1ea-b9cb4651e7d2",
+            "systolic": 132,
+            "diastolic": 76,
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP: 132/76, HR 92, Temp 98.8 °F, SpO2 95% RA"
+          }
+        ],
+        "note_temperatures": [
+          {
+            "doc_id": "11a57159-c8f6-5f27-a1ea-b9cb4651e7d2",
+            "value": 98.8,
+            "unit": "F",
+            "time": "10:05",
+            "quote": "  Vitals 10:05  BP: 132/76, HR 92, Temp 98.8 °F, SpO2 95% RA"
+          }
+        ],
+        "anticoagulant_mentions": [],
+        "medication_list_anticoagulants": [],
+        "anticoagulation_plans": []
+      },
+      "problem": null,
+      "open_items": [],
+      "usage": {
+        "prompt_tokens": 3692,
+        "completion_tokens": 593,
+        "cost_usd": 0.00052367
+      }
+    }
+  ]
+}
