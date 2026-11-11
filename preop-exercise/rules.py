@@ -120,8 +120,12 @@ def anticoagulants_named(text: str | None) -> set[str]:
 
 
 def _day(value: str | None) -> date | None:
-    """The calendar date as written. Windows count calendar days and ignore the time of
-    day: label 12 passes a CBC taken 30 days and 4 hours before the submission."""
+    """The calendar date as written. Windows count calendar days and ignore the time of day.
+
+    Label 09 fails a CBC taken 15 calendar days before the procedure date, although it
+    was taken less than 15 x 24 hours before that date begins, so elapsed-time arithmetic
+    would pass it. Label 12 passes one taken exactly 30 calendar days before.
+    """
 
     try:
         return date.fromisoformat((value or "")[:10])
@@ -623,6 +627,36 @@ def _fahrenheit(value: float, unit: str) -> float:
     return round(value * 9 / 5 + 32 if unit == "C" else value, 2)
 
 
+def blood_pressures_written(text: str | None) -> list[tuple[int, int]]:
+    """Every plausible blood pressure written in `text`, as (systolic, diastolic).
+    Dates such as 03/15/2026 and scores such as 6/10 are not blood pressures."""
+
+    found = []
+    for match in _BP_SHAPE.finditer(unicodedata.normalize("NFKC", text or "")):
+        systolic, diastolic = int(match.group(1)), int(match.group(2))
+        if 60 <= systolic <= 260 and 30 <= diastolic <= 160 and systolic > diastolic:
+            found.append((systolic, diastolic))
+    return found
+
+
+def temperatures_written(text: str | None) -> list[tuple[float, str]]:
+    """Every plausible body temperature written in `text`, as (value, 'C' or 'F')."""
+
+    found = []
+    for match in _TEMP_SHAPE.finditer(unicodedata.normalize("NFKC", text or "")):
+        value, unit = float(match.group(1)), match.group(2)
+        if (30 <= value <= 45) if unit == "C" else (90 <= value <= 110):
+            found.append((value, unit))
+    return found
+
+
+def temperature_reported(value: float, unit: str, reported_fahrenheit: list[float]) -> bool:
+    """True when a written temperature matches a reported one, in either unit:
+    "38.6 C (101.5 F)" is one reading written twice."""
+
+    return any(abs(_fahrenheit(value, unit) - reported) <= 0.15 for reported in reported_fahrenheit)
+
+
 def _could_be_latest(open_items: list[tuple[date | None, str]], readings: list[_Reading]) -> list[str]:
     """The open items (an unverified reading, or one written but not reported) that could
     be the most recent reading. One from a document dated before a verified reading
@@ -709,10 +743,8 @@ def _blood_pressure(c: _Case) -> Check:
 
     for doc in c.s.documents:
         reported = {(f.systolic, f.diastolic) for f in c.facts.note_blood_pressures if f.doc_id == doc.doc_id}
-        for match in _BP_SHAPE.finditer(unicodedata.normalize("NFKC", doc.text or "")):
-            pair = (int(match.group(1)), int(match.group(2)))
-            plausible = 60 <= pair[0] <= 260 and 30 <= pair[1] <= 160 and pair[0] > pair[1]
-            if plausible and pair not in reported:
+        for pair in blood_pressures_written(doc.text):
+            if pair not in reported:
                 open_items.append((_day(doc.date), f"{pair[0]}/{pair[1]} is written in {c.label(doc.doc_id)} but the reader did not report it; check that document"))
     doubt += _could_be_latest(open_items, readings)
 
@@ -750,10 +782,8 @@ def _temperature(c: _Case) -> Check:
 
     for doc in c.s.documents:
         reported = [_fahrenheit(f.value, f.unit) for f in c.facts.note_temperatures if f.doc_id == doc.doc_id]
-        for match in _TEMP_SHAPE.finditer(unicodedata.normalize("NFKC", doc.text or "")):
-            value, unit = float(match.group(1)), match.group(2)
-            plausible = 30 <= value <= 45 if unit == "C" else 90 <= value <= 110
-            if plausible and not any(abs(_fahrenheit(value, unit) - r) <= 0.15 for r in reported):
+        for value, unit in temperatures_written(doc.text):
+            if not temperature_reported(value, unit, reported):
                 open_items.append((_day(doc.date), f"{_num(value)} {unit} is written in {c.label(doc.doc_id)} but the reader did not report it; check that document"))
     doubt += _could_be_latest(open_items, readings)
 
@@ -784,16 +814,18 @@ _FAIL_CATEGORY = {
     "temperature": "ACUTE_SAFETY_EXCLUSION",
 }
 _STATUS_WORD = {"PASS": "PASS", "FAIL": "FAIL", "UNKNOWN": "UNKNOWN", "NOT_APPLICABLE": "N/A"}
+# Rejection reasons that only mean "a newer one exists". Routine, so left out of issue evidence.
+_SUPERSEDED_BY_AGE = {"older H&P", "older result", "older reading"}
 
 
 def _issue_evidence(check: Check) -> str:
-    """One line for the issue: what was found. For a finding of absence there is nothing
-    to cite, so the evidence is what was considered and set aside (a BMP for a missing CMP).
-    The full list of rejected items stays in the explanation."""
+    """One line for the issue: what was found, then anything set aside for a reason a
+    nurse would want to see (entered in error, a BMP offered for a CMP, a wellness visit).
+    Items passed over only because something newer exists stay in the explanation."""
 
     found = [e.label + (f' "{e.quote}"' if e.quote else "") for e in check.evidence]
-    set_aside = [f"rejected: {r.label} ({r.reason})" for r in check.rejected]
-    return "; ".join(found or set_aside) or "nothing on file to cite"
+    set_aside = [f"rejected: {r.label} ({r.reason})" for r in check.rejected if r.reason not in _SUPERSEDED_BY_AGE]
+    return "; ".join(found + set_aside) or "nothing on file to cite"
 
 
 def render(decision: str, checks: list[Check], submission: PatientSubmission) -> str:

@@ -393,6 +393,33 @@ def test_entered_in_error_falls_back_to_the_latest_real_result(older_days: int, 
     assert any(r.reason == "entered in error" for r in output.checks[2].rejected)
 
 
+def test_issue_evidence_names_unusual_rejections_but_not_merely_older_results() -> None:
+    """Review finding: an entered-in-error CBC case cited only the old CBC. The nurse
+    needs to see that a newer result exists and why it was not used."""
+
+    s, f = ready_case()
+    s["labs"] = [
+        {"id": "lab-new", "code": "CBC", "effective_at": ago(3, "08:00"), "status": "entered-in-error"},
+        {"id": "lab-mid", "code": "CBC", "effective_at": ago(44, "08:00"), "status": "final"},
+        {"id": "lab-old", "code": "CBC", "effective_at": ago(90, "08:00"), "status": "final"},
+    ]
+    issue = run(s, f).issues[0]
+
+    assert issue.category == "REQUIRED_TESTING"
+    assert "lab #lab-mid" in issue.evidence  # the result the finding rests on
+    assert "lab #lab-new (entered in error)" in issue.evidence
+    assert "lab-old" not in issue.evidence and "older result" not in issue.evidence
+
+
+def test_written_readings_are_found_by_one_shared_helper() -> None:
+    from rules import blood_pressures_written, temperature_reported, temperatures_written
+
+    text = "Visit 03/19/2026. Pain 6/10. 08:06 NIBP 189/112, T 37.1 C. Later 137/78 mmHg, Temp 99.1 °F. Goal INR 2-3."
+    assert blood_pressures_written(text) == [(189, 112), (137, 78)]
+    assert temperatures_written(text) == [(37.1, "C"), (99.1, "F")]
+    assert temperature_reported(38.6, "C", [101.5]) and not temperature_reported(100.9, "F", [100.0])
+
+
 def test_the_latest_result_decides_whatever_the_list_order() -> None:
     s, f = ready_case()
     s["labs"] = [

@@ -4,22 +4,26 @@ REPORT ?= data/eval_report.json
 DETERMINISM_REPORT ?= data/determinism_report.json
 MODEL ?= gpt-4.1-mini
 
+# Load API keys from .env when it exists (see .env.example). uv stops with an error
+# if it is told to load a file that is not there, so the flag is added only then.
+ENV_FILE := $(if $(wildcard .env),--env-file .env,)
+
 .PHONY: baseline evals determinism score report test all clean
 
 baseline:
-	uv run run_baseline.py \
+	uv run $(ENV_FILE) run_baseline.py \
 		--input $(INPUT) \
 		--output $(OUTPUT) \
 		--model $(MODEL)
 
 evals:
-	uv run run_evals.py \
+	uv run $(ENV_FILE) run_evals.py \
 		--input $(INPUT) \
 		--outputs $(OUTPUT) \
 		--report $(REPORT)
 
 determinism:
-	uv run run_evals.py \
+	uv run $(ENV_FILE) run_evals.py \
 		--determinism \
 		--input $(INPUT) \
 		--model $(MODEL) \

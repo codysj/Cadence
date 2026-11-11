@@ -7,8 +7,9 @@ often as needed. Facts live one file per case: {"case_id", "submission_sha256", 
   check CASE [CASE...]  check a facts file against its documents (never the label)
   score [--facts DIR]   run the rules on saved facts for every case and compare with labels
 
-`score` applies the same three metrics as run_evals.py and writes a report that
-view_report.py can open:  uv run view_report.py --report data/offline_report.json
+`score` calls run_evals.py's own scoring functions, so its three metrics are the
+harness's, and writes a report that view_report.py can open:
+  uv run view_report.py --report data/offline_report.json
 """
 
 from __future__ import annotations
@@ -23,6 +24,7 @@ from pathlib import Path
 from typing import Any
 
 import rules
+import run_evals
 from facts import Facts, reader_input, submission_hash
 from models import PatientSubmission, TriageOutput
 
@@ -113,15 +115,12 @@ def open_items(submission: PatientSubmission, facts: Facts) -> list[str]:
             problems.append(f"{generic} is named in {label} but there is no mention for it from that document")
 
         pairs = {(f.systolic, f.diastolic) for f in facts.note_blood_pressures if f.doc_id == doc.doc_id}
-        for match in rules._BP_SHAPE.finditer(text):
-            pair = (int(match.group(1)), int(match.group(2)))
-            if 60 <= pair[0] <= 260 and 30 <= pair[1] <= 160 and pair[0] > pair[1] and pair not in pairs:
+        for pair in rules.blood_pressures_written(doc.text):
+            if pair not in pairs:
                 problems.append(f"{pair[0]}/{pair[1]} is written in {label} but is not reported")
         temps = [rules._fahrenheit(f.value, f.unit) for f in facts.note_temperatures if f.doc_id == doc.doc_id]
-        for match in rules._TEMP_SHAPE.finditer(text):
-            value, unit = float(match.group(1)), match.group(2)
-            plausible = 30 <= value <= 45 if unit == "C" else 90 <= value <= 110
-            if plausible and not any(abs(rules._fahrenheit(value, unit) - t) <= 0.15 for t in temps):
+        for value, unit in rules.temperatures_written(doc.text):
+            if not rules.temperature_reported(value, unit, temps):
                 problems.append(f"{value:g} {unit} is written in {label} but is not reported")
     return problems
 
@@ -172,49 +171,42 @@ def cmd_check(args: argparse.Namespace) -> int:
     return 1 if failed else 0
 
 
-def score_rows(rows: list[dict[str, Any]], facts_dir: Path) -> list[dict[str, Any]]:
-    """One record per case, in the shape run_evals.py writes and view_report.py reads."""
+def score_outputs(rows: list[dict[str, Any]], outputs: list[tuple[TriageOutput | None, str | None]]) -> list[dict[str, Any]]:
+    """One record per case, scored by the harness's own code (run_evals), so these
+    numbers are the harness's numbers. `outputs` holds (output, error) per row."""
 
-    records = []
-    for index, row in enumerate(rows):
-        label = row["label"]
-        output: TriageOutput | None = None
-        error = None
-        try:
-            output = rules.evaluate(PatientSubmission.model_validate(row["submission"]), load_facts(facts_dir, row))
-        except Exception as exc:
-            error = f"{type(exc).__name__}: {exc}"
-        metrics = {
-            "json_schema_valid": output is not None,
-            "decision_match_oracle": output is not None and output.decision == label["decision"],
-            "issue_categories_match_oracle": output is not None
-            and sorted({i.category for i in output.issues}) == sorted(set(label["categories"])),
-        }
-        records.append(
-            {
-                "record_index": index,
-                "case_id": row["case_id"],
-                "submission": row["submission"],
-                "baseline_error": error,
-                "label": label,
-                "parsed_output": output.model_dump() if output else None,
-                "parse_error": None,
-                "metrics": metrics,
-                "aggregate_local_score": 100.0 * sum(metrics.values()) / len(metrics),
-            }
-        )
+    by_index = {
+        index: {"record_index": index, "output": output.model_dump() if output else None, "error": error}
+        for index, (output, error) in enumerate(outputs)
+    }
+    cases = [run_evals.EvalCase.model_validate(row) for row in rows]
+    _, records = run_evals._build_eval_items(cases, by_index)
     return records
+
+
+def score_rows(rows: list[dict[str, Any]], facts_dir: Path) -> list[dict[str, Any]]:
+    """Run the rules on the facts saved in `facts_dir` and score every case."""
+
+    outputs: list[tuple[TriageOutput | None, str | None]] = []
+    for row in rows:
+        try:
+            outputs.append((rules.evaluate(PatientSubmission.model_validate(row["submission"]), load_facts(facts_dir, row)), None))
+        except Exception as exc:
+            outputs.append((None, f"{type(exc).__name__}: {exc}"))
+    return score_outputs(rows, outputs)
 
 
 def cmd_score(args: argparse.Namespace) -> int:
     records = score_rows(load_rows(), args.facts)
     total = len(records)
-    score = round(sum(r["aggregate_local_score"] for r in records) / total, 2)
+    summary = run_evals._summarize_local_rows(records)
+    score = summary["aggregate_local_score_pct"]
     report = {
         "generated_at": datetime.now(tz=timezone.utc).isoformat(),
         "mode": f"offline ({args.facts.name})",
-        "primary_score": {"name": "aggregate_local_score_pct", "value_pct": score, "goal": "maximize"},
+        "primary_score": {"name": run_evals.PRIMARY_SCORE_NAME, "value_pct": score, "goal": "maximize"},
         "facts_source": str(args.facts),
+        "local_metrics_summary": summary,
         "records": records,
     }
     args.report.parent.mkdir(parents=True, exist_ok=True)

@@ -1,9 +1,14 @@
 """Stage 3 check: given a careful reading of each case, the rules reproduce the label.
 
 data/gold_facts/ holds reference facts for all 50 sample cases: what a careful, literal
-reader finds in each case's documents. They were written from the documents alone,
-without sight of the labels, and each must leave nothing open: every quote is found in
-the document it cites and nothing written in a document goes unreported.
+reader finds in each case's documents. Each must leave nothing open: every quote is
+found in the document it cites and nothing written in a document goes unreported.
+
+How independent they are: 49 were written by subagents that never saw labels, following
+a reading guide written after studying the labels. That guide settles the judgement
+calls (what counts as a concrete or a deferred instruction, which titles are consents)
+with examples close to wording from labelled cases. case_00016 was written knowing its
+label. So agreement with the labels here was partly built in by the guide.
 
 This tests the code side only. It says nothing about how well a model reads, and it
 exercises the paths where facts are complete; the doubt paths (unverified quotes,
@@ -59,17 +64,51 @@ def test_rules_reproduce_the_label_from_reference_facts(row: dict) -> None:
     assert sorted({issue.category for issue in output.issues}) == sorted(set(row["label"]["categories"]))
 
 
-def test_offline_scorer_agrees_with_the_harness_metrics() -> None:
-    records = score_rows(ROWS, GOLD)
+def test_offline_scores_are_the_harness_own_metrics(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The offline scorer does not re-implement scoring: it calls run_evals. Swapping the
+    harness's metric function for a marker changes what the offline scorer reports."""
 
+    import run_evals
+
+    records = score_rows(ROWS, GOLD)
     assert [r["record_index"] for r in records] == list(range(50))
-    for metric in ("json_schema_valid", "decision_match_oracle", "issue_categories_match_oracle"):
-        assert sum(r["metrics"][metric] for r in records) == 50 - len(KNOWN_DISAGREEMENTS)
+    for record, row in zip(records, ROWS):
+        direct = run_evals._local_metrics_for_row(run_evals.CaseLabel.model_validate(row["label"]), record["parsed_output"])
+        assert record["metrics"] == direct["metrics"]
+        assert record["aggregate_local_score"] == direct["aggregate_local_score"]
+    assert run_evals._summarize_local_rows(records)["aggregate_local_score_pct"] == 100.0
+
+    marker = {"parsed_output": None, "parse_error": "marker", "metrics": dict.fromkeys(run_evals.METRIC_WEIGHTS, False),
+              "aggregate_local_score": -1.0, "expected_categories": [], "actual_categories": [], "actual_decision": "INVALID"}
+    monkeypatch.setattr(run_evals, "_local_metrics_for_row", lambda **kwargs: marker)
+    assert score_rows(ROWS[:1], GOLD)[0]["aggregate_local_score"] == -1.0
+
+
+def test_the_harness_fails_a_case_for_one_extra_category() -> None:
+    """Why a false UNKNOWN is expensive: the category set must match exactly."""
+
+    from offline_eval import score_outputs
+
+    row = next(r for r in ROWS if r["label"]["decision"] == "NEEDS_FOLLOW_UP" and len(r["label"]["categories"]) == 1)
+    output = evaluate(PatientSubmission.model_validate(row["submission"]), load_facts(GOLD, row))
+    extra = output.model_copy(update={"issues": [*output.issues, output.issues[0].model_copy(update={"category": "MISSING_REQUIRED_DATA"})]})
+    if row["label"]["categories"] == ["MISSING_REQUIRED_DATA"]:
+        extra = output.model_copy(update={"issues": [*output.issues, output.issues[0].model_copy(update={"category": "REQUIRED_TESTING"})]})
+
+    metrics = score_outputs([row], [(extra, None)])[0]["metrics"]
+    assert metrics == {"json_schema_valid": True, "decision_match_oracle": True, "issue_categories_match_oracle": False}
 
 
 def test_missing_facts_file_is_scored_as_a_failure_not_a_crash(tmp_path) -> None:
-    record = score_rows(ROWS[:1], tmp_path)[0]
+    ready = next(r for r in ROWS if r["label"]["decision"] == "READY")
+    record = score_rows([ready], tmp_path)[0]
 
     assert record["parsed_output"] is None
     assert record["baseline_error"].startswith("FileNotFoundError")
-    assert record["aggregate_local_score"] == 0.0
+    assert record["metrics"]["json_schema_valid"] is False
+    assert record["metrics"]["decision_match_oracle"] is False
+    # A property of the harness, not of this code: with no output at all, a READY label's
+    # empty category list "matches", so a crashed READY case still earns one metric in three.
+    # My own re-implementation scored this 0; calling the harness shows what it really does.
+    assert record["metrics"]["issue_categories_match_oracle"] is True
+    assert round(record["aggregate_local_score"], 1) == 33.3
